@@ -1,0 +1,36 @@
+{
+  "nav": {
+    "home": "בית",
+    "properties": "נכסים",
+    "contact": "צור קשר"
+  },
+  "hero": {
+    "eyebrow": "צילום נדל\"ן קולנועי",
+    "title": "האמנות לחשוף כל",
+    "titleAccent": "מרחב",
+    "subtitle": "צילום · וידאו רחפן · סיור וירטואלי 360°",
+    "cta": "גלה נכסים"
+  },
+  "properties": {
+    "title": "הנכסים שלנו",
+    "eyebrow": "נכסים יוצאי דופן",
+    "filters": {
+      "all": "הכל",
+      "villa": "וילה",
+      "appartement": "דירה",
+      "maison": "בית",
+      "penthouse": "פנטהאוז"
+    },
+    "available": "זמין",
+    "sold": "נמכר",
+    "surface": "מ\"ר",
+    "rooms": "חדרים",
+    "bedrooms": "חדרי שינה",
+    "seeMore": "צפה בנכס →",
+    "noResults": "אין נכסים זמינים כרגע"
+  },
+  "status": {
+    "available": "זמין",
+    "sold": "נמכר"
+  }
+}

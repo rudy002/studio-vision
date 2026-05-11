@@ -1,0 +1,36 @@
+{
+  "nav": {
+    "home": "Home",
+    "properties": "Properties",
+    "contact": "Contact"
+  },
+  "hero": {
+    "eyebrow": "Real Estate Cinematography",
+    "title": "The art of revealing every",
+    "titleAccent": "space",
+    "subtitle": "Photography · Drone video · 360° Virtual tour",
+    "cta": "Explore properties"
+  },
+  "properties": {
+    "title": "Our Properties",
+    "eyebrow": "Exceptional properties",
+    "filters": {
+      "all": "All",
+      "villa": "Villa",
+      "appartement": "Apartment",
+      "maison": "House",
+      "penthouse": "Penthouse"
+    },
+    "available": "Available",
+    "sold": "Sold",
+    "surface": "m²",
+    "rooms": "rooms",
+    "bedrooms": "bedrooms",
+    "seeMore": "View property →",
+    "noResults": "No properties available at the moment"
+  },
+  "status": {
+    "available": "Available",
+    "sold": "Sold"
+  }
+}

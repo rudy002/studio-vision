@@ -1,0 +1,36 @@
+{
+  "nav": {
+    "home": "Accueil",
+    "properties": "Biens",
+    "contact": "Contact"
+  },
+  "hero": {
+    "eyebrow": "Cinématographie immobilière",
+    "title": "L'art de révéler chaque",
+    "titleAccent": "espace",
+    "subtitle": "Photographie · Vidéo drone · Visite virtuelle 360°",
+    "cta": "Explorer les biens"
+  },
+  "properties": {
+    "title": "Nos Biens",
+    "eyebrow": "Propriétés d'exception",
+    "filters": {
+      "all": "Tous",
+      "villa": "Villa",
+      "appartement": "Appartement",
+      "maison": "Maison",
+      "penthouse": "Penthouse"
+    },
+    "available": "Disponible",
+    "sold": "Vendu",
+    "surface": "m²",
+    "rooms": "pièces",
+    "bedrooms": "chambres",
+    "seeMore": "Voir le bien →",
+    "noResults": "Aucun bien disponible pour le moment"
+  },
+  "status": {
+    "available": "Disponible",
+    "sold": "Vendu"
+  }
+}
