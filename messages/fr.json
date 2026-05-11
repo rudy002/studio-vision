@@ -32,5 +32,28 @@
   "status": {
     "available": "Disponible",
     "sold": "Vendu"
+  },
+
+  "contact": {
+    "eyebrow": "Contactez-nous",
+    "title": "Parlons de votre projet",
+    "description": "Notre équipe est disponible pour répondre à toutes vos questions sur nos biens et services de cinématographie immobilière.",
+    "info": {
+      "location": "Israël",
+      "email": "contact@studiovision.il",
+      "phone": "+972 XX XXX XXXX"
+    },
+    "form": {
+      "firstname": "Prénom",
+      "lastname": "Nom",
+      "email": "Email",
+      "phone": "Téléphone",
+      "message": "Message",
+      "submit": "Envoyer",
+      "role": "Vous êtes ?",
+      "buyer": "Acheteur",
+      "seller": "Vendeur",
+      "agent": "Agent immobilier"
+    }
   }
 }

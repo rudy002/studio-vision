@@ -32,5 +32,27 @@
   "status": {
     "available": "זמין",
     "sold": "נמכר"
+  },
+  "contact": {
+    "eyebrow": "צור קשר",
+    "title": "בואו נדבר על הפרויקט שלך",
+    "description": "הצוות שלנו זמין לענות על כל שאלותיך לגבי הנכסים ושירותי הצילום הנדל״ני שלנו.",
+    "info": {
+      "location": "ישראל",
+      "email": "contact@studiovision.il",
+      "phone": "+972 XX XXX XXXX"
+    },
+    "form": {
+      "firstname": "שם פרטי",
+      "lastname": "שם משפחה",
+      "email": "אימייל",
+      "phone": "טלפון",
+      "message": "הודעה",
+      "submit": "שלח",
+      "role": "את/ה?",
+      "buyer": "קונה",
+      "seller": "מוכר",
+      "agent": "סוכן נדל״ן"
+    }
   }
 }

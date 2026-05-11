@@ -32,5 +32,28 @@
   "status": {
     "available": "Available",
     "sold": "Sold"
+  },
+
+  "contact": {
+    "eyebrow": "Contact us",
+    "title": "Let's talk about your project",
+    "description": "Our team is available to answer all your questions about our properties and real estate cinematography services.",
+    "info": {
+      "location": "Israel",
+      "email": "contact@studiovision.il",
+      "phone": "+972 XX XXX XXXX"
+    },
+    "form": {
+      "firstname": "First name",
+      "lastname": "Last name",
+      "email": "Email",
+      "phone": "Phone",
+      "message": "Message",
+      "submit": "Send",
+      "role": "You are?",
+      "buyer": "Buyer",
+      "seller": "Seller",
+      "agent": "Real estate agent"
+    }
   }
 }
