@@ -29,7 +29,8 @@ export default function PropertyCard({ property, onClick }: { property: Property
   return (
     <div
   onClick={onClick}
-  className="group block bg-white... cursor-pointer"
+  className="group block cursor-pointer overflow-hidden"
+  style={{ background: 'rgba(255,255,255,0.25)', backdropFilter: 'blur(16px)', border: '0.5px solid rgba(255,255,255,0.5)', borderRadius: '20px' }}
 >
       {/* Image */}
       <div className="relative h-56 overflow-hidden bg-[#ede8df]">

@@ -16,7 +16,7 @@ export default function Navbar() {
   };
 
   return (
-    <nav className="fixed top-0 left-0 right-0 z-50 flex justify-between items-center px-16 py-5 bg-[#f5f2ec]/90 backdrop-blur-md border-b border-[#b08d57]/15">
+    <nav className="fixed top-0 left-0 right-0 z-50 flex justify-between items-center px-16 py-5" style={{ background: 'rgba(255,255,255,0.25)', backdropFilter: 'blur(12px)', borderBottom: '0.5px solid rgba(255,255,255,0.4)' }}>
       
       {/* Logo */}
       <Link href={`/${locale}`} className="font-serif text-xl tracking-widest text-[#1c1917] uppercase">

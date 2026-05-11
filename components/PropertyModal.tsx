@@ -32,7 +32,7 @@ export default function PropertyModal({ property, onClose }: { property: Propert
       />
 
       {/* Modal */}
-      <div className="fixed inset-x-4 top-8 bottom-8 z-50 md:inset-x-16 lg:inset-x-32 bg-[#f5f2ec] rounded-3xl overflow-y-auto shadow-2xl">
+      <div className="fixed inset-x-4 top-8 bottom-8 z-50 md:inset-x-16 lg:inset-x-32 rounded-3xl overflow-y-auto shadow-2xl" style={{ background: 'rgba(255,255,255,0.35)', backdropFilter: 'blur(24px)', border: '0.5px solid rgba(255,255,255,0.5)' }}>
         
         {/* Bouton fermer */}
         <button

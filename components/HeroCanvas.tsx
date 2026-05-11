@@ -11,8 +11,9 @@ export default function HeroCanvas() {
     if (!canvas) return;
 
     const isMobile = window.innerWidth < 768;
-    const count = isMobile ? 800 : 1800;
-    const count2 = isMobile ? 400 : 900;
+    const N = isMobile ? 150 : 300;
+    const RADIUS = 6;
+    const MAX_DIST = 0.8;
 
     const W = canvas.clientWidth;
     const H = canvas.clientHeight;
@@ -20,70 +21,206 @@ export default function HeroCanvas() {
     const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
     renderer.setSize(W, H);
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-    renderer.setClearColor(0xf0ede7, 1);
+    renderer.setClearColor(0x000000, 0);
 
     const scene = new THREE.Scene();
-    scene.fog = new THREE.FogExp2(0xf0ede7, 0.012);
-
     const camera = new THREE.PerspectiveCamera(55, W / H, 0.1, 500);
-    camera.position.set(0, 0, 35);
+    camera.position.set(0, 0, 22);
+
+    // Distribution de Fibonacci sur sphère unité
+    const goldenAngle = Math.PI * (3 - Math.sqrt(5));
+    const unitPoints: THREE.Vector3[] = [];
+    for (let i = 0; i < N; i++) {
+      const y = 1 - (i / (N - 1)) * 2;
+      const r = Math.sqrt(Math.max(0, 1 - y * y));
+      const theta = goldenAngle * i;
+      unitPoints.push(new THREE.Vector3(Math.cos(theta) * r, y, Math.sin(theta) * r));
+    }
 
     // Particules dorées
-    const geo = new THREE.BufferGeometry();
-    const pos = new Float32Array(count * 3);
-    for (let i = 0; i < count; i++) {
-      pos[i * 3] = (Math.random() - 0.5) * 130;
-      pos[i * 3 + 1] = (Math.random() - 0.5) * 80;
-      pos[i * 3 + 2] = (Math.random() - 0.5) * 70;
-    }
-    geo.setAttribute('position', new THREE.BufferAttribute(pos, 3));
-    const mat = new THREE.PointsMaterial({ color: 0xb08d57, size: 0.22, transparent: true, opacity: 0.35 });
-    const particles = new THREE.Points(geo, mat);
-    scene.add(particles);
+    const pPositions = new Float32Array(N * 3);
+    unitPoints.forEach((p, i) => {
+      pPositions[i * 3]     = p.x * RADIUS;
+      pPositions[i * 3 + 1] = p.y * RADIUS;
+      pPositions[i * 3 + 2] = p.z * RADIUS;
+    });
+    const pGeo = new THREE.BufferGeometry();
+    pGeo.setAttribute('position', new THREE.BufferAttribute(pPositions, 3));
+    const pMat = new THREE.PointsMaterial({
+      color: 0x8b6520,
+      size: 0.08,
+      transparent: true,
+      opacity: 1,
+      sizeAttenuation: true,
+    });
+    const particles = new THREE.Points(pGeo, pMat);
 
-    // Petites particules crème
-    const geo2 = new THREE.BufferGeometry();
-    const pos2 = new Float32Array(count2 * 3);
-    for (let i = 0; i < count2; i++) {
-      pos2[i * 3] = (Math.random() - 0.5) * 100;
-      pos2[i * 3 + 1] = (Math.random() - 0.5) * 60;
-      pos2[i * 3 + 2] = (Math.random() - 0.5) * 50;
-    }
-    geo2.setAttribute('position', new THREE.BufferAttribute(pos2, 3));
-    const mat2 = new THREE.PointsMaterial({ color: 0xccb89a, size: 0.13, transparent: true, opacity: 0.5 });
-    const particles2 = new THREE.Points(geo2, mat2);
-    scene.add(particles2);
+    // Lignes de connexion avec opacité proportionnelle à la distance
+    const linePositions: number[] = [];
+    const lineAlphas: number[] = [];
 
-    // Lignes architecturales
-    const lineMat = new THREE.LineBasicMaterial({ color: 0xb08d57, transparent: true, opacity: 0.06 });
-    for (let i = 0; i < 8; i++) {
-      const y = (i - 4) * 7;
-      const pts = [new THREE.Vector3(-70, y, -15), new THREE.Vector3(70, y, -15)];
-      scene.add(new THREE.Line(new THREE.BufferGeometry().setFromPoints(pts), lineMat));
+    for (let i = 0; i < N; i++) {
+      for (let j = i + 1; j < N; j++) {
+        const dist = unitPoints[i].distanceTo(unitPoints[j]);
+        if (dist < MAX_DIST) {
+          const alpha = (1 - dist / MAX_DIST) * 0.35;
+          linePositions.push(
+            unitPoints[i].x * RADIUS, unitPoints[i].y * RADIUS, unitPoints[i].z * RADIUS,
+            unitPoints[j].x * RADIUS, unitPoints[j].y * RADIUS, unitPoints[j].z * RADIUS,
+          );
+          lineAlphas.push(alpha, alpha);
+        }
+      }
     }
 
-    // Sphères flottantes
-    const sphereGeo = new THREE.SphereGeometry(1, 32, 32);
-    const spheres: { mesh: THREE.Mesh, speed: number, offset: number }[] = [];
-    const spherePositions = [[18, 8, 5], [25, -5, 2], [-22, 6, 8], [-30, -8, 3], [10, -12, 6]];
-    spherePositions.forEach(([x, y, z], i) => {
-      const m = new THREE.MeshBasicMaterial({ color: 0xb08d57, transparent: true, opacity: 0.07, wireframe: true });
-      const s = new THREE.Mesh(sphereGeo, m);
-      s.position.set(x, y, z);
-      const scale = 1.5 + i * 0.6;
-      s.scale.set(scale, scale, scale);
-      scene.add(s);
-      spheres.push({ mesh: s, speed: 0.003 + i * 0.001, offset: i * 1.2 });
+    const lGeo = new THREE.BufferGeometry();
+    lGeo.setAttribute('position', new THREE.BufferAttribute(new Float32Array(linePositions), 3));
+    lGeo.setAttribute('alpha',    new THREE.BufferAttribute(new Float32Array(lineAlphas), 1));
+
+    // Shader avec alpha par vertex
+    const lMat = new THREE.ShaderMaterial({
+      vertexShader: `
+        attribute float alpha;
+        varying float vAlpha;
+        void main() {
+          vAlpha = alpha;
+          gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+        }
+      `,
+      fragmentShader: `
+        varying float vAlpha;
+        void main() {
+          gl_FragColor = vec4(0.545, 0.396, 0.125, vAlpha);
+        }
+      `,
+      transparent: true,
+      depthWrite: false,
     });
 
-    // Mouse parallax (desktop seulement)
-    let mx = 0, my = 0;
+    const lines = new THREE.LineSegments(lGeo, lMat);
+
+    const group = new THREE.Group();
+    group.add(particles);
+    group.add(lines);
+    group.position.x = 3;
+    scene.add(group);
+
+    // --- Drones ---
+    type DroneInstance = { group: THREE.Group; propellers: THREE.Mesh[] };
+
+    const buildDrone = (): DroneInstance => {
+      const g = new THREE.Group();
+      scene.add(g);
+
+      const bodyMat = new THREE.MeshPhongMaterial({
+        color: 0x2a2a2a,
+        specular: 0x666666,
+        shininess: 40,
+        transparent: true,
+        opacity: 0.92,
+      });
+      const propMat = new THREE.MeshPhongMaterial({
+        color: 0x8b6520,
+        specular: 0xffd9a0,
+        shininess: 80,
+        transparent: true,
+        opacity: 0.80,
+      });
+      const lensMat = new THREE.MeshPhongMaterial({
+        color: 0x1a1410,
+        specular: 0x223355,
+        shininess: 60,
+      });
+
+      // Corps
+      g.add(new THREE.Mesh(new THREE.BoxGeometry(0.5, 0.12, 0.5), bodyMat));
+
+      // 4 bras en croix légèrement inclinés
+      const armGeo = new THREE.BoxGeometry(0.4, 0.05, 0.05);
+      const armDefs: { pos: [number,number,number]; ry: number; tilt: number }[] = [
+        { pos: [ 0.45, 0,  0],    ry: 0,           tilt: -0.13 },
+        { pos: [-0.45, 0,  0],    ry: 0,           tilt:  0.13 },
+        { pos: [ 0,    0,  0.45], ry: Math.PI / 2, tilt: -0.13 },
+        { pos: [ 0,    0, -0.45], ry: Math.PI / 2, tilt:  0.13 },
+      ];
+      armDefs.forEach(({ pos, ry, tilt }) => {
+        const arm = new THREE.Mesh(armGeo, bodyMat);
+        arm.position.set(...pos);
+        arm.rotation.y = ry;
+        arm.rotation.z = tilt;
+        g.add(arm);
+      });
+
+      // 4 hélices — rotation.x = π/2 pour les mettre à plat
+      const propGeo = new THREE.TorusGeometry(0.18, 0.025, 4, 20);
+      const propDefs: [number,number,number][] = [
+        [ 0.65, 0,  0],
+        [-0.65, 0,  0],
+        [ 0,    0,  0.65],
+        [ 0,    0, -0.65],
+      ];
+      const propellers: THREE.Mesh[] = [];
+      propDefs.forEach((pos) => {
+        const prop = new THREE.Mesh(propGeo, propMat);
+        prop.position.set(...pos);
+        prop.rotation.x = Math.PI / 2;
+        g.add(prop);
+        propellers.push(prop);
+      });
+
+      // Pieds d'atterrissage — 4 coins du corps
+      const legGeo = new THREE.CylinderGeometry(0.01, 0.01, 0.15, 8);
+      const legCorners: [number,number,number][] = [
+        [-0.22, -0.135, -0.22],
+        [ 0.22, -0.135, -0.22],
+        [-0.22, -0.135,  0.22],
+        [ 0.22, -0.135,  0.22],
+      ];
+      legCorners.forEach((pos) => {
+        const leg = new THREE.Mesh(legGeo, bodyMat);
+        leg.position.set(...pos);
+        g.add(leg);
+      });
+
+      // Caméra : sphère + cylindre objectif
+      const camSphere = new THREE.Mesh(new THREE.SphereGeometry(0.08, 12, 12), lensMat);
+      camSphere.position.set(0, -0.14, 0.06);
+      g.add(camSphere);
+
+      const lensGeo = new THREE.CylinderGeometry(0.04, 0.04, 0.06, 12);
+      const lensObj = new THREE.Mesh(lensGeo, lensMat);
+      lensObj.position.set(0, -0.14, 0.14);
+      lensObj.rotation.x = Math.PI / 2;
+      g.add(lensObj);
+
+      // LED bleue
+      const ledLight = new THREE.PointLight(0x00aaff, 0.5, 12);
+      ledLight.position.set(0, -0.2, 0);
+      g.add(ledLight);
+
+      return { group: g, propellers };
+    };
+
+    const drone1 = buildDrone();
+    const drone2 = buildDrone();
+
+    const ORBIT_R1 = 9;
+    const INCL1    =  Math.PI / 6;  //  30°
+    const ORBIT_R2 = 10;
+    const INCL2    = -Math.PI / 4;  // -45°
+    const BANK     = -Math.PI / 12; // -15° d'inclinaison en virage
+    const worldYAxis   = new THREE.Vector3(0, 1, 0);
+    const sphereCenter = new THREE.Vector3(3, 0, 0);
+
+    // Parallax souris — décalage cible avec lerp
+    let targetMX = 0, targetMY = 0;
+    let smoothMX = 0, smoothMY = 0;
     let onMouseMove: ((e: MouseEvent) => void) | null = null;
 
     if (!isMobile) {
       onMouseMove = (e: MouseEvent) => {
-        mx = (e.clientX / window.innerWidth - 0.5) * 2;
-        my = (e.clientY / window.innerHeight - 0.5) * 2;
+        targetMX = (e.clientX / window.innerWidth - 0.5) * 2;
+        targetMY = (e.clientY / window.innerHeight - 0.5) * 2;
       };
       window.addEventListener('mousemove', onMouseMove);
     }
@@ -95,19 +232,36 @@ export default function HeroCanvas() {
       animId = requestAnimationFrame(animate);
       t += 0.003;
 
-      particles.rotation.y = t * 0.035 + mx * 0.04;
-      particles.rotation.x = Math.sin(t * 0.4) * 0.025 + my * 0.02;
-      particles2.rotation.y = -t * 0.05;
+      smoothMX += (targetMX - smoothMX) * 0.04;
+      smoothMY += (targetMY - smoothMY) * 0.04;
 
-      spheres.forEach(({ mesh, speed, offset }) => {
-        mesh.position.y += Math.sin(t + offset) * speed;
-        mesh.rotation.x += 0.003;
-        mesh.rotation.z += 0.002;
+      group.rotation.y = t * 0.07 + smoothMX * 0.35;
+      group.rotation.x = t * 0.025 + smoothMY * 0.22;
+
+      // Drone 1 — orbite 30°, r=9, vitesse t*0.3
+      const a1 = t * 0.3;
+      drone1.group.position.set(
+        3 + ORBIT_R1 * Math.cos(a1),
+        ORBIT_R1 * Math.sin(a1) * Math.sin(INCL1) + Math.sin(t * 2) * 0.3,
+        ORBIT_R1 * Math.sin(a1) * Math.cos(INCL1),
+      );
+      drone1.group.lookAt(sphereCenter);
+      drone1.group.rotateZ(BANK);
+
+      // Drone 2 — orbite -45°, r=10, vitesse t*0.2
+      const a2 = t * 0.2 + Math.PI;
+      drone2.group.position.set(
+        3 + ORBIT_R2 * Math.cos(a2),
+        ORBIT_R2 * Math.sin(a2) * Math.sin(INCL2) + Math.sin(t * 2 + 1) * 0.3,
+        ORBIT_R2 * Math.sin(a2) * Math.cos(INCL2),
+      );
+      drone2.group.lookAt(sphereCenter);
+      drone2.group.rotateZ(BANK);
+
+      // Hélices — rotation rapide autour de l'axe Y monde
+      [...drone1.propellers, ...drone2.propellers].forEach((prop, i) => {
+        prop.rotateOnWorldAxis(worldYAxis, i % 2 === 0 ? 0.18 : -0.18);
       });
-
-      camera.position.x += (mx * 1.8 - camera.position.x) * 0.018;
-      camera.position.y += (-my * 1.2 - camera.position.y) * 0.018;
-      camera.lookAt(0, 0, 0);
 
       renderer.render(scene, camera);
     };
