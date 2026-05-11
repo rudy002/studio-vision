@@ -1,22 +1,34 @@
+'use client';
+
+import { useEffect, useState } from 'react';
 import { createClient } from '@supabase/supabase-js';
-import { getTranslations, getLocale } from 'next-intl/server';
+import { useTranslations, useLocale } from 'next-intl';
 import PropertyCard, { Property } from '../../../components/PropertyCard';
+import PropertyModal from '../../../components/PropertyModal';
 
 const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL!,
   process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
 );
 
-export default async function BiensPage() {
-  const t = await getTranslations('properties');
-  const locale = await getLocale();
+export default function BiensPage() {
+  const t = useTranslations('properties');
+  const locale = useLocale();
+  const [properties, setProperties] = useState<Property[]>([]);
+  const [selected, setSelected] = useState<Property | null>(null);
+  const [loading, setLoading] = useState(true);
 
-  const { data: properties, error } = await supabase
-    .from('properties')
-    .select('*')
-    .order('created_at', { ascending: false });
-
-  if (error) console.error(error);
+  useEffect(() => {
+    const fetchProperties = async () => {
+      const { data } = await supabase
+        .from('properties')
+        .select('*')
+        .order('created_at', { ascending: false });
+      setProperties(data || []);
+      setLoading(false);
+    };
+    fetchProperties();
+  }, []);
 
   return (
     <main className="bg-[#f5f2ec] min-h-screen">
@@ -31,20 +43,34 @@ export default async function BiensPage() {
         </h1>
       </div>
 
-      {/* Grille de biens */}
+      {/* Grille */}
       <div className="px-16 pb-24">
-        {!properties || properties.length === 0 ? (
+        {loading ? (
+          <p className="font-serif text-2xl text-[#8a8078] text-center py-24">...</p>
+        ) : !properties || properties.length === 0 ? (
           <p className="font-serif text-2xl text-[#8a8078] text-center py-24">
             {t('noResults')}
           </p>
         ) : (
           <div className="grid grid-cols-3 gap-7">
             {properties.map((property: Property) => (
-              <PropertyCard key={property.id} property={property} />
+              <PropertyCard
+                key={property.id}
+                property={property}
+                onClick={() => setSelected(property)}
+              />
             ))}
           </div>
         )}
       </div>
+
+      {/* Modal */}
+      {selected && (
+        <PropertyModal
+          property={selected}
+          onClose={() => setSelected(null)}
+        />
+      )}
 
     </main>
   );

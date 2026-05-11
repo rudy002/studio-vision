@@ -19,7 +19,7 @@ export type Property = {
   video_url: string;
 };
 
-export default function PropertyCard({ property }: { property: Property }) {
+export default function PropertyCard({ property, onClick }: { property: Property; onClick?: () => void }) {
   const t = useTranslations('properties');
   const locale = useLocale();
 
@@ -27,10 +27,10 @@ export default function PropertyCard({ property }: { property: Property }) {
   const isAvailable = property.status === 'available';
 
   return (
-    <Link
-      href={`/${locale}/biens/${property.id}`}
-      className="group block bg-white rounded-2xl overflow-hidden border border-[#b08d57]/15 shadow-sm hover:shadow-xl hover:-translate-y-2 transition-all duration-300"
-    >
+    <div
+  onClick={onClick}
+  className="group block bg-white... cursor-pointer"
+>
       {/* Image */}
       <div className="relative h-56 overflow-hidden bg-[#ede8df]">
         {property.photos && property.photos.length > 0 ? (
@@ -71,7 +71,7 @@ export default function PropertyCard({ property }: { property: Property }) {
 
         <div className="flex justify-between items-center">
           <p className="font-serif text-2xl font-light text-[#1c1917]">
-            {property.price.toLocaleString()} €
+            {property.price.toLocaleString()}
           </p>
           <div className="flex gap-3">
             <span className="text-[11px] text-[#8a8078]">{property.surface} {t('surface')}</span>
@@ -80,6 +80,6 @@ export default function PropertyCard({ property }: { property: Property }) {
           </div>
         </div>
       </div>
-    </Link>
+    </div>
   );
 }
