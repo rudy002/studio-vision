@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { signOut } from 'next-auth/react';
 import { createClient } from '@supabase/supabase-js';
 
@@ -8,6 +8,14 @@ const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL!,
   process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
 );
+
+type CityOption = {
+  label: string;
+  lat: number;
+  lng: number;
+};
+
+
 
 type Property = {
   id: string;
@@ -61,6 +69,9 @@ export default function AdminDashboard() {
   const [video, setVideo] = useState<File | null>(null);
   const [loading, setLoading] = useState(false);
   const [activeTab, setActiveTab] = useState<'list' | 'add'>('list');
+  const [citySuggestions, setCitySuggestions] = useState<CityOption[]>([]);
+  const [showSuggestions, setShowSuggestions] = useState(false);
+  const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   useEffect(() => {
     fetchProperties();
@@ -80,6 +91,34 @@ export default function AdminDashboard() {
     >,
   ) => {
     setForm({ ...form, [e.target.name]: e.target.value });
+  };
+
+  const handleCityInput = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const query = e.target.value;
+    setForm({ ...form, city: query });
+    if (debounceRef.current) clearTimeout(debounceRef.current);
+    if (query.length < 2) {
+      setCitySuggestions([]);
+      setShowSuggestions(false);
+      return;
+    }
+    debounceRef.current = setTimeout(async () => {
+      try {
+        const res = await fetch(`/api/cities?q=${encodeURIComponent(query)}`);
+        const cities: CityOption[] = await res.json();
+        setCitySuggestions(cities);
+        setShowSuggestions(cities.length > 0);
+      } catch {
+        setCitySuggestions([]);
+        setShowSuggestions(false);
+      }
+    }, 300);
+  };
+
+  const handleCitySuggestionClick = (city: CityOption) => {
+    setForm({ ...form, city: city.label, lat: city.lat, lng: city.lng });
+    setCitySuggestions([]);
+    setShowSuggestions(false);
   };
 
   const uploadFile = async (file: File, folder: string) => {
@@ -417,56 +456,48 @@ export default function AdminDashboard() {
               <p className="text-[9px] tracking-[3px] text-[#8b6914] uppercase mb-4">
                 Localisation
               </p>
-              <div className="grid grid-cols-2 gap-4">
-                <div className="flex flex-col gap-2">
-                  <label className="text-[9px] tracking-[2px] text-[#6b5d4a] uppercase">
-                    Ville
-                  </label>
-                  <input
-                    name="city"
-                    value={form.city}
-                    onChange={handleChange}
-                    required
-                    className="bg-white/50 border border-white/60 rounded-xl px-4 py-3 text-sm text-[#1a1410] outline-none focus:border-[#8b6914]"
-                  />
-                </div>
-                <div className="flex flex-col gap-2">
-                  <label className="text-[9px] tracking-[2px] text-[#6b5d4a] uppercase">
-                    Adresse
-                  </label>
-                  <input
-                    name="address"
-                    value={form.address}
-                    onChange={handleChange}
-                    className="bg-white/50 border border-white/60 rounded-xl px-4 py-3 text-sm text-[#1a1410] outline-none focus:border-[#8b6914]"
-                  />
-                </div>
-                <div className="flex flex-col gap-2">
-                  <label className="text-[9px] tracking-[2px] text-[#6b5d4a] uppercase">
-                    Latitude
-                  </label>
-                  <input
-                    name="lat"
-                    type="number"
-                    step="any"
-                    value={form.lat}
-                    onChange={handleChange}
-                    className="bg-white/50 border border-white/60 rounded-xl px-4 py-3 text-sm text-[#1a1410] outline-none focus:border-[#8b6914]"
-                  />
-                </div>
-                <div className="flex flex-col gap-2">
-                  <label className="text-[9px] tracking-[2px] text-[#6b5d4a] uppercase">
-                    Longitude
-                  </label>
-                  <input
-                    name="lng"
-                    type="number"
-                    step="any"
-                    value={form.lng}
-                    onChange={handleChange}
-                    className="bg-white/50 border border-white/60 rounded-xl px-4 py-3 text-sm text-[#1a1410] outline-none focus:border-[#8b6914]"
-                  />
-                </div>
+              <div className="relative flex flex-col gap-2">
+                <label className="text-[9px] tracking-[2px] text-[#6b5d4a] uppercase">
+                  Ville
+                </label>
+                <input
+                  name="city"
+                  value={form.city}
+                  onChange={handleCityInput}
+                  onBlur={() => setTimeout(() => setShowSuggestions(false), 150)}
+                  onFocus={() => citySuggestions.length > 0 && setShowSuggestions(true)}
+                  required
+                  placeholder="Rechercher une ville en Israël..."
+                  className="bg-white/50 border border-white/60 rounded-xl px-4 py-3 text-sm text-[#1a1410] outline-none focus:border-[#8b6914]"
+                />
+                {showSuggestions && citySuggestions.length > 0 && (
+                  <ul
+                    style={{
+                      background: 'rgba(255,255,255,0.9)',
+                      backdropFilter: 'blur(16px)',
+                      borderRadius: '12px',
+                      border: '0.5px solid rgba(255,255,255,0.7)',
+                      boxShadow: '0 8px 32px rgba(0,0,0,0.12)',
+                    }}
+                    className="absolute top-full left-0 right-0 mt-1 z-50 overflow-hidden"
+                  >
+                    {citySuggestions.map((city) => (
+                      <li
+                        key={city.label}
+                        onMouseDown={() => handleCitySuggestionClick(city)}
+                        style={{ padding: '10px 16px', cursor: 'pointer', transition: 'background 0.15s' }}
+                        className="text-sm text-[#1a1410] hover:bg-[#8b6914]/10 hover:text-[#8b6914]"
+                      >
+                        {city.label}
+                      </li>
+                    ))}
+                  </ul>
+                )}
+                {form.lat !== emptyForm.lat && form.lng !== emptyForm.lng && (
+                  <p className="text-[10px] text-[#8b6914]">
+                    {form.lat.toFixed(4)}, {form.lng.toFixed(4)}
+                  </p>
+                )}
               </div>
             </div>
 
