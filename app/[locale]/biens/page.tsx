@@ -1,10 +1,13 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import dynamic from 'next/dynamic';
 import { createClient } from '@supabase/supabase-js';
 import { useTranslations, useLocale } from 'next-intl';
 import PropertyCard, { Property } from '../../../components/PropertyCard';
 import PropertyModal from '../../../components/PropertyModal';
+
+const MapView = dynamic(() => import('../../../components/MapView'), { ssr: false });
 
 const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL!,
@@ -41,6 +44,16 @@ export default function BiensPage() {
         <h1 className="font-serif text-5xl font-light text-[#1c1917]">
           {t('title')}
         </h1>
+      </div>
+
+      {/* Carte */}
+      <div className="px-16 pb-12">
+        <div
+          className="rounded-3xl overflow-hidden"
+          style={{ background: 'rgba(255,255,255,0.25)', backdropFilter: 'blur(16px)', border: '0.5px solid rgba(255,255,255,0.5)' }}
+        >
+          <MapView properties={properties} onPropertyClick={(p) => setSelected(p)} />
+        </div>
       </div>
 
       {/* Grille */}

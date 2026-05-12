@@ -17,6 +17,8 @@ export type Property = {
   status: string;
   photos: string[];
   video_url: string;
+  lat?: number;
+  lng?: number;
 };
 
 export default function PropertyCard({ property, onClick }: { property: Property; onClick?: () => void }) {
