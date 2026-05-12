@@ -6,7 +6,7 @@ import { createClient } from '@supabase/supabase-js';
 
 const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
 );
 
 type Property = {
@@ -33,12 +33,22 @@ type Property = {
 };
 
 const emptyForm = {
-  title_fr: '', title_en: '', title_he: '',
+  title_fr: '',
+  title_en: '',
+  title_he: '',
   type: 'Villa',
-  price: 0, surface: 0, rooms: 0, bedrooms: 0, bathrooms: 0,
-  city: '', address: '',
-  lat: 31.7683, lng: 35.2137,
-  description_fr: '', description_en: '', description_he: '',
+  price: 0,
+  surface: 0,
+  rooms: 0,
+  bedrooms: 0,
+  bathrooms: 0,
+  city: '',
+  address: '',
+  lat: 31.7683,
+  lng: 35.2137,
+  description_fr: '',
+  description_en: '',
+  description_he: '',
   status: 'available',
   video_url: '',
 };
@@ -52,14 +62,23 @@ export default function AdminDashboard() {
   const [loading, setLoading] = useState(false);
   const [activeTab, setActiveTab] = useState<'list' | 'add'>('list');
 
-  useEffect(() => { fetchProperties(); }, []);
+  useEffect(() => {
+    fetchProperties();
+  }, []);
 
   const fetchProperties = async () => {
-    const { data } = await supabase.from('properties').select('*').order('created_at', { ascending: false });
+    const { data } = await supabase
+      .from('properties')
+      .select('*')
+      .order('created_at', { ascending: false });
     setProperties(data || []);
   };
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+  const handleChange = (
+    e: React.ChangeEvent<
+      HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
+    >,
+  ) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
@@ -117,12 +136,38 @@ export default function AdminDashboard() {
 
   const toggleStatus = async (id: string, currentStatus: string) => {
     const newStatus = currentStatus === 'available' ? 'sold' : 'available';
-    await supabase.from('properties').update({ status: newStatus }).eq('id', id);
+    await supabase
+      .from('properties')
+      .update({ status: newStatus })
+      .eq('id', id);
     fetchProperties();
   };
 
   const deleteProperty = async (id: string) => {
     if (!confirm('Supprimer ce bien ?')) return;
+
+    // Récupère les médias du bien
+    const property = properties.find((p) => p.id === id);
+
+    // Supprime les fichiers dans R2
+    if (property?.photos) {
+      for (const photo of property.photos) {
+        await fetch('/api/delete-file', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ url: photo }),
+        });
+      }
+    }
+    if (property?.video_url) {
+      await fetch('/api/delete-file', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ url: property.video_url }),
+      });
+    }
+
+    // Supprime de Supabase
     await supabase.from('properties').delete().eq('id', id);
     fetchProperties();
   };
@@ -132,8 +177,12 @@ export default function AdminDashboard() {
       {/* Header */}
       <div className="flex justify-between items-center mb-8">
         <div>
-          <p className="text-[9px] tracking-[3px] text-[#8b6914] uppercase mb-1">Administration</p>
-          <h1 className="font-serif text-3xl font-light text-[#1a1410]">Studio Vision</h1>
+          <p className="text-[9px] tracking-[3px] text-[#8b6914] uppercase mb-1">
+            Administration
+          </p>
+          <h1 className="font-serif text-3xl font-light text-[#1a1410]">
+            Studio Vision
+          </h1>
         </div>
         <button
           onClick={() => signOut()}
@@ -171,7 +220,9 @@ export default function AdminDashboard() {
       {activeTab === 'list' && (
         <div className="grid grid-cols-3 gap-6">
           {properties.length === 0 && (
-            <p className="col-span-3 text-center font-serif text-xl text-[#6b5d4a] py-16">Aucun bien publié</p>
+            <p className="col-span-3 text-center font-serif text-xl text-[#6b5d4a] py-16">
+              Aucun bien publié
+            </p>
           )}
           {properties.map((p) => (
             <div
@@ -180,29 +231,41 @@ export default function AdminDashboard() {
               style={{
                 background: 'rgba(255,255,255,0.25)',
                 backdropFilter: 'blur(16px)',
-                border: '0.5px solid rgba(255,255,255,0.5)'
+                border: '0.5px solid rgba(255,255,255,0.5)',
               }}
             >
               <div className="flex justify-between items-start mb-4">
                 <div>
-                  <p className="text-[9px] tracking-[2px] text-[#8b6914] uppercase mb-1">{p.type} · {p.city}</p>
-                  <h3 className="font-serif text-lg font-light text-[#1a1410]">{p.title_fr}</h3>
+                  <p className="text-[9px] tracking-[2px] text-[#8b6914] uppercase mb-1">
+                    {p.type} · {p.city}
+                  </p>
+                  <h3 className="font-serif text-lg font-light text-[#1a1410]">
+                    {p.title_fr}
+                  </h3>
                 </div>
-                <span className={`text-[8px] tracking-[2px] uppercase px-3 py-1 rounded-full ${
-                  p.status === 'available' ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'
-                }`}>
+                <span
+                  className={`text-[8px] tracking-[2px] uppercase px-3 py-1 rounded-full ${
+                    p.status === 'available'
+                      ? 'bg-green-100 text-green-700'
+                      : 'bg-red-100 text-red-700'
+                  }`}
+                >
                   {p.status === 'available' ? 'Disponible' : 'Vendu'}
                 </span>
               </div>
 
-              <p className="font-serif text-xl text-[#1a1410] mb-4">₪ {p.price?.toLocaleString()}</p>
+              <p className="font-serif text-xl text-[#1a1410] mb-4">
+                ₪ {p.price?.toLocaleString()}
+              </p>
 
               <div className="flex gap-2">
                 <button
                   onClick={() => toggleStatus(p.id, p.status)}
                   className="flex-1 text-[9px] tracking-[1px] uppercase py-2 rounded-full bg-white/50 text-[#1a1410] hover:bg-[#8b6914] hover:text-white transition-colors cursor-pointer"
                 >
-                  {p.status === 'available' ? 'Marquer vendu' : 'Marquer disponible'}
+                  {p.status === 'available'
+                    ? 'Marquer vendu'
+                    : 'Marquer disponible'}
                 </button>
                 <button
                   onClick={() => deleteProperty(p.id)}
@@ -224,21 +287,29 @@ export default function AdminDashboard() {
             style={{
               background: 'rgba(255,255,255,0.25)',
               backdropFilter: 'blur(16px)',
-              border: '0.5px solid rgba(255,255,255,0.5)'
+              border: '0.5px solid rgba(255,255,255,0.5)',
             }}
           >
-            <h2 className="font-serif text-2xl font-light text-[#1a1410] mb-8">Nouveau bien</h2>
+            <h2 className="font-serif text-2xl font-light text-[#1a1410] mb-8">
+              Nouveau bien
+            </h2>
 
             {/* Titres */}
             <div className="mb-6">
-              <p className="text-[9px] tracking-[3px] text-[#8b6914] uppercase mb-4">Titres</p>
+              <p className="text-[9px] tracking-[3px] text-[#8b6914] uppercase mb-4">
+                Titres
+              </p>
               <div className="grid grid-cols-3 gap-4">
                 {['fr', 'en', 'he'].map((lang) => (
                   <div key={lang} className="flex flex-col gap-2">
-                    <label className="text-[9px] tracking-[2px] text-[#6b5d4a] uppercase">Titre ({lang.toUpperCase()})</label>
+                    <label className="text-[9px] tracking-[2px] text-[#6b5d4a] uppercase">
+                      Titre ({lang.toUpperCase()})
+                    </label>
                     <input
                       name={`title_${lang}`}
-                      value={form[`title_${lang}` as keyof typeof form] as string}
+                      value={
+                        form[`title_${lang}` as keyof typeof form] as string
+                      }
                       onChange={handleChange}
                       required
                       className="bg-white/50 border border-white/60 rounded-xl px-4 py-3 text-sm text-[#1a1410] outline-none focus:border-[#8b6914]"
@@ -250,82 +321,173 @@ export default function AdminDashboard() {
 
             {/* Infos */}
             <div className="mb-6">
-              <p className="text-[9px] tracking-[3px] text-[#8b6914] uppercase mb-4">Informations</p>
+              <p className="text-[9px] tracking-[3px] text-[#8b6914] uppercase mb-4">
+                Informations
+              </p>
               <div className="grid grid-cols-3 gap-4">
                 <div className="flex flex-col gap-2">
-                  <label className="text-[9px] tracking-[2px] text-[#6b5d4a] uppercase">Type</label>
-                  <select name="type" value={form.type} onChange={handleChange}
-                    className="bg-white/50 border border-white/60 rounded-xl px-4 py-3 text-sm text-[#1a1410] outline-none focus:border-[#8b6914]">
-                    {['Villa', 'Appartement', 'Maison', 'Penthouse', 'Duplex'].map(t => (
-                      <option key={t} value={t}>{t}</option>
+                  <label className="text-[9px] tracking-[2px] text-[#6b5d4a] uppercase">
+                    Type
+                  </label>
+                  <select
+                    name="type"
+                    value={form.type}
+                    onChange={handleChange}
+                    className="bg-white/50 border border-white/60 rounded-xl px-4 py-3 text-sm text-[#1a1410] outline-none focus:border-[#8b6914]"
+                  >
+                    {[
+                      'Villa',
+                      'Appartement',
+                      'Maison',
+                      'Penthouse',
+                      'Duplex',
+                    ].map((t) => (
+                      <option key={t} value={t}>
+                        {t}
+                      </option>
                     ))}
                   </select>
                 </div>
                 <div className="flex flex-col gap-2">
-                  <label className="text-[9px] tracking-[2px] text-[#6b5d4a] uppercase">Prix (₪)</label>
-                  <input name="price" type="number" value={form.price} onChange={handleChange} required
-                    className="bg-white/50 border border-white/60 rounded-xl px-4 py-3 text-sm text-[#1a1410] outline-none focus:border-[#8b6914]" />
+                  <label className="text-[9px] tracking-[2px] text-[#6b5d4a] uppercase">
+                    Prix (₪)
+                  </label>
+                  <input
+                    name="price"
+                    type="number"
+                    value={form.price}
+                    onChange={handleChange}
+                    required
+                    className="bg-white/50 border border-white/60 rounded-xl px-4 py-3 text-sm text-[#1a1410] outline-none focus:border-[#8b6914]"
+                  />
                 </div>
                 <div className="flex flex-col gap-2">
-                  <label className="text-[9px] tracking-[2px] text-[#6b5d4a] uppercase">Surface (m²)</label>
-                  <input name="surface" type="number" value={form.surface} onChange={handleChange}
-                    className="bg-white/50 border border-white/60 rounded-xl px-4 py-3 text-sm text-[#1a1410] outline-none focus:border-[#8b6914]" />
+                  <label className="text-[9px] tracking-[2px] text-[#6b5d4a] uppercase">
+                    Surface (m²)
+                  </label>
+                  <input
+                    name="surface"
+                    type="number"
+                    value={form.surface}
+                    onChange={handleChange}
+                    className="bg-white/50 border border-white/60 rounded-xl px-4 py-3 text-sm text-[#1a1410] outline-none focus:border-[#8b6914]"
+                  />
                 </div>
                 <div className="flex flex-col gap-2">
-                  <label className="text-[9px] tracking-[2px] text-[#6b5d4a] uppercase">Pièces</label>
-                  <input name="rooms" type="number" value={form.rooms} onChange={handleChange}
-                    className="bg-white/50 border border-white/60 rounded-xl px-4 py-3 text-sm text-[#1a1410] outline-none focus:border-[#8b6914]" />
+                  <label className="text-[9px] tracking-[2px] text-[#6b5d4a] uppercase">
+                    Pièces
+                  </label>
+                  <input
+                    name="rooms"
+                    type="number"
+                    value={form.rooms}
+                    onChange={handleChange}
+                    className="bg-white/50 border border-white/60 rounded-xl px-4 py-3 text-sm text-[#1a1410] outline-none focus:border-[#8b6914]"
+                  />
                 </div>
                 <div className="flex flex-col gap-2">
-                  <label className="text-[9px] tracking-[2px] text-[#6b5d4a] uppercase">Chambres</label>
-                  <input name="bedrooms" type="number" value={form.bedrooms} onChange={handleChange}
-                    className="bg-white/50 border border-white/60 rounded-xl px-4 py-3 text-sm text-[#1a1410] outline-none focus:border-[#8b6914]" />
+                  <label className="text-[9px] tracking-[2px] text-[#6b5d4a] uppercase">
+                    Chambres
+                  </label>
+                  <input
+                    name="bedrooms"
+                    type="number"
+                    value={form.bedrooms}
+                    onChange={handleChange}
+                    className="bg-white/50 border border-white/60 rounded-xl px-4 py-3 text-sm text-[#1a1410] outline-none focus:border-[#8b6914]"
+                  />
                 </div>
                 <div className="flex flex-col gap-2">
-                  <label className="text-[9px] tracking-[2px] text-[#6b5d4a] uppercase">Salles de bain</label>
-                  <input name="bathrooms" type="number" value={form.bathrooms} onChange={handleChange}
-                    className="bg-white/50 border border-white/60 rounded-xl px-4 py-3 text-sm text-[#1a1410] outline-none focus:border-[#8b6914]" />
+                  <label className="text-[9px] tracking-[2px] text-[#6b5d4a] uppercase">
+                    Salles de bain
+                  </label>
+                  <input
+                    name="bathrooms"
+                    type="number"
+                    value={form.bathrooms}
+                    onChange={handleChange}
+                    className="bg-white/50 border border-white/60 rounded-xl px-4 py-3 text-sm text-[#1a1410] outline-none focus:border-[#8b6914]"
+                  />
                 </div>
               </div>
             </div>
 
             {/* Localisation */}
             <div className="mb-6">
-              <p className="text-[9px] tracking-[3px] text-[#8b6914] uppercase mb-4">Localisation</p>
+              <p className="text-[9px] tracking-[3px] text-[#8b6914] uppercase mb-4">
+                Localisation
+              </p>
               <div className="grid grid-cols-2 gap-4">
                 <div className="flex flex-col gap-2">
-                  <label className="text-[9px] tracking-[2px] text-[#6b5d4a] uppercase">Ville</label>
-                  <input name="city" value={form.city} onChange={handleChange} required
-                    className="bg-white/50 border border-white/60 rounded-xl px-4 py-3 text-sm text-[#1a1410] outline-none focus:border-[#8b6914]" />
+                  <label className="text-[9px] tracking-[2px] text-[#6b5d4a] uppercase">
+                    Ville
+                  </label>
+                  <input
+                    name="city"
+                    value={form.city}
+                    onChange={handleChange}
+                    required
+                    className="bg-white/50 border border-white/60 rounded-xl px-4 py-3 text-sm text-[#1a1410] outline-none focus:border-[#8b6914]"
+                  />
                 </div>
                 <div className="flex flex-col gap-2">
-                  <label className="text-[9px] tracking-[2px] text-[#6b5d4a] uppercase">Adresse</label>
-                  <input name="address" value={form.address} onChange={handleChange}
-                    className="bg-white/50 border border-white/60 rounded-xl px-4 py-3 text-sm text-[#1a1410] outline-none focus:border-[#8b6914]" />
+                  <label className="text-[9px] tracking-[2px] text-[#6b5d4a] uppercase">
+                    Adresse
+                  </label>
+                  <input
+                    name="address"
+                    value={form.address}
+                    onChange={handleChange}
+                    className="bg-white/50 border border-white/60 rounded-xl px-4 py-3 text-sm text-[#1a1410] outline-none focus:border-[#8b6914]"
+                  />
                 </div>
                 <div className="flex flex-col gap-2">
-                  <label className="text-[9px] tracking-[2px] text-[#6b5d4a] uppercase">Latitude</label>
-                  <input name="lat" type="number" step="any" value={form.lat} onChange={handleChange}
-                    className="bg-white/50 border border-white/60 rounded-xl px-4 py-3 text-sm text-[#1a1410] outline-none focus:border-[#8b6914]" />
+                  <label className="text-[9px] tracking-[2px] text-[#6b5d4a] uppercase">
+                    Latitude
+                  </label>
+                  <input
+                    name="lat"
+                    type="number"
+                    step="any"
+                    value={form.lat}
+                    onChange={handleChange}
+                    className="bg-white/50 border border-white/60 rounded-xl px-4 py-3 text-sm text-[#1a1410] outline-none focus:border-[#8b6914]"
+                  />
                 </div>
                 <div className="flex flex-col gap-2">
-                  <label className="text-[9px] tracking-[2px] text-[#6b5d4a] uppercase">Longitude</label>
-                  <input name="lng" type="number" step="any" value={form.lng} onChange={handleChange}
-                    className="bg-white/50 border border-white/60 rounded-xl px-4 py-3 text-sm text-[#1a1410] outline-none focus:border-[#8b6914]" />
+                  <label className="text-[9px] tracking-[2px] text-[#6b5d4a] uppercase">
+                    Longitude
+                  </label>
+                  <input
+                    name="lng"
+                    type="number"
+                    step="any"
+                    value={form.lng}
+                    onChange={handleChange}
+                    className="bg-white/50 border border-white/60 rounded-xl px-4 py-3 text-sm text-[#1a1410] outline-none focus:border-[#8b6914]"
+                  />
                 </div>
               </div>
             </div>
 
             {/* Descriptions */}
             <div className="mb-6">
-              <p className="text-[9px] tracking-[3px] text-[#8b6914] uppercase mb-4">Descriptions</p>
+              <p className="text-[9px] tracking-[3px] text-[#8b6914] uppercase mb-4">
+                Descriptions
+              </p>
               <div className="flex flex-col gap-4">
                 {['fr', 'en', 'he'].map((lang) => (
                   <div key={lang} className="flex flex-col gap-2">
-                    <label className="text-[9px] tracking-[2px] text-[#6b5d4a] uppercase">Description ({lang.toUpperCase()})</label>
+                    <label className="text-[9px] tracking-[2px] text-[#6b5d4a] uppercase">
+                      Description ({lang.toUpperCase()})
+                    </label>
                     <textarea
                       name={`description_${lang}`}
-                      value={form[`description_${lang}` as keyof typeof form] as string}
+                      value={
+                        form[
+                          `description_${lang}` as keyof typeof form
+                        ] as string
+                      }
                       onChange={handleChange}
                       rows={3}
                       className="bg-white/50 border border-white/60 rounded-xl px-4 py-3 text-sm text-[#1a1410] outline-none focus:border-[#8b6914] resize-none"
@@ -337,23 +499,33 @@ export default function AdminDashboard() {
 
             {/* Médias */}
             <div className="mb-8">
-              <p className="text-[9px] tracking-[3px] text-[#8b6914] uppercase mb-4">Médias</p>
+              <p className="text-[9px] tracking-[3px] text-[#8b6914] uppercase mb-4">
+                Médias
+              </p>
               <div className="grid grid-cols-2 gap-4">
                 <div className="flex flex-col gap-2">
-                  <label className="text-[9px] tracking-[2px] text-[#6b5d4a] uppercase">Photos</label>
+                  <label className="text-[9px] tracking-[2px] text-[#6b5d4a] uppercase">
+                    Photos
+                  </label>
                   <input
                     type="file"
                     accept="image/*"
                     multiple
-                    onChange={(e) => setPhotos(Array.from(e.target.files || []))}
+                    onChange={(e) =>
+                      setPhotos(Array.from(e.target.files || []))
+                    }
                     className="bg-white/50 border border-white/60 rounded-xl px-4 py-3 text-sm text-[#1a1410] outline-none cursor-pointer"
                   />
                   {photos.length > 0 && (
-                    <p className="text-[10px] text-[#8b6914]">{photos.length} photo(s) sélectionnée(s)</p>
+                    <p className="text-[10px] text-[#8b6914]">
+                      {photos.length} photo(s) sélectionnée(s)
+                    </p>
                   )}
                 </div>
                 <div className="flex flex-col gap-2">
-                  <label className="text-[9px] tracking-[2px] text-[#6b5d4a] uppercase">Vidéo</label>
+                  <label className="text-[9px] tracking-[2px] text-[#6b5d4a] uppercase">
+                    Vidéo
+                  </label>
                   <input
                     type="file"
                     accept="video/*"
