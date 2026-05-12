@@ -42,9 +42,27 @@ export default function PropertyModal({ property, onClose }: { property: Propert
           <span className="text-[#1c1917] text-lg">✕</span>
         </button>
 
-        {/* Photo principale */}
-        <div className="relative h-[50vh] bg-[#ede8df] overflow-hidden rounded-t-3xl">
-          {property.photos && property.photos.length > 0 ? (
+        {/* Media principale (vidéo > photo > placeholder) */}
+        <div className={`relative overflow-hidden rounded-t-3xl ${property.video_url ? 'h-[60vh]' : 'h-[50vh] bg-[#ede8df]'}`}>
+          {property.video_url ? (
+            <>
+              {/* Fond flouté (remplace les bandes noires pour les vidéos verticales) */}
+              <video
+                src={property.video_url}
+                muted
+                autoPlay
+                loop
+                playsInline
+                className="absolute inset-0 w-full h-full object-cover scale-110 opacity-70 blur-[20px]"
+              />
+              {/* Vidéo principale */}
+              <video
+                src={property.video_url}
+                controls
+                className="relative w-full h-full object-contain"
+              />
+            </>
+          ) : property.photos && property.photos.length > 0 ? (
             <img
               src={property.photos[0]}
               alt={title}
@@ -103,24 +121,16 @@ export default function PropertyModal({ property, onClose }: { property: Propert
             </div>
           </div>
 
-          {/* Vidéo */}
-          {property.video_url && (
-            <div className="mb-8">
-              <p className="text-[9px] tracking-[3px] text-[#b08d57] uppercase mb-4">Vidéo</p>
-              <video src={property.video_url} controls className="w-full rounded-2xl" />
-            </div>
-          )}
-
           {/* Galerie photos */}
-          {property.photos && property.photos.length > 1 && (
+          {property.photos && property.photos.length > (property.video_url ? 0 : 1) && (
             <div className="mb-8">
               <p className="text-[9px] tracking-[3px] text-[#b08d57] uppercase mb-4">Photos</p>
               <div className="grid grid-cols-2 gap-3">
-                {property.photos.slice(1).map((photo: string, i: number) => (
+                {(property.video_url ? property.photos : property.photos.slice(1)).map((photo: string, i: number) => (
                   <img
                     key={i}
                     src={photo}
-                    alt={`${title} ${i + 2}`}
+                    alt={`${title} ${i + (property.video_url ? 1 : 2)}`}
                     className="w-full h-48 object-cover rounded-xl"
                   />
                 ))}

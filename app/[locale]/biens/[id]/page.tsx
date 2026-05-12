@@ -4,11 +4,11 @@ import PropertyModal from '../../../../components/PropertyModal';
 
 const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
 );
 
 export default async function BienPage({
-  params
+  params,
 }: {
   params: Promise<{ id: string }>;
 }) {
@@ -24,7 +24,7 @@ export default async function BienPage({
 
   return (
     <main className="bg-[#f5f2ec] min-h-screen pt-32 px-16">
-      <PropertyModal property={property} />
+      <PropertyModal property={property} onClose={() => {}} />
     </main>
   );
 }
