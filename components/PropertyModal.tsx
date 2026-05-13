@@ -44,7 +44,7 @@ export default function PropertyModal({ property, onClose }: { property: Propert
 
       {/* Modal */}
       <div
-        className="fixed inset-x-4 top-8 bottom-8 z-50 md:inset-x-16 lg:inset-x-32 rounded-3xl overflow-y-auto shadow-2xl"
+        className="fixed inset-x-2 top-4 bottom-4 z-50 md:inset-x-16 lg:inset-x-32 rounded-3xl overflow-y-auto shadow-2xl"
         style={{ background: 'rgba(255,255,255,0.35)', backdropFilter: 'blur(24px)', border: '0.5px solid rgba(255,255,255,0.5)' }}
       >
         {/* Bouton fermer */}
@@ -165,16 +165,16 @@ export default function PropertyModal({ property, onClose }: { property: Propert
           )}
 
           {/* Titre et prix */}
-          <div className="flex justify-between items-start mb-8">
+          <div className="flex flex-col gap-4 md:flex-row md:justify-between md:items-start mb-8">
             <div>
               <p className="text-[9px] tracking-[3px] text-[#8a8078] uppercase mb-2">
                 {property.city} · {property.type}
               </p>
-              <h2 className="font-serif text-4xl font-light text-[#1c1917]">
+              <h2 className="font-serif text-3xl md:text-4xl font-light text-[#1c1917]">
                 {title}
               </h2>
             </div>
-            <div className="text-right">
+            <div className="md:text-right">
               <p className="font-serif text-3xl font-light text-[#1c1917]">
                 ₪ {property.price.toLocaleString()}
               </p>
@@ -182,7 +182,7 @@ export default function PropertyModal({ property, onClose }: { property: Propert
           </div>
 
           {/* Specs */}
-          <div className="grid grid-cols-3 gap-4 mb-8">
+          <div className="grid grid-cols-2 md:grid-cols-3 gap-4 mb-8">
             <div className="bg-white rounded-2xl p-5 text-center border border-[#b08d57]/10">
               <p className="font-serif text-3xl font-light text-[#1c1917]">{property.surface}</p>
               <p className="text-[9px] tracking-[2px] text-[#8a8078] uppercase mt-1">{t('surface')}</p>

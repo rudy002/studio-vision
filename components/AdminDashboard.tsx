@@ -212,7 +212,7 @@ export default function AdminDashboard() {
   };
 
   return (
-    <div className="min-h-screen p-8">
+    <div className="min-h-screen p-4 md:p-8">
       {/* Header */}
       <div className="flex justify-between items-center mb-8">
         <div>
@@ -257,9 +257,9 @@ export default function AdminDashboard() {
 
       {/* Liste des biens */}
       {activeTab === 'list' && (
-        <div className="grid grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {properties.length === 0 && (
-            <p className="col-span-3 text-center font-serif text-xl text-[#6b5d4a] py-16">
+            <p className="col-span-1 md:col-span-3 text-center font-serif text-xl text-[#6b5d4a] py-16">
               Aucun bien publié
             </p>
           )}
@@ -338,7 +338,7 @@ export default function AdminDashboard() {
               <p className="text-[9px] tracking-[3px] text-[#8b6914] uppercase mb-4">
                 Titres
               </p>
-              <div className="grid grid-cols-3 gap-4">
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                 {['fr', 'en', 'he'].map((lang) => (
                   <div key={lang} className="flex flex-col gap-2">
                     <label className="text-[9px] tracking-[2px] text-[#6b5d4a] uppercase">
@@ -363,7 +363,7 @@ export default function AdminDashboard() {
               <p className="text-[9px] tracking-[3px] text-[#8b6914] uppercase mb-4">
                 Informations
               </p>
-              <div className="grid grid-cols-3 gap-4">
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                 <div className="flex flex-col gap-2">
                   <label className="text-[9px] tracking-[2px] text-[#6b5d4a] uppercase">
                     Type
@@ -533,7 +533,7 @@ export default function AdminDashboard() {
               <p className="text-[9px] tracking-[3px] text-[#8b6914] uppercase mb-4">
                 Médias
               </p>
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="flex flex-col gap-2">
                   <label className="text-[9px] tracking-[2px] text-[#6b5d4a] uppercase">
                     Photos

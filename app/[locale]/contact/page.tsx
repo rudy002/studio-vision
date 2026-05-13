@@ -33,17 +33,17 @@ export default function ContactPage() {
 
   return (
     <main className="min-h-screen pt-20" style={{ background: 'linear-gradient(135deg, #e8dfd4 0%, #d4c9b8 50%, #c8b99a 100%)' }}>
-      <div className="grid grid-cols-2 min-h-[calc(100vh-80px)]">
+      <div className="grid grid-cols-1 md:grid-cols-2 min-h-[calc(100vh-80px)]">
 
         {/* Colonne gauche */}
-        <div className="bg-[#1a1410] p-20 flex flex-col justify-center">
+        <div className="bg-[#1a1410] p-10 md:p-20 flex flex-col justify-center">
           <p className="text-[10px] tracking-[4px] text-[#8b6914] uppercase mb-6">
             {t('eyebrow')}
           </p>
-          <h1 className="font-serif text-5xl font-light text-white leading-tight mb-8">
+          <h1 className="font-serif text-4xl md:text-5xl font-light text-white leading-tight mb-8">
             {t('title')}
           </h1>
-          <p className="text-sm text-white/50 leading-relaxed mb-16">
+          <p className="text-sm text-white/50 leading-relaxed mb-10 md:mb-16">
             {t('description')}
           </p>
 
@@ -67,9 +67,9 @@ export default function ContactPage() {
         </div>
 
         {/* Colonne droite */}
-        <div className="flex items-center justify-center p-16">
+        <div className="flex items-center justify-center p-6 md:p-16">
           <div
-            className="w-full max-w-lg rounded-3xl p-10"
+            className="w-full max-w-lg rounded-3xl p-8 md:p-10"
             style={{
               background: 'rgba(255,255,255,0.25)',
               backdropFilter: 'blur(16px)',
@@ -87,7 +87,7 @@ export default function ContactPage() {
               <>
                 <h2 className="font-serif text-3xl font-light text-[#1a1410] mb-8">{t('form.role')}</h2>
                 <form onSubmit={handleSubmit} className="flex flex-col gap-4">
-                  <div className="grid grid-cols-2 gap-4">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div className="flex flex-col gap-2">
                       <label className="text-[9px] tracking-[2px] text-[#6b5d4a] uppercase">{t('form.firstname')}</label>
                       <input name="firstname" type="text" onChange={handleChange} required

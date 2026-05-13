@@ -77,7 +77,7 @@ export default function PropertyCard({ property, onClick }: { property: Property
           <p className="font-serif text-2xl font-light text-[#1c1917]">
             {property.price.toLocaleString(intlLocale)}
           </p>
-          <div className="flex gap-3">
+          <div className="flex flex-wrap gap-2">
             <span className="text-[11px] text-[#8a8078]">{property.surface} {t('surface')}</span>
             <span className="text-[11px] text-[#8a8078]">{property.rooms} {t('rooms')}</span>
             <span className="text-[11px] text-[#8a8078]">{property.bedrooms} {t('bedrooms')}</span>

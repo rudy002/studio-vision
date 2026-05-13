@@ -39,9 +39,10 @@ const israelBounds = [[29.4, 33.8], [33.4, 35.9]] as L.LatLngBoundsExpression;
 interface MapViewProps {
   properties: Property[];
   onPropertyClick: (property: Property) => void;
+  className?: string;
 }
 
-export default function MapView({ properties, onPropertyClick }: MapViewProps) {
+export default function MapView({ properties, onPropertyClick, className = 'h-130' }: MapViewProps) {
   const [maskFeature, setMaskFeature] = useState<any>(null);
 
   useEffect(() => {
@@ -77,68 +78,70 @@ export default function MapView({ properties, onPropertyClick }: MapViewProps) {
   const mapped = properties.filter((p) => p.lat != null && p.lng != null);
 
   return (
-    <MapContainer
-      center={[31.4, 34.9]}
-      zoom={7.8}
-      minZoom={7}
-      maxZoom={16}
-      maxBounds={israelBounds}
-      maxBoundsViscosity={1.0}
-      style={{ height: '520px', width: '100%', borderRadius: '20px' }}
-      scrollWheelZoom={false}
-    >
-      <TileLayer
-        attribution='&copy; OpenStreetMap &copy; CartoDB'
-        url="https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png"
-      />
-
-      {maskFeature && (
-        <GeoJSON
-          key="mask"
-          data={maskFeature}
-          style={{ fillColor: '#1a1410', fillOpacity: 0.35, stroke: false, weight: 0 }}
+    <div className={className}>
+      <MapContainer
+        center={[31.4, 34.9]}
+        zoom={7.8}
+        minZoom={7}
+        maxZoom={16}
+        maxBounds={israelBounds}
+        maxBoundsViscosity={1.0}
+        style={{ height: '100%', width: '100%', borderRadius: '20px' }}
+        scrollWheelZoom={false}
+      >
+        <TileLayer
+          attribution='&copy; OpenStreetMap &copy; CartoDB'
+          url="https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png"
         />
-      )}
 
-      {mapped.map((property) => (
-        <Marker
-          key={property.id}
-          position={[property.lat!, property.lng!]}
-          icon={property.status === 'available' ? goldIcon : darkIcon}
-        >
-          <Popup>
-            <div style={{ fontFamily: 'Georgia, serif', minWidth: '160px', padding: '4px 2px' }}>
-              <p style={{ fontSize: '10px', letterSpacing: '2px', textTransform: 'uppercase', color: '#8a8078', margin: '0 0 6px' }}>
-                {property.city}
-              </p>
-              <p style={{ fontSize: '15px', fontWeight: 300, color: '#1c1917', margin: '0 0 4px', lineHeight: 1.3 }}>
-                {property.title_fr}
-              </p>
-              <p style={{ fontSize: '14px', color: '#8b6914', margin: '0 0 12px', fontWeight: 400 }}>
-                {property.price.toLocaleString()} ₪
-              </p>
-              <button
-                onClick={() => onPropertyClick(property)}
-                style={{
-                  width: '100%',
-                  padding: '8px 0',
-                  background: '#8b6914',
-                  color: '#fff',
-                  border: 'none',
-                  borderRadius: '20px',
-                  fontSize: '10px',
-                  letterSpacing: '2px',
-                  textTransform: 'uppercase',
-                  cursor: 'pointer',
-                  fontFamily: 'Georgia, serif',
-                }}
-              >
-                Voir le bien
-              </button>
-            </div>
-          </Popup>
-        </Marker>
-      ))}
-    </MapContainer>
+        {maskFeature && (
+          <GeoJSON
+            key="mask"
+            data={maskFeature}
+            style={{ fillColor: '#1a1410', fillOpacity: 0.35, stroke: false, weight: 0 }}
+          />
+        )}
+
+        {mapped.map((property) => (
+          <Marker
+            key={property.id}
+            position={[property.lat!, property.lng!]}
+            icon={property.status === 'available' ? goldIcon : darkIcon}
+          >
+            <Popup>
+              <div style={{ fontFamily: 'Georgia, serif', minWidth: '160px', padding: '4px 2px' }}>
+                <p style={{ fontSize: '10px', letterSpacing: '2px', textTransform: 'uppercase', color: '#8a8078', margin: '0 0 6px' }}>
+                  {property.city}
+                </p>
+                <p style={{ fontSize: '15px', fontWeight: 300, color: '#1c1917', margin: '0 0 4px', lineHeight: 1.3 }}>
+                  {property.title_fr}
+                </p>
+                <p style={{ fontSize: '14px', color: '#8b6914', margin: '0 0 12px', fontWeight: 400 }}>
+                  {property.price.toLocaleString()} ₪
+                </p>
+                <button
+                  onClick={() => onPropertyClick(property)}
+                  style={{
+                    width: '100%',
+                    padding: '8px 0',
+                    background: '#8b6914',
+                    color: '#fff',
+                    border: 'none',
+                    borderRadius: '20px',
+                    fontSize: '10px',
+                    letterSpacing: '2px',
+                    textTransform: 'uppercase',
+                    cursor: 'pointer',
+                    fontFamily: 'Georgia, serif',
+                  }}
+                >
+                  Voir le bien
+                </button>
+              </div>
+            </Popup>
+          </Marker>
+        ))}
+      </MapContainer>
+    </div>
   );
 }
