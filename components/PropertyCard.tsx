@@ -26,6 +26,7 @@ export default function PropertyCard({ property, onClick }: { property: Property
   const locale = useLocale();
 
   const title = locale === 'fr' ? property.title_fr : locale === 'en' ? property.title_en : property.title_he;
+  const intlLocale = locale === 'fr' ? 'fr-FR' : locale === 'he' ? 'he-IL' : 'en-US';
   const isAvailable = property.status === 'available';
 
   return (
@@ -74,7 +75,7 @@ export default function PropertyCard({ property, onClick }: { property: Property
 
         <div className="flex justify-between items-center">
           <p className="font-serif text-2xl font-light text-[#1c1917]">
-            {property.price.toLocaleString()}
+            {property.price.toLocaleString(intlLocale)}
           </p>
           <div className="flex gap-3">
             <span className="text-[11px] text-[#8a8078]">{property.surface} {t('surface')}</span>
