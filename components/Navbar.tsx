@@ -25,21 +25,23 @@ export default function Navbar() {
     setMenuOpen(false);
   };
 
-  const transparent = !scrolled;
+  // Effet transparent uniquement sur la page d'accueil
+  const isHome = pathname === `/${locale}` || pathname === `/${locale}/`;
+  const isLight = isHome && scrolled; // seul état où le fond est blanc glassmorphism
 
-  const navStyle = transparent
-    ? { background: 'transparent' }
-    : { background: 'rgba(255,255,255,0.25)', backdropFilter: 'blur(12px)', borderBottom: '0.5px solid rgba(255,255,255,0.4)' };
+  const navStyle = !isHome
+    ? { background: 'rgba(10,15,26,0.92)', backdropFilter: 'blur(14px)', borderBottom: '1px solid rgba(255,255,255,0.07)' }
+    : scrolled
+      ? { background: 'rgba(255,255,255,0.25)', backdropFilter: 'blur(12px)', borderBottom: '0.5px solid rgba(255,255,255,0.4)' }
+      : { background: 'transparent' };
 
-  const logoClass = transparent ? 'text-white' : 'text-[#1c1917]';
-  const linkClass = transparent
-    ? 'text-white/80 hover:text-white'
-    : 'text-[#4a4540] hover:text-[#b08d57]';
-  const burgerClass = transparent ? 'text-white' : 'text-[#1c1917]';
+  const logoClass = isLight ? 'text-[#1c1917]' : 'text-white';
+  const linkClass = isLight ? 'text-[#4a4540] hover:text-[#b08d57]' : 'text-white/80 hover:text-white';
+  const burgerClass = isLight ? 'text-[#1c1917]' : 'text-white';
 
   const langClass = (lang: string) => {
     if (locale === lang) return 'text-[#b08d57] border-b border-[#b08d57]';
-    return transparent ? 'text-white/60 hover:text-white' : 'text-[#8a8078] hover:text-[#b08d57]';
+    return isLight ? 'text-[#8a8078] hover:text-[#b08d57]' : 'text-white/60 hover:text-white';
   };
 
   return (
