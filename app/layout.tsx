@@ -1,4 +1,5 @@
 import NextAuthProvider from '../components/SessionProvider';
+import WhatsAppButton from '../components/WhatsAppButton';
 
 export default function RootLayout({
   children,
@@ -11,6 +12,7 @@ export default function RootLayout({
         <NextAuthProvider>
           {children}
         </NextAuthProvider>
+        <WhatsAppButton />
       </body>
     </html>
   );
