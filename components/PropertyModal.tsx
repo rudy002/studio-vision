@@ -40,11 +40,11 @@ export default function PropertyModal({ property, onClose }: { property: Propert
   return (
     <>
       {/* Overlay */}
-      <div className="fixed inset-0 z-50 bg-[#1c1917]/70 backdrop-blur-sm" onClick={onClose} />
+      <div className="fixed inset-0 z-1001 bg-[#1c1917]/70 backdrop-blur-sm" onClick={onClose} />
 
       {/* Modal */}
       <div
-        className="fixed inset-x-2 top-4 bottom-4 z-50 md:inset-x-16 lg:inset-x-32 rounded-3xl overflow-y-auto shadow-2xl"
+        className="fixed inset-x-2 top-4 bottom-4 z-1001 md:inset-x-16 lg:inset-x-32 rounded-3xl overflow-y-auto shadow-2xl"
         style={{ background: 'rgba(255,255,255,0.35)', backdropFilter: 'blur(24px)', border: '0.5px solid rgba(255,255,255,0.5)' }}
       >
         {/* Bouton fermer */}
