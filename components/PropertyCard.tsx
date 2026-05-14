@@ -44,11 +44,11 @@ export default function PropertyCard({ property, onClick }: { property: Property
             className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
           />
         ) : (
-          <div className="w-full h-full flex items-center justify-content-center bg-linear-to-br from-[#ede8df] to-[#f0e8d8]">
-            <div className="w-12 h-12 border border-[#b08d57]/30 rounded-full flex items-center justify-center">
-              <div className="w-0 h-0 border-t-8 border-t-transparent border-b-8 border-b-transparent border-l-14 border-l-[#b08d57] ml-1"></div>
-            </div>
-          </div>
+          <img
+            src="https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=800&q=80"
+            alt="Bien immobilier"
+            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+          />
         )}
 
         {/* Badge statut */}

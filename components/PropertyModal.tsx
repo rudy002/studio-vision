@@ -81,9 +81,11 @@ export default function PropertyModal({ property, onClose }: { property: Propert
               <img src={active.url} alt={title} className="relative w-full h-full object-contain transition-opacity duration-300" />
             </>
           ) : (
-            <div className="w-full h-full flex items-center justify-center bg-linear-to-br from-[#ede8df] to-[#f0e8d8]">
-              <p className="font-serif text-2xl text-[#b08d57] opacity-40">Studio Vision</p>
-            </div>
+            <img
+              src="https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=800&q=80"
+              alt="Bien immobilier"
+              className="w-full h-full object-cover"
+            />
           )}
 
           {/* Badge statut */}
