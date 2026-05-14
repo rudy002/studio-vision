@@ -34,6 +34,19 @@
     "sold": "Vendu"
   },
 
+  "home": {
+    "featured": "En vedette",
+    "seeProperty": "Voir le bien →",
+    "sectionEyebrow": "Biens en vedette",
+    "sectionTitle": "Propriétés d'exception",
+    "seeAll": "Voir tous les biens →",
+    "statSoldNumber": "300+",
+    "statSoldLabel": "Biens vendus pour nos clients",
+    "statExperienceNumber": "5 ans",
+    "statExperienceLabel": "D'expérience",
+    "statSatisfactionNumber": "100%",
+    "statSatisfactionLabel": "Clients satisfaits"
+  },
   "contact": {
     "eyebrow": "Contactez-nous",
     "title": "Parlons de votre projet",

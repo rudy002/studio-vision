@@ -34,6 +34,19 @@
     "sold": "Sold"
   },
 
+  "home": {
+    "featured": "Featured",
+    "seeProperty": "View property →",
+    "sectionEyebrow": "Featured properties",
+    "sectionTitle": "Exceptional properties",
+    "seeAll": "View all properties →",
+    "statSoldNumber": "300+",
+    "statSoldLabel": "Properties sold for our clients",
+    "statExperienceNumber": "5 years",
+    "statExperienceLabel": "Of experience",
+    "statSatisfactionNumber": "100%",
+    "statSatisfactionLabel": "Satisfied clients"
+  },
   "contact": {
     "eyebrow": "Contact us",
     "title": "Let's talk about your project",

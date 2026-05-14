@@ -33,6 +33,19 @@
     "available": "זמין",
     "sold": "נמכר"
   },
+  "home": {
+    "featured": "מומלץ",
+    "seeProperty": "צפה בנכס →",
+    "sectionEyebrow": "נכסים מומלצים",
+    "sectionTitle": "נכסים יוצאי דופן",
+    "seeAll": "לכל הנכסים →",
+    "statSoldNumber": "300+",
+    "statSoldLabel": "נכסים שנמכרו עבור לקוחותינו",
+    "statExperienceNumber": "5 שנים",
+    "statExperienceLabel": "ניסיון",
+    "statSatisfactionNumber": "100%",
+    "statSatisfactionLabel": "לקוחות מרוצים"
+  },
   "contact": {
     "eyebrow": "צור קשר",
     "title": "בואו נדבר על הפרויקט שלך",
