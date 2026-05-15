@@ -11,6 +11,7 @@ export default async function Home({
   const { locale } = await params;
   const t = await getTranslations('hero');
   const th = await getTranslations('home');
+  const tt = await getTranslations('tarifs');
 
   const supabase = createClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
@@ -118,6 +119,51 @@ export default async function Home({
               </p>
               <p className="text-[10px] tracking-[3px] text-white/40 uppercase">{stat.label}</p>
             </div>
+          ))}
+        </div>
+      </section>
+
+      {/* Aperçu des tarifs */}
+      <section className="px-6 md:px-16 py-16 md:py-24 bg-[#0a0f1a]">
+        <p className="text-[10px] tracking-[5px] text-[#b08d57] uppercase mb-5">
+          {tt('homeEyebrow')}
+        </p>
+        <div className="flex flex-col gap-4 md:flex-row md:justify-between md:items-end mb-10 md:mb-12">
+          <h2 className="font-serif text-3xl md:text-5xl font-light text-white max-w-xl">
+            {tt('homeTitle')}
+          </h2>
+          <Link
+            href={`/${locale}/tarifs`}
+            className="text-[11px] tracking-[3px] uppercase text-white border-b-2 border-[#b08d57] pb-1 hover:text-[#b08d57] transition-colors self-start md:self-auto"
+          >
+            {tt('homeCta')}
+          </Link>
+        </div>
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          {[
+            { icon: '📸', title: tt('photoTitle'), from: '350 ₪' },
+            { icon: '🎬', title: tt('videoAdvTitle'), from: '1 000 ₪' },
+            { icon: '🏠', title: tt('matterportTitle'), from: '600 ₪' },
+            { icon: '🖥️', title: tt('hadmayaTitle'), from: '160 ₪' },
+          ].map((service) => (
+            <Link
+              key={service.title}
+              href={`/${locale}/tarifs`}
+              className="group rounded-2xl p-6 flex flex-col gap-4 transition-all duration-300"
+              style={{
+                background: 'rgba(255,255,255,0.04)',
+                border: '1px solid rgba(255,255,255,0.07)',
+              }}
+            >
+              <span className="text-2xl">{service.icon}</span>
+              <div>
+                <p className="text-sm font-light text-white/80 leading-snug mb-2 group-hover:text-white transition-colors">
+                  {service.title}
+                </p>
+                <p className="font-serif text-xl text-[#b08d57]">{tt('from')} {service.from}</p>
+              </div>
+            </Link>
           ))}
         </div>
       </section>

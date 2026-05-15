@@ -66,6 +66,9 @@ export default function Navbar() {
         <Link href={`/${locale}/biens`} className={`text-[13px] tracking-widest uppercase transition-colors ${linkClass}`}>
           {t('properties')}
         </Link>
+        <Link href={`/${locale}/tarifs`} className={`text-[13px] tracking-widest uppercase transition-colors ${linkClass}`}>
+          {t('tarifs')}
+        </Link>
         <Link href={`/${locale}/contact`} className={`text-[13px] tracking-widest uppercase transition-colors ${linkClass}`}>
           {t('contact')}
         </Link>
@@ -116,6 +119,13 @@ export default function Navbar() {
             className="px-6 py-4 text-[13px] tracking-widest text-white/80 uppercase hover:text-[#b08d57] transition-colors border-b border-white/10"
           >
             {t('properties')}
+          </Link>
+          <Link
+            href={`/${locale}/tarifs`}
+            onClick={() => setMenuOpen(false)}
+            className="px-6 py-4 text-[13px] tracking-widest text-white/80 uppercase hover:text-[#b08d57] transition-colors border-b border-white/10"
+          >
+            {t('tarifs')}
           </Link>
           <Link
             href={`/${locale}/contact`}
