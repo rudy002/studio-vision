@@ -1,7 +1,9 @@
 'use client';
 
+import * as React from 'react';
 import { useTranslations, useLocale } from 'next-intl';
-import Link from 'next/link';
+import { ArrowRight, MapPin } from 'lucide-react';
+import { cn } from '@/lib/utils';
 
 export type Property = {
   id: string;
@@ -21,66 +23,120 @@ export type Property = {
   lng?: number;
 };
 
-export default function PropertyCard({ property, onClick }: { property: Property; onClick?: () => void }) {
+const TYPE_COLORS: Record<string, string> = {
+  villa:       '38 48% 28%',
+  penthouse:   '18 32% 22%',
+  appartement: '152 32% 16%',
+  maison:      '170 26% 18%',
+};
+const DEFAULT_COLOR = '150 28% 14%';
+
+const FALLBACK_IMAGE = 'https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=800&q=80';
+
+export default function PropertyCard({
+  property,
+  onClick,
+  className,
+}: {
+  property: Property;
+  onClick?: () => void;
+  className?: string;
+}) {
   const t = useTranslations('properties');
   const locale = useLocale();
 
-  const title = locale === 'fr' ? property.title_fr : locale === 'en' ? property.title_en : property.title_he;
-  const intlLocale = locale === 'fr' ? 'fr-FR' : locale === 'he' ? 'he-IL' : 'en-US';
+  const title =
+    locale === 'fr' ? property.title_fr
+    : locale === 'en' ? property.title_en
+    : property.title_he;
+
+  const intlLocale =
+    locale === 'fr' ? 'fr-FR' : locale === 'he' ? 'he-IL' : 'en-US';
+
   const isAvailable = property.status === 'available';
+  const themeColor = TYPE_COLORS[property.type?.toLowerCase()] ?? DEFAULT_COLOR;
+  const imageUrl = property.photos?.[0] ?? FALLBACK_IMAGE;
 
   return (
     <div
-  onClick={onClick}
-  className="group block cursor-pointer overflow-hidden"
-  style={{ background: 'rgba(255,255,255,0.25)', backdropFilter: 'blur(16px)', border: '0.5px solid rgba(255,255,255,0.5)', borderRadius: '20px' }}
->
-      {/* Image */}
-      <div className="relative h-56 overflow-hidden bg-[#ede8df]">
-        {property.photos && property.photos.length > 0 ? (
-          <img
-            src={property.photos[0]}
-            alt={title}
-            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-          />
-        ) : (
-          <img
-            src="https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=800&q=80"
-            alt="Bien immobilier"
-            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-          />
-        )}
+      onClick={onClick}
+      style={{ '--theme-color': themeColor } as React.CSSProperties}
+      className={cn('group w-full h-full cursor-pointer', className)}
+    >
+      <div
+        className="relative w-full h-full rounded-2xl overflow-hidden
+                   transition-all duration-500 ease-in-out
+                   group-hover:scale-[1.03] group-hover:shadow-[0_0_60px_-15px_hsl(var(--theme-color)/0.7)]"
+        style={{ boxShadow: `0 0 40px -18px hsl(${themeColor} / 0.5)` }}
+      >
+        {/* Background image with zoom on hover */}
+        <div
+          className="absolute inset-0 bg-cover bg-center
+                     transition-transform duration-500 ease-in-out group-hover:scale-110"
+          style={{ backgroundImage: `url(${imageUrl})` }}
+        />
 
-        {/* Badge statut */}
-        <div className={`absolute top-3 left-3 text-[9px] tracking-widest uppercase px-3 py-1 rounded-full backdrop-blur-sm ${
-          isAvailable
-            ? 'text-[#b08d57] bg-white/90'
-            : 'text-white bg-[#1c1917]/80'
-        }`}>
-          {isAvailable ? t('available') : t('sold')}
+        {/* Gradient overlay */}
+        <div
+          className="absolute inset-0"
+          style={{
+            background: `linear-gradient(to top,
+              hsl(var(--theme-color) / 0.97) 0%,
+              hsl(var(--theme-color) / 0.65) 42%,
+              transparent 68%)`,
+          }}
+        />
+
+        {/* Top badges */}
+        <div className="absolute top-4 left-4 right-4 flex justify-between items-start pointer-events-none">
+          <span
+            className={`text-[9px] tracking-[2px] uppercase px-3 py-1 rounded-full backdrop-blur-sm border ${
+              isAvailable
+                ? 'text-[#c39553] bg-[#c39553]/10 border-[#c39553]/30'
+                : 'text-white/50 bg-black/25 border-white/10'
+            }`}
+          >
+            {isAvailable ? t('available') : t('sold')}
+          </span>
+          <span className="text-[9px] tracking-[2px] uppercase px-3 py-1 rounded-full bg-white/10 backdrop-blur-sm border border-white/15 text-white/75">
+            {property.type}
+          </span>
         </div>
 
-        {/* Badge type */}
-        <div className="absolute top-3 right-3 text-[9px] tracking-widest uppercase px-3 py-1 rounded-full bg-white/90 text-[#4a4540]">
-          {property.type}
-        </div>
-      </div>
-
-      {/* Contenu */}
-      <div className="p-6">
-        <p className="text-[9px] tracking-[3px] text-[#8a8078] uppercase mb-1">{property.city}</p>
-        <h3 className="font-serif text-xl font-light text-[#1c1917] mb-4">{title}</h3>
-
-        <div className="h-px bg-[#b08d57]/15 mb-4"></div>
-
-        <div className="flex justify-between items-center">
-          <p className="font-serif text-2xl font-light text-[#1c1917]">
-            {property.price.toLocaleString(intlLocale)}
+        {/* Bottom content */}
+        <div className="relative flex flex-col justify-end h-full p-5 text-white">
+          <p className="text-[9px] tracking-[3px] text-[#c39553]/75 uppercase mb-1.5 flex items-center gap-1">
+            <MapPin className="h-2.5 w-2.5 shrink-0" />
+            {property.city}
           </p>
-          <div className="flex flex-wrap gap-2">
-            <span className="text-[11px] text-[#8a8078]">{property.surface} {t('surface')}</span>
-            <span className="text-[11px] text-[#8a8078]">{property.rooms} {t('rooms')}</span>
-            <span className="text-[11px] text-[#8a8078]">{property.bedrooms} {t('bedrooms')}</span>
+
+          <h3 className="font-serif text-xl font-light leading-snug mb-2.5">
+            {title}
+          </h3>
+
+          <div className="flex items-center gap-2.5 text-[10px] text-white/55 mb-4 font-mono">
+            <span>{property.surface} m²</span>
+            <span className="opacity-30">·</span>
+            <span>{property.rooms} {t('rooms')}</span>
+            <span className="opacity-30">·</span>
+            <span>{property.bedrooms} {t('bedrooms')}</span>
+          </div>
+
+          {/* Price + arrow */}
+          <div
+            className="flex items-center justify-between rounded-xl px-4 py-3
+                       backdrop-blur-md border
+                       transition-all duration-300
+                       group-hover:border-[hsl(var(--theme-color)/0.6)]"
+            style={{
+              background: `hsl(var(--theme-color) / 0.22)`,
+              borderColor: `hsl(${themeColor} / 0.32)`,
+            }}
+          >
+            <span className="font-serif text-lg font-light">
+              {property.price.toLocaleString(intlLocale)}&nbsp;₪
+            </span>
+            <ArrowRight className="h-4 w-4 text-[#c39553] transition-transform duration-300 group-hover:translate-x-1 shrink-0" />
           </div>
         </div>
       </div>

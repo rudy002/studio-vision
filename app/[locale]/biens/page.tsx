@@ -108,21 +108,21 @@ export default function BiensPage() {
   const pillClass = (active: boolean) =>
     `text-[11px] tracking-[1.5px] uppercase px-4 py-1.5 rounded-full border transition-all duration-200 cursor-pointer whitespace-nowrap ${
       active
-        ? 'bg-[#b08d57] border-[#b08d57] text-white'
-        : 'border-white/35 text-white/70 hover:border-white/60 hover:text-white'
+        ? 'bg-[#c39553] border-[#c39553] text-[#0e1612]'
+        : 'border-white/30 text-white/60 hover:border-white/55 hover:text-white'
     }`;
 
   const inputClass =
-    'border border-white/25 rounded-lg px-3 py-2 text-white text-[12px] placeholder:text-white/40 focus:outline-none focus:border-[#b08d57]/80 transition-colors';
+    'border border-white/20 rounded-lg px-3 py-2 text-white text-[12px] placeholder:text-white/35 focus:outline-none focus:border-[#c39553]/70 transition-colors';
 
-  const selectStyle = { background: '#0f1624', colorScheme: 'dark' as const };
+  const selectStyle = { background: '#0b1510', colorScheme: 'dark' as const };
 
   return (
     <main className="min-h-screen">
 
       {/* Header sombre */}
-      <div className="bg-[#0a0f1a] pt-32 md:pt-40 pb-10 px-6 md:px-16">
-        <p className="text-[13px] tracking-[4px] text-[#b08d57] uppercase mb-4">
+      <div className="bg-[#0e1612] pt-32 md:pt-40 pb-10 px-6 md:px-16">
+        <p className="text-[13px] tracking-[4px] text-[#c39553] uppercase mb-4">
           {t('eyebrow')}
         </p>
         <h1 className="font-serif text-4xl md:text-5xl font-light text-white mb-10">
@@ -145,7 +145,7 @@ export default function BiensPage() {
         {/* Filtres avancés */}
         <div
           className="rounded-2xl p-6"
-          style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.12)' }}
+          style={{ background: 'rgba(195,149,83,0.04)', border: '1px solid rgba(195,149,83,0.12)' }}
         >
           <div className="flex flex-col gap-5">
 
@@ -293,7 +293,7 @@ export default function BiensPage() {
               {hasActiveFilters && (
                 <button
                   onClick={() => setFilters(DEFAULT_FILTERS)}
-                  className="text-[11px] tracking-[1.5px] uppercase text-[#b08d57] hover:text-white border border-[#b08d57]/40 hover:border-white/40 px-4 py-2 rounded-lg transition-all duration-200 cursor-pointer self-end"
+                  className="text-[11px] tracking-[1.5px] uppercase text-[#c39553] hover:text-white border border-[#c39553]/40 hover:border-white/40 px-4 py-2 rounded-lg transition-all duration-200 cursor-pointer self-end"
                 >
                   {t('filters.reset')}
                 </button>
@@ -304,8 +304,8 @@ export default function BiensPage() {
       </div>
 
       {/* Carte */}
-      <div className="bg-[#0a0f1a] px-6 md:px-16 pb-16 pt-10">
-        <div className="rounded-3xl overflow-hidden" style={{ border: '1px solid rgba(255,255,255,0.08)' }}>
+      <div className="bg-[#0e1612] px-6 md:px-16 pb-16 pt-10">
+        <div className="rounded-3xl overflow-hidden" style={{ border: '1px solid rgba(195,149,83,0.12)' }}>
           <MapView
             properties={filtered}
             onPropertyClick={(p) => setSelected(p)}
@@ -315,37 +315,38 @@ export default function BiensPage() {
       </div>
 
       {/* Séparateur doré */}
-      <div className="bg-[#0a0f1a] px-6 md:px-16 pb-0">
-        <div className="h-px bg-[#b08d57]/20" />
+      <div className="bg-[#0e1612] px-6 md:px-16 pb-0">
+        <div className="h-px bg-[#c39553]/18" />
       </div>
 
       {/* Grille */}
-      <div className="bg-[#f5f2ec] px-6 md:px-16 py-16 md:py-24">
+      <div className="bg-[#0e1612] px-6 md:px-16 py-16 md:py-24">
 
         {/* Compteur de résultats */}
         {!loading && (
-          <p className="text-[11px] tracking-[2px] uppercase text-[#8a8078] mb-8">
+          <p className="text-[11px] tracking-[2px] uppercase text-[#c39553]/45 mb-10">
             {filtered.length} {t('filters.resultsCount')}
           </p>
         )}
 
         {loading ? (
           <div className="flex flex-col items-center gap-4 py-32">
-            <div className="w-px h-12 bg-[#b08d57]/40 animate-pulse" />
-            <div className="w-px h-8 bg-[#b08d57]/20 animate-pulse" />
+            <div className="w-px h-12 bg-[#c39553]/35 animate-pulse" />
+            <div className="w-px h-8 bg-[#c39553]/15 animate-pulse" />
           </div>
         ) : filtered.length === 0 ? (
-          <p className="font-serif text-2xl text-[#8a8078] text-center py-24">
+          <p className="font-serif text-2xl text-white/30 text-center py-24">
             {t('noResults')}
           </p>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-7">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {filtered.map((property) => (
-              <PropertyCard
-                key={property.id}
-                property={property}
-                onClick={() => setSelected(property)}
-              />
+              <div key={property.id} className="h-96">
+                <PropertyCard
+                  property={property}
+                  onClick={() => setSelected(property)}
+                />
+              </div>
             ))}
           </div>
         )}
