@@ -43,7 +43,7 @@ export function MediaCarousel({ items, className }: MediaCarouselProps) {
           Items use position:absolute + inset:0 so they fill the container exactly.
         */}
         <div
-          className="flex h-full transition-transform duration-300 ease-[cubic-bezier(0.4,0,0.2,1)]"
+          className="flex h-full transition-transform duration-300 ease-in-out"
           style={{ transform: `translateX(-${page * 100}%)`, height: '100%' }}
         >
           {items.map((item, i) => (

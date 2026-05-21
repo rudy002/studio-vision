@@ -30,8 +30,8 @@ function wrap(min: number, max: number, v: number) {
   return ((((v - min) % rangeSize) + rangeSize) % rangeSize) + min;
 }
 
-const BASE_SPRING = { type: "spring", stiffness: 300, damping: 30, mass: 1 };
-const TAP_SPRING  = { type: "spring", stiffness: 450, damping: 18, mass: 1 };
+const BASE_SPRING = { type: "spring", stiffness: 300, damping: 30, mass: 1 } as const;
+const TAP_SPRING  = { type: "spring", stiffness: 450, damping: 18, mass: 1 } as const;
 
 export function FocusRail({
   items,
@@ -102,7 +102,7 @@ export function FocusRail({
   return (
     <div
       className={cn(
-        "group relative flex h-[600px] w-full flex-col overflow-hidden text-white outline-none select-none overflow-x-hidden",
+        "group relative flex h-150 w-full flex-col overflow-hidden text-white outline-none select-none overflow-x-hidden",
         className
       )}
       style={{ background: '#0e1612' }}
@@ -138,7 +138,7 @@ export function FocusRail({
       {/* Rail */}
       <div className="relative z-10 flex flex-1 flex-col justify-center px-4 md:px-8">
         <motion.div
-          className="relative mx-auto flex h-[360px] w-full max-w-6xl items-center justify-center cursor-grab active:cursor-grabbing"
+          className="relative mx-auto flex h-90 w-full max-w-6xl items-center justify-center cursor-grab active:cursor-grabbing"
           style={{ perspective: '1200px' }}
           drag="x"
           dragConstraints={{ left: 0, right: 0 }}
@@ -159,7 +159,7 @@ export function FocusRail({
               <motion.div
                 key={absIndex}
                 className={cn(
-                  "absolute aspect-[3/4] w-[220px] md:w-[280px] rounded-2xl bg-[#142019] shadow-2xl",
+                  "absolute aspect-3/4 w-55 md:w-70 rounded-2xl bg-[#142019] shadow-2xl",
                   isCenter ? "z-20" : "z-10"
                 )}
                 style={{
@@ -175,9 +175,7 @@ export function FocusRail({
                   opacity:  isCenter ? 1 : Math.max(0.1, 1 - dist * 0.5),
                   filter:   `blur(${isCenter ? 0 : dist * 6}px) brightness(${isCenter ? 1 : 0.5})`,
                 }}
-                transition={(val: string) =>
-                  val === "scale" ? TAP_SPRING : BASE_SPRING
-                }
+                transition={{ scale: TAP_SPRING, default: BASE_SPRING }}
                 onClick={() => {
                   if (offset !== 0) setActive((p) => p + offset);
                 }}
@@ -240,7 +238,7 @@ export function FocusRail({
               >
                 <ChevronLeft className="h-5 w-5" />
               </button>
-              <span className="min-w-[40px] text-center text-xs font-mono"
+              <span className="min-w-10 text-center text-xs font-mono"
                 style={{ color: 'rgba(195,149,83,0.6)' }}>
                 {activeIndex + 1} / {count}
               </span>

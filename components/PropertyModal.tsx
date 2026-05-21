@@ -56,7 +56,7 @@ export default function PropertyModal({
 
       {/* Modal shell — centered dialog, explicit height so h-full chain works */}
       <div
-        className="fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-1001 w-[95vw] max-w-[1300px] rounded-2xl overflow-hidden shadow-2xl flex flex-col md:flex-row"
+        className="fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-1001 w-[95vw] max-w-325 rounded-2xl overflow-hidden shadow-2xl flex flex-col md:flex-row"
         style={{ background: '#05080c', height: 'min(90vh, 660px)' }}
       >
 
