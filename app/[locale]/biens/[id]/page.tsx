@@ -1,6 +1,6 @@
 import { createClient } from '@supabase/supabase-js';
 import { notFound } from 'next/navigation';
-import PropertyModal from '../../../../components/PropertyModal';
+import PropertyPageWrapper from '../../../../components/PropertyPageWrapper';
 
 const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL!,
@@ -24,7 +24,7 @@ export default async function BienPage({
 
   return (
     <main className="bg-[#f5f2ec] min-h-screen pt-32 px-16">
-      <PropertyModal property={property} onClose={() => {}} />
+      <PropertyPageWrapper property={property} />
     </main>
   );
 }

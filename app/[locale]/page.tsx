@@ -1,7 +1,7 @@
 import { getTranslations } from 'next-intl/server';
 import { createClient } from '@supabase/supabase-js';
 import ScrollExperience from '../../components/blocks/ScrollExperience';
-import { PropertyCarousel } from '../../components/ui/feature-carousel';
+import { FocusRail, FocusRailItem } from '../../components/ui/focus-rail';
 import Link from 'next/link';
 
 export default async function Home({
@@ -84,12 +84,17 @@ export default async function Home({
             </Link>
           </div>
 
-          <PropertyCarousel
-            items={properties.map((p) => ({
-              src:  p.photos?.[0] ?? fallbackImg,
-              alt:  locale === 'fr' ? p.title_fr : locale === 'en' ? p.title_en : p.title_he,
-              href: `/${locale}/biens/${p.id}`,
+          <FocusRail
+            items={properties.map((p): FocusRailItem => ({
+              id:          p.id,
+              title:       locale === 'fr' ? p.title_fr : locale === 'en' ? p.title_en : p.title_he,
+              imageSrc:    p.photos?.[0] ?? fallbackImg,
+              href:        `/${locale}/biens/${p.id}`,
+              meta:        [p.city, p.type].filter(Boolean).join(' · '),
+              description: [p.surface && `${p.surface} m²`, p.rooms && `${p.rooms} pièces`, p.price && `${Number(p.price).toLocaleString('fr-FR')} ₪`].filter(Boolean).join('  ·  '),
             }))}
+            ctaLabel={th('seeProperty')}
+            loop
           />
         </section>
       )}
