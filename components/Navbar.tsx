@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useTranslations, useLocale } from 'next-intl';
 import { useRouter, usePathname } from 'next/navigation';
 import Link from 'next/link';
@@ -12,14 +12,24 @@ export default function Navbar() {
   const pathname = usePathname();
   const [menuOpen, setMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [navHidden, setNavHidden] = useState(false);
+  const lastScrollY = useRef(0);
 
-  // Sur la page d'accueil : toujours transparent (scroll experience plein écran)
   const isHome = pathname === `/${locale}` || pathname === `/${locale}/`;
   const isLight = false;
 
   useEffect(() => {
-    if (isHome) return;
-    const onScroll = () => setScrolled(window.scrollY > 40);
+    const onScroll = () => {
+      const y = window.scrollY;
+      if (!isHome) setScrolled(y > 40);
+
+      if (y > 80) {
+        setNavHidden(y > lastScrollY.current);
+      } else {
+        setNavHidden(false);
+      }
+      lastScrollY.current = y;
+    };
     window.addEventListener('scroll', onScroll, { passive: true });
     return () => window.removeEventListener('scroll', onScroll);
   }, [isHome]);
@@ -45,7 +55,7 @@ export default function Navbar() {
 
   return (
     <nav
-      className="fixed top-0 left-0 right-0 z-50 flex justify-between items-center px-6 md:px-16 py-5 transition-all duration-300"
+      className={`fixed top-0 left-0 right-0 z-50 flex justify-between items-center px-6 md:px-16 py-5 transition-all duration-500 ${navHidden ? 'md:-translate-y-full md:opacity-0 md:pointer-events-none' : 'translate-y-0 opacity-100'}`}
       style={navStyle}
     >
       {/* Logo */}
