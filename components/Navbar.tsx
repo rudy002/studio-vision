@@ -13,11 +13,16 @@ export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
 
+  // Sur la page d'accueil : toujours transparent (scroll experience plein écran)
+  const isHome = pathname === `/${locale}` || pathname === `/${locale}/`;
+  const isLight = false;
+
   useEffect(() => {
+    if (isHome) return;
     const onScroll = () => setScrolled(window.scrollY > 40);
     window.addEventListener('scroll', onScroll, { passive: true });
     return () => window.removeEventListener('scroll', onScroll);
-  }, []);
+  }, [isHome]);
 
   const switchLocale = (newLocale: string) => {
     const newPath = pathname.replace(`/${locale}`, `/${newLocale}`);
@@ -25,15 +30,9 @@ export default function Navbar() {
     setMenuOpen(false);
   };
 
-  // Effet transparent uniquement sur la page d'accueil
-  const isHome = pathname === `/${locale}` || pathname === `/${locale}/`;
-  const isLight = isHome && scrolled; // seul état où le fond est blanc glassmorphism
-
   const navStyle = !isHome
     ? { background: 'rgba(10,15,26,0.92)', backdropFilter: 'blur(14px)', borderBottom: '1px solid rgba(255,255,255,0.07)' }
-    : scrolled
-      ? { background: 'rgba(255,255,255,0.25)', backdropFilter: 'blur(12px)', borderBottom: '0.5px solid rgba(255,255,255,0.4)' }
-      : { background: 'transparent' };
+    : { background: 'transparent' };
 
   const logoClass = isLight ? 'text-[#1c1917]' : 'text-white';
   const linkClass = isLight ? 'text-[#4a4540] hover:text-[#b08d57]' : 'text-white/80 hover:text-white';

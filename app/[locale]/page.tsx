@@ -1,6 +1,7 @@
 import { getTranslations } from 'next-intl/server';
 import { createClient } from '@supabase/supabase-js';
-import PropertyCard from '../../components/PropertyCard';
+import ScrollExperience from '../../components/blocks/ScrollExperience';
+import { PropertyCarousel } from '../../components/ui/feature-carousel';
 import Link from 'next/link';
 
 export default async function Home({
@@ -9,9 +10,8 @@ export default async function Home({
   params: Promise<{ locale: string }>;
 }) {
   const { locale } = await params;
-  const t = await getTranslations('hero');
   const th = await getTranslations('home');
-  const tt = await getTranslations('tarifs');
+  const tse = await getTranslations('scrollExperience');
 
   const supabase = createClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
@@ -25,174 +25,72 @@ export default async function Home({
     .order('created_at', { ascending: false })
     .limit(3);
 
-  const featured = properties?.[0];
-  const intlLocale = locale === 'fr' ? 'fr-FR' : locale === 'he' ? 'he-IL' : 'en-US';
-  const featuredTitle = featured
-    ? (locale === 'fr' ? featured.title_fr : locale === 'en' ? featured.title_en : featured.title_he)
-    : null;
+  const fallbackImg = 'https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=800&q=80';
 
   return (
-    <main className="bg-[#0a0f1a] min-h-screen">
+    <main className="bg-[#0e1612] min-h-screen">
 
-      {/* Hero plein écran */}
-      <section className="relative h-screen min-h-150 flex items-center overflow-hidden">
-
-        {/* Image de fond */}
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img
-          src="https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=1920&q=80"
-          alt=""
-          className="absolute inset-0 w-full h-full object-cover"
-        />
-
-        {/* Overlay gradient */}
-        <div
-          className="absolute inset-0"
-          style={{
-            background:
-              'linear-gradient(to right, rgba(10,15,26,0.85) 0%, rgba(10,15,26,0.4) 60%, rgba(10,15,26,0.1) 100%)',
-          }}
-        />
-
-        {/* Texte à gauche */}
-        <div className="relative z-10 px-6 md:px-16 max-w-2xl">
-          <p className="text-[10px] tracking-[5px] text-[#b08d57] uppercase mb-5">
-            {t('eyebrow')}
-          </p>
-          <h1 className="font-serif text-5xl md:text-6xl font-light text-white leading-tight mb-5">
-            {t('title')} <em className="italic text-[#b08d57]">{t('titleAccent')}</em>
-          </h1>
-          <p className="text-sm text-white/50 tracking-wide leading-relaxed mb-10">
-            {t('subtitle')}
-          </p>
-          <Link
-            href={`/${locale}/biens`}
-            className="inline-block text-[11px] tracking-[3px] uppercase text-white bg-[#b08d57] px-8 py-4 hover:bg-[#c9a867] transition-colors"
-          >
-            {t('cta')} →
-          </Link>
-        </div>
-
-        {/* Card glassmorphism — bien en vedette */}
-        {featured && featuredTitle && (
-          <div
-            className="absolute bottom-8 right-6 md:right-16 w-72 z-10 rounded-2xl p-6"
-            style={{
-              background: 'rgba(255,255,255,0.1)',
-              backdropFilter: 'blur(20px)',
-              border: '1px solid rgba(255,255,255,0.15)',
-            }}
-          >
-            <div className="mb-4">
-              <span className="text-[9px] tracking-[3px] text-[#b08d57] uppercase bg-[#b08d57]/15 px-3 py-1 rounded-full">
-                {th('featured')}
-              </span>
-            </div>
-            <p className="text-[9px] tracking-[2px] text-white/50 uppercase mb-1">{featured.city}</p>
-            <h3 className="font-serif text-lg font-light text-white mb-3 leading-snug">
-              {featuredTitle}
-            </h3>
-            <p className="font-serif text-2xl font-light text-[#b08d57] mb-5">
-              {featured.price.toLocaleString(intlLocale)} €
-            </p>
-            <Link
-              href={`/${locale}/biens/${featured.id}`}
-              className="text-[10px] tracking-[2px] uppercase text-white border-b border-white/30 pb-0.5 hover:border-[#b08d57] hover:text-[#b08d57] transition-colors"
-            >
-              {th('seeProperty')}
-            </Link>
-          </div>
-        )}
-      </section>
-
-      {/* Stats bar */}
-      <section className="py-14 px-6 md:px-16" style={{ background: '#0a0f1a' }}>
-        <div className="max-w-3xl mx-auto grid grid-cols-3 gap-8 text-center">
-          {[
-            { number: th('statSoldNumber'),         label: th('statSoldLabel') },
-            { number: th('statExperienceNumber'),   label: th('statExperienceLabel') },
-            { number: th('statSatisfactionNumber'), label: th('statSatisfactionLabel') },
-          ].map((stat) => (
-            <div key={stat.label}>
-              <p className="font-serif text-3xl md:text-4xl font-light text-[#b08d57] mb-2">
-                {stat.number}
-              </p>
-              <p className="text-[10px] tracking-[3px] text-white/40 uppercase">{stat.label}</p>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      {/* Aperçu des tarifs */}
-      <section className="px-6 md:px-16 py-16 md:py-24 bg-[#0a0f1a]">
-        <p className="text-[10px] tracking-[5px] text-[#b08d57] uppercase mb-5">
-          {tt('homeEyebrow')}
-        </p>
-        <div className="flex flex-col gap-4 md:flex-row md:justify-between md:items-end mb-10 md:mb-12">
-          <h2 className="font-serif text-3xl md:text-5xl font-light text-white max-w-xl">
-            {tt('homeTitle')}
-          </h2>
-          <Link
-            href={`/${locale}/tarifs`}
-            className="text-[11px] tracking-[3px] uppercase text-white border-b-2 border-[#b08d57] pb-1 hover:text-[#b08d57] transition-colors self-start md:self-auto"
-          >
-            {tt('homeCta')}
-          </Link>
-        </div>
-
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-          {[
-            { icon: '📸', title: tt('photoTitle'), from: '350 ₪' },
-            { icon: '🎬', title: tt('videoAdvTitle'), from: '1 000 ₪' },
-            { icon: '🏠', title: tt('matterportTitle'), from: '600 ₪' },
-            { icon: '🖥️', title: tt('hadmayaTitle'), from: '160 ₪' },
-          ].map((service) => (
-            <Link
-              key={service.title}
-              href={`/${locale}/tarifs`}
-              className="group rounded-2xl p-6 flex flex-col gap-4 transition-all duration-300"
-              style={{
-                background: 'rgba(255,255,255,0.04)',
-                border: '1px solid rgba(255,255,255,0.07)',
-              }}
-            >
-              <span className="text-2xl">{service.icon}</span>
-              <div>
-                <p className="text-sm font-light text-white/80 leading-snug mb-2 group-hover:text-white transition-colors">
-                  {service.title}
-                </p>
-                <p className="font-serif text-xl text-[#b08d57]">{tt('from')} {service.from}</p>
-              </div>
-            </Link>
-          ))}
-        </div>
-      </section>
+      <ScrollExperience
+        ctaPrimaryHref={`/${locale}/tarifs`}
+        ctaSecondaryHref={`/${locale}/contact`}
+        texts={{
+          introEyebrow:        tse('introEyebrow'),
+          introTitleLine1:     tse('introTitleLine1'),
+          introTitleAccent:    tse('introTitleAccent'),
+          introSubtitle:       tse('introSubtitle'),
+          scrollHint:          tse('scrollHint'),
+          droneTag:            tse('droneTag'),
+          droneTitle:          tse('droneTitle'),
+          droneTitleAccent:    tse('droneTitleAccent'),
+          visiteLead:          tse('visiteLead'),
+          visiteCount:         tse('visiteCount'),
+          hadmayaTag:          tse('hadmayaTag'),
+          hadmayaTitle:        tse('hadmayaTitle'),
+          hadmayaTitleAccent:  tse('hadmayaTitleAccent'),
+          hadmayaBefore:       tse('hadmayaBefore'),
+          hadmayaBeforeSub:    tse('hadmayaBeforeSub'),
+          hadmayaAfter:        tse('hadmayaAfter'),
+          hadmayaAfterSub:     tse('hadmayaAfterSub'),
+          matterportTag:       tse('matterportTag'),
+          matterportTitle:     tse('matterportTitle'),
+          matterportTitleAccent: tse('matterportTitleAccent'),
+          matterportDesc:      tse('matterportDesc'),
+          reelEyebrow:         tse('reelEyebrow'),
+          reelTitleLine1:      tse('reelTitleLine1'),
+          reelTitleAccent:     tse('reelTitleAccent'),
+          reelTagline:         tse('reelTagline'),
+          ctaPrimary:          tse('ctaPrimary'),
+          ctaSecondary:        tse('ctaSecondary'),
+          brand:               tse('brand'),
+          brandSub:            tse('brandSub'),
+        }}
+      />
 
       {/* Biens en vedette */}
       {properties && properties.length > 0 && (
-        <section className="px-6 md:px-16 py-16 md:py-24 bg-[#f5f2ec]">
-          <p className="text-[10px] tracking-[5px] text-[#b08d57] uppercase mb-5">
+        <section className="px-6 md:px-16 py-16 md:py-24 bg-[#0e1612]">
+          <p className="text-[10px] tracking-[5px] text-[#c39553] uppercase mb-5">
             {th('sectionEyebrow')}
           </p>
           <div className="flex flex-col gap-4 md:flex-row md:justify-between md:items-end mb-10 md:mb-12">
-            <h2 className="font-serif text-3xl md:text-5xl font-light text-[#1c1917]">
+            <h2 className="font-serif text-3xl md:text-5xl font-light text-white">
               {th('sectionTitle')}
             </h2>
             <Link
               href={`/${locale}/biens`}
-              className="text-[11px] tracking-[3px] uppercase text-[#1c1917] border-b-2 border-[#b08d57] pb-1 hover:text-[#b08d57] transition-colors self-start md:self-auto"
+              className="text-[11px] tracking-[3px] uppercase text-white border-b-2 border-[#c39553] pb-1 hover:text-[#c39553] transition-colors self-start md:self-auto"
             >
               {th('seeAll')}
             </Link>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-7">
-            {properties.map((property) => (
-              <Link key={property.id} href={`/${locale}/biens/${property.id}`} className="block">
-                <PropertyCard property={property} />
-              </Link>
-            ))}
-          </div>
+          <PropertyCarousel
+            items={properties.map((p) => ({
+              src:  p.photos?.[0] ?? fallbackImg,
+              alt:  locale === 'fr' ? p.title_fr : locale === 'en' ? p.title_en : p.title_he,
+              href: `/${locale}/biens/${p.id}`,
+            }))}
+          />
         </section>
       )}
 
