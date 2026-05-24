@@ -90,7 +90,7 @@ export default async function TarifsPage({
       {/* Radial gold glow — same position as the prompt's indigo gradient */}
       <div className="absolute top-0 z-0 min-h-full w-full bg-[radial-gradient(ellipse_20%_80%_at_50%_-20%,rgba(176,141,87,0.22),rgba(255,255,255,0))]" />
 
-      <div className="relative max-w-screen-xl mx-auto px-4 md:px-8 min-h-full">
+      <div className="relative max-w-7xl mx-auto px-4 md:px-8 min-h-full">
 
         {/* ── Header ── */}
         <div className="relative max-w-xl mx-auto sm:text-center pt-28 pb-2">
@@ -124,7 +124,7 @@ export default async function TarifsPage({
                 className={cn(
                   'animate-background-shine p-8 space-y-5 border-b border-white/8',
                   idx === 2
-                    ? 'bg-[linear-gradient(110deg,transparent,45%,rgba(176,141,87,0.07),55%,transparent)] bg-[length:200%_100%] transition-colors rounded-t-xl'
+                    ? 'bg-[linear-gradient(110deg,transparent,45%,rgba(176,141,87,0.07),55%,transparent)] bg-size-[200%_100%] transition-colors rounded-t-xl'
                     : ''
                 )}
               >
