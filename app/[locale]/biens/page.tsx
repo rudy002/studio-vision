@@ -115,13 +115,13 @@ export default function BiensPage() {
   const inputClass =
     'border border-white/20 rounded-lg px-3 py-2 text-white text-[12px] placeholder:text-white/35 focus:outline-none focus:border-[#c39553]/70 transition-colors';
 
-  const selectStyle = { background: '#0b1510', colorScheme: 'dark' as const };
+  const selectStyle = { background: '#0a0f1a', colorScheme: 'dark' as const };
 
   return (
     <main className="min-h-screen">
 
       {/* Header sombre */}
-      <div className="bg-[#0e1612] pt-32 md:pt-40 pb-10 px-6 md:px-16">
+      <div className="bg-[#0a0f1a] pt-32 md:pt-40 pb-10 px-6 md:px-16">
         <p className="text-[13px] tracking-[4px] text-[#c39553] uppercase mb-4">
           {t('eyebrow')}
         </p>
@@ -304,7 +304,7 @@ export default function BiensPage() {
       </div>
 
       {/* Carte */}
-      <div className="bg-[#0e1612] px-6 md:px-16 pb-16 pt-10">
+      <div className="bg-[#0a0f1a] px-6 md:px-16 pb-16 pt-10">
         <div className="rounded-3xl overflow-hidden" style={{ border: '1px solid rgba(195,149,83,0.12)' }}>
           <MapView
             properties={filtered}
@@ -315,12 +315,12 @@ export default function BiensPage() {
       </div>
 
       {/* Séparateur doré */}
-      <div className="bg-[#0e1612] px-6 md:px-16 pb-0">
+      <div className="bg-[#0a0f1a] px-6 md:px-16 pb-0">
         <div className="h-px bg-[#c39553]/18" />
       </div>
 
       {/* Grille */}
-      <div className="bg-[#0e1612] px-6 md:px-16 py-16 md:py-24">
+      <div className="bg-[#0a0f1a] px-6 md:px-16 py-16 md:py-24">
 
         {/* Compteur de résultats */}
         {!loading && (

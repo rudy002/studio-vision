@@ -24,12 +24,12 @@ export type Property = {
 };
 
 const TYPE_COLORS: Record<string, string> = {
-  villa:       '38 48% 28%',
-  penthouse:   '18 32% 22%',
-  appartement: '152 32% 16%',
-  maison:      '170 26% 18%',
+  villa:       '38 45% 18%',   // ambre chaud
+  penthouse:   '25 38% 16%',   // brun doré
+  appartement: '220 35% 16%',  // bleu-marine
+  maison:      '215 30% 15%',  // ardoise bleue
 };
-const DEFAULT_COLOR = '150 28% 14%';
+const DEFAULT_COLOR = '220 30% 12%'; // bleu-marine profond
 
 const FALLBACK_IMAGE = 'https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=800&q=80';
 
