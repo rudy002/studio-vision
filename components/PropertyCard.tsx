@@ -125,11 +125,10 @@ export default function PropertyCard({
           {/* Price + arrow */}
           <div
             className="flex items-center justify-between rounded-xl px-4 py-3
-                       backdrop-blur-md border
-                       transition-all duration-300
+                       border transition-all duration-300
                        group-hover:border-[hsl(var(--theme-color)/0.6)]"
             style={{
-              background: `hsl(var(--theme-color) / 0.22)`,
+              background: `hsl(${themeColor} / 0.55)`,
               borderColor: `hsl(${themeColor} / 0.32)`,
             }}
           >
