@@ -1,6 +1,7 @@
 'use client';
 
 import * as React from 'react';
+import { memo } from 'react';
 import { useTranslations, useLocale } from 'next-intl';
 import { ArrowRight, MapPin } from 'lucide-react';
 import { cn } from '@/lib/utils';
@@ -33,7 +34,7 @@ const DEFAULT_COLOR = '220 30% 12%'; // bleu-marine profond
 
 const FALLBACK_IMAGE = 'https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=800&q=80';
 
-export default function PropertyCard({
+function PropertyCard({
   property,
   onClick,
   className,
@@ -142,3 +143,5 @@ export default function PropertyCard({
     </div>
   );
 }
+
+export default memo(PropertyCard);

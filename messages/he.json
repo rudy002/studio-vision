@@ -40,7 +40,8 @@
       "sort_surface_asc": "שטח עולה",
       "sort_surface_desc": "שטח יורד",
       "reset": "אפס",
-      "resultsCount": "נכס/נכסים נמצאו"
+      "resultsCount": "נכס/נכסים נמצאו",
+      "advanced": "סינון מתקדם"
     },
     "available": "זמין",
     "sold": "נמכר",
@@ -48,7 +49,9 @@
     "rooms": "חדרים",
     "bedrooms": "חדרי שינה",
     "seeMore": "צפה בנכס →",
-    "noResults": "אין נכסים זמינים כרגע"
+    "noResults": "אין נכסים זמינים כרגע",
+    "errorTitle": "אירעה שגיאה",
+    "retry": "נסה שוב"
   },
   "status": {
     "available": "זמין",

@@ -40,7 +40,8 @@
       "sort_surface_asc": "Surface: small to large",
       "sort_surface_desc": "Surface: large to small",
       "reset": "Reset",
-      "resultsCount": "property(ies) found"
+      "resultsCount": "property(ies) found",
+      "advanced": "Advanced filters"
     },
     "available": "Available",
     "sold": "Sold",
@@ -48,13 +49,14 @@
     "rooms": "rooms",
     "bedrooms": "bedrooms",
     "seeMore": "View property →",
-    "noResults": "No properties available at the moment"
+    "noResults": "No properties available at the moment",
+    "errorTitle": "An error occurred",
+    "retry": "Retry"
   },
   "status": {
     "available": "Available",
     "sold": "Sold"
   },
-
   "home": {
     "featured": "Featured",
     "seeProperty": "View property →",

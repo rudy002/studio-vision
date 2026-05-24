@@ -40,7 +40,8 @@
       "sort_surface_asc": "Surface croissante",
       "sort_surface_desc": "Surface décroissante",
       "reset": "Réinitialiser",
-      "resultsCount": "bien(s) trouvé(s)"
+      "resultsCount": "bien(s) trouvé(s)",
+      "advanced": "Filtres avancés"
     },
     "available": "Disponible",
     "sold": "Vendu",
@@ -48,13 +49,14 @@
     "rooms": "pièces",
     "bedrooms": "chambres",
     "seeMore": "Voir le bien →",
-    "noResults": "Aucun bien disponible pour le moment"
+    "noResults": "Aucun bien disponible pour le moment",
+    "errorTitle": "Une erreur est survenue",
+    "retry": "Réessayer"
   },
   "status": {
     "available": "Disponible",
     "sold": "Vendu"
   },
-
   "home": {
     "featured": "En vedette",
     "seeProperty": "Voir le bien →",

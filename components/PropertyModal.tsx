@@ -82,7 +82,7 @@ export default function PropertyModal({
         {/* ── RIGHT: Details panel ── */}
         <div
           className="flex-1 md:flex-none md:w-76 lg:w-88 xl:w-96 overflow-y-auto flex flex-col"
-          style={{ background: '#0e1612', borderLeft: '1px solid rgba(195,149,83,0.1)' }}
+          style={{ background: '#0a0f1a', borderLeft: '1px solid rgba(195,149,83,0.1)' }}
         >
 
           {/* Header */}
@@ -190,7 +190,7 @@ export default function PropertyModal({
               href={`/${locale}/biens/${property.id}`}
               onClick={onClose}
               className="group flex items-center justify-between w-full px-5 py-4 rounded-xl text-[11px] tracking-[2px] uppercase font-medium transition-all duration-300 hover:brightness-110 active:scale-[0.98]"
-              style={{ background: '#c39553', color: '#0e1612' }}
+              style={{ background: '#c39553', color: '#0a0f1a' }}
             >
               {t('seeMore').replace(' →', '')}
               <ArrowUpRight className="h-4 w-4 transition-transform duration-200 group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
