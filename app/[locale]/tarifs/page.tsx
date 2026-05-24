@@ -1,15 +1,8 @@
 import { getTranslations } from 'next-intl/server';
 import Link from 'next/link';
+import { cn } from '@/lib/utils';
 
-type Feature = { label: string; price: string; muted?: boolean };
-
-function Check() {
-  return (
-    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#b08d57" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="flex-none mt-0.5">
-      <polyline points="20 6 9 17 4 12" />
-    </svg>
-  );
-}
+type Feature = { label: string; subtitle?: string; muted?: boolean };
 
 export default async function TarifsPage({
   params,
@@ -19,260 +12,282 @@ export default async function TarifsPage({
   const { locale } = await params;
   const t = await getTranslations('tarifs');
 
-  const packs: {
+  const plans: {
     icon: string;
-    title: string;
+    name: string;
     desc: string;
-    startingPrice: string;
-    popular: boolean;
+    isMostPop: boolean;
     features: Feature[];
   }[] = [
     {
       icon: '📸',
-      title: t('photoTitle'),
+      name: t('photoTitle'),
       desc: t('packPhotosDesc'),
-      startingPrice: '350 ₪',
-      popular: false,
+      isMostPop: false,
       features: [
-        { label: t('appartement'), price: '350 ₪' },
-        { label: t('maisonVilla'), price: '400 ₪' },
-        { label: t('hautGamme'), price: '500–600 ₪' },
-        { label: t('optionDrone'), price: '+100 ₪' },
+        { label: t('appartement') },
+        { label: t('maisonVilla') },
+        { label: t('hautGamme') },
+        { label: t('optionDrone') },
       ],
     },
     {
       icon: '🎬',
-      title: t('packVideoTitle'),
+      name: t('packVideoTitle'),
       desc: t('packVideoDesc'),
-      startingPrice: '600 ₪',
-      popular: true,
+      isMostPop: true,
       features: [
-        { label: `${t('videoBasicTitle')} · ${t('appartement')}`, price: '600 ₪' },
-        { label: `${t('videoBasicTitle')} · ${t('villaDuplex')}`, price: '700 ₪' },
-        { label: t('optionReels'), price: '+350 ₪' },
-        { label: `${t('videoAdvTitle')} · ${t('appartement')}`, price: '1 000 ₪' },
-        { label: `${t('videoAdvTitle')} · ${t('villaDuplex')}`, price: '1 150 ₪' },
-        { label: t('videoPremiumTitle'), price: '1 500 ₪' },
+        { label: t('videoBasicTitle'), subtitle: t('videoBasicDesc') },
+        { label: t('optionReels') },
+        { label: t('videoAdvTitle'), subtitle: t('videoAdvDesc') },
+        { label: t('videoPremiumTitle'), subtitle: t('videoPremiumDesc') },
       ],
     },
     {
       icon: '🏠',
-      title: t('packVirtualTitle'),
+      name: t('packVirtualTitle'),
       desc: t('packVirtualDesc'),
-      startingPrice: '160 ₪',
-      popular: false,
+      isMostPop: false,
       features: [
-        { label: `${t('matterportTitle')} · ${t('appartement')}`, price: '600 ₪' },
-        { label: `${t('matterportTitle')} · ${t('villa')}`, price: t('villaSizeNote'), muted: true },
-        { label: t('meubleSimulation'), price: '160 / 320 ₪' },
-        { label: t('renovationSimulation'), price: '200 / 400 ₪' },
-        { label: t('archPlan'), price: '550 ₪+' },
+        { label: t('matterportTitle'), subtitle: t('matterportDesc') },
+        { label: t('meubleSimulation') },
+        { label: t('renovationSimulation') },
+        { label: t('archPlan') },
       ],
     },
   ];
 
-  const addons: { icon: string; title: string; desc?: string; features: Feature[] }[] = [
+  const addons: {
+    icon: string;
+    name: string;
+    desc?: string;
+    features: Feature[];
+  }[] = [
     {
       icon: '🚁',
-      title: t('droneTitle'),
+      name: t('droneTitle'),
       features: [
-        { label: t('droneOnly'), price: '400 ₪' },
-        { label: t('oneSimulation'), price: '400 ₪' },
-        { label: t('twoSimulations'), price: '600 ₪' },
-        { label: t('packVideoSims'), price: '1 100 ₪' },
+        { label: t('droneOnly') },
+        { label: t('oneSimulation') },
+        { label: t('twoSimulations') },
+        { label: t('packVideoSims') },
       ],
     },
     {
       icon: '🏗️',
-      title: t('projectVideoTitle'),
+      name: t('projectVideoTitle'),
       desc: t('projectVideoDesc'),
       features: [
-        { label: t('from'), price: '1 800 ₪', muted: false },
-        { label: t('urgencyNote'), price: '', muted: true },
+        { label: t('allTypes') },
+        { label: t('urgencyNote'), muted: true },
       ],
     },
   ];
 
   return (
-    <main className="bg-[#0a0f1a] min-h-screen">
+    <section className="py-14 relative bg-[#0a0f1a] min-h-screen">
 
-      {/* Header */}
-      <section className="pt-36 pb-16 px-6 md:px-16 text-center">
-        <p className="text-[10px] tracking-[5px] text-[#b08d57] uppercase mb-5">
-          {t('eyebrow')}
-        </p>
-        <h1 className="font-serif text-4xl md:text-6xl font-light text-white leading-tight mb-5">
-          {t('title')}
-        </h1>
-        <div className="w-12 h-px bg-[#b08d57] mx-auto mb-6" />
-        <p className="text-sm text-white/45 max-w-md mx-auto leading-relaxed">
-          {t('subtitle')}
-        </p>
-      </section>
+      {/* Radial gold glow — same position as the prompt's indigo gradient */}
+      <div className="absolute top-0 z-0 min-h-full w-full bg-[radial-gradient(ellipse_20%_80%_at_50%_-20%,rgba(176,141,87,0.22),rgba(255,255,255,0))]" />
 
-      {/* 3 main pack cards */}
-      <section className="px-6 md:px-16 pb-10">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-5 max-w-6xl mx-auto">
-          {packs.map((pack) => (
+      <div className="relative max-w-screen-xl mx-auto px-4 md:px-8 min-h-full">
+
+        {/* ── Header ── */}
+        <div className="relative max-w-xl mx-auto sm:text-center pt-28 pb-2">
+          <p className="text-sm tracking-[5px] text-[#b08d57] uppercase mb-4">
+            {t('eyebrow')}
+          </p>
+          <h1 className="font-serif text-transparent bg-clip-text bg-linear-to-r from-[#b08d57] to-[#e8c97e] text-5xl font-light sm:text-7xl py-1 sm:py-2 leading-tight">
+            {t('title')}
+          </h1>
+          <div className="mt-5 text-white/40 text-lg">
+            <p>{t('subtitle')}</p>
+          </div>
+        </div>
+
+        {/* ── Plans — 3-column grid (exact prompt structure) ── */}
+        <div className="mt-16 justify-center gap-6 sm:grid sm:grid-cols-2 sm:space-y-0 lg:grid-cols-3">
+          {plans.map((item, idx) => (
             <div
-              key={pack.title}
-              className="rounded-2xl flex flex-col relative overflow-hidden"
-              style={
-                pack.popular
-                  ? { background: 'rgba(176,141,87,0.08)', border: '1px solid rgba(176,141,87,0.55)' }
-                  : { background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.09)' }
-              }
+              key={idx}
+              className="relative flex-1 flex items-stretch flex-col rounded-xl mt-6 sm:mt-0 transform-gpu [border:1px_solid_rgba(255,255,255,0.1)] [box-shadow:0_-20px_80px_-20px_rgba(176,141,87,0.1)_inset]"
             >
               {/* Popular badge */}
-              {pack.popular && (
-                <div className="absolute top-5 right-5">
-                  <span className="text-[9px] tracking-[2px] uppercase text-[#0a0f1a] bg-[#b08d57] px-3 py-1 rounded-full font-medium">
-                    {t('popular')}
-                  </span>
-                </div>
+              {item.isMostPop && (
+                <span className="w-36 absolute -top-5 left-0 right-0 mx-auto px-3 py-2 rounded-full border border-[#b08d57]/40 shadow-md bg-[#b08d57] bg-[radial-gradient(ellipse_20%_80%_at_50%_-20%,rgba(232,201,126,0.5),rgba(176,141,87,0))] animate-background-shine text-center text-[#0a0f1a] text-sm font-semibold">
+                  {t('popular')}
+                </span>
               )}
 
-              <div className="p-7 flex flex-col flex-1">
-                {/* Icon + title */}
-                <div className="mb-6">
-                  <span className="text-2xl block mb-3">{pack.icon}</span>
-                  <h2 className="font-serif text-xl font-light text-white mb-1">{pack.title}</h2>
-                  <p className="text-[11px] text-white/40 leading-snug">{pack.desc}</p>
+              {/* Card header — name + desc + CTA */}
+              <div
+                className={cn(
+                  'animate-background-shine p-8 space-y-5 border-b border-white/8',
+                  idx === 2
+                    ? 'bg-[linear-gradient(110deg,transparent,45%,rgba(176,141,87,0.07),55%,transparent)] bg-[length:200%_100%] transition-colors rounded-t-xl'
+                    : ''
+                )}
+              >
+                {/* Icon + name */}
+                <div className="flex items-center gap-3">
+                  <span className="text-4xl">{item.icon}</span>
+                  <span className="text-[#b08d57] font-serif text-3xl font-light tracking-tight">
+                    {item.name}
+                  </span>
                 </div>
 
-                {/* Price */}
-                <div className="mb-7">
-                  <p className="text-[10px] tracking-[2px] text-white/35 uppercase mb-1">{t('from')}</p>
-                  <p className="font-serif text-4xl font-light text-white">
-                    {pack.startingPrice}
-                  </p>
-                </div>
+                {/* Description */}
+                <p className="text-white/55 text-base leading-relaxed">
+                  {item.desc}
+                </p>
 
-                {/* CTA */}
+                {/* CTA button */}
                 <Link
                   href={`/${locale}/contact`}
-                  className={`block text-center text-[11px] tracking-[3px] uppercase py-3.5 rounded-full transition-colors duration-200 mb-8 ${
-                    pack.popular
-                      ? 'bg-[#b08d57] text-white hover:bg-[#c9a867]'
-                      : 'border border-white/25 text-white/80 hover:border-[#b08d57] hover:text-[#b08d57]'
-                  }`}
+                  className={cn(
+                    'w-full text-center rounded-lg text-base tracking-[2px] uppercase px-4 py-4 transition-all hover:scale-[1.02] active:scale-[0.98] flex items-center justify-center gap-2',
+                    item.isMostPop
+                      ? 'bg-linear-to-br from-[#b08d57] to-[#c9a867] text-[#0a0f1a] font-semibold'
+                      : 'border border-white/20 text-white/70 hover:border-[#b08d57] hover:text-[#b08d57]'
+                  )}
                 >
                   {t('cta')} →
                 </Link>
+              </div>
 
-                {/* Divider + features label */}
-                <div className="flex items-center gap-3 mb-5">
-                  <div className="flex-1 h-px bg-white/8" />
-                  <span className="text-[9px] tracking-[3px] text-white/25 uppercase">{t('features')}</span>
-                  <div className="flex-1 h-px bg-white/8" />
+              {/* Features list */}
+              <ul className="p-8 space-y-5">
+                <li className="text-white/60 pb-1 font-medium text-lg">
+                  {t('features')}
+                </li>
+                {item.features.map((feat, i) => (
+                  <li key={i} className="flex items-start gap-4">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      className="h-6 w-6 text-[#b08d57] flex-none mt-0.5"
+                      viewBox="0 0 20 20"
+                      fill="currentColor"
+                    >
+                      <path
+                        fillRule="evenodd"
+                        d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                        clipRule="evenodd"
+                      />
+                    </svg>
+                    <div className="flex flex-col">
+                      <span className={cn('text-base leading-snug', feat.muted ? 'text-white/30 italic' : 'text-white/75')}>
+                        {feat.label}
+                      </span>
+                      {feat.subtitle && (
+                        <span className="text-sm text-white/35 mt-1">
+                          {feat.subtitle}
+                        </span>
+                      )}
+                    </div>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
+        </div>
+
+        {/* ── Addons — same card style, 2-col ── */}
+        <div className="mt-10">
+          <p className="text-sm tracking-[5px] text-white/25 uppercase mb-6">
+            Compléments
+          </p>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {addons.map((addon, idx) => (
+              <div
+                key={idx}
+                className="relative flex flex-col rounded-xl transform-gpu [border:1px_solid_rgba(255,255,255,0.07)] [box-shadow:0_-20px_80px_-20px_rgba(176,141,87,0.06)_inset]"
+              >
+                {/* Addon header */}
+                <div className="p-8 space-y-3 border-b border-white/8">
+                  <div className="flex items-center gap-3">
+                    <span className="text-3xl">{addon.icon}</span>
+                    <div>
+                      <p className="font-serif text-2xl font-light text-white">
+                        {addon.name}
+                      </p>
+                      {addon.desc && (
+                        <p className="text-sm tracking-[2px] text-[#b08d57] uppercase mt-0.5">
+                          {addon.desc}
+                        </p>
+                      )}
+                    </div>
+                  </div>
                 </div>
 
-                {/* Feature list */}
-                <ul className="flex flex-col gap-3 flex-1">
-                  {pack.features.map((feat, i) => (
-                    <li key={i} className="flex items-start gap-2.5 justify-between">
-                      <div className="flex items-start gap-2.5 flex-1 min-w-0">
-                        <Check />
-                        <span className={`text-[12px] leading-snug ${feat.muted ? 'text-white/30 italic' : 'text-white/60'}`}>
-                          {feat.label}
-                        </span>
-                      </div>
-                      {feat.price && (
-                        <span className="text-[12px] text-white/90 whitespace-nowrap tabular-nums ml-2">
-                          {feat.price}
-                        </span>
-                      )}
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      {/* Addon cards */}
-      <section className="px-6 md:px-16 pb-16">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-5 max-w-6xl mx-auto">
-          {addons.map((addon) => (
-            <div
-              key={addon.title}
-              className="rounded-2xl p-7"
-              style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.07)' }}
-            >
-              <span className="text-xl block mb-3">{addon.icon}</span>
-              <h3 className="font-serif text-lg font-light text-white mb-1">{addon.title}</h3>
-              {addon.desc && (
-                <p className="text-[10px] tracking-[1.5px] text-[#b08d57] uppercase mb-5">{addon.desc}</p>
-              )}
-              <div className="mt-5 border-t border-white/6 pt-5">
-                <ul className="flex flex-col gap-3">
+                {/* Addon features */}
+                <ul className="p-8 space-y-5">
                   {addon.features.map((feat, i) => (
-                    <li key={i} className="flex items-start gap-2.5 justify-between">
-                      <div className="flex items-start gap-2.5 flex-1">
-                        {!feat.muted && <Check />}
-                        <span className={`text-[12px] leading-snug ${feat.muted ? 'text-white/30 italic pl-5' : 'text-white/60'}`}>
-                          {feat.label}
-                        </span>
-                      </div>
-                      {feat.price && (
-                        <span className="text-[12px] text-white/90 whitespace-nowrap tabular-nums ml-2">
-                          {feat.price}
-                        </span>
+                    <li key={i} className="flex items-center gap-4">
+                      {!feat.muted ? (
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          className="h-6 w-6 text-[#b08d57] flex-none"
+                          viewBox="0 0 20 20"
+                          fill="currentColor"
+                        >
+                          <path
+                            fillRule="evenodd"
+                            d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                            clipRule="evenodd"
+                          />
+                        </svg>
+                      ) : (
+                        <span className="h-6 w-6 flex-none" />
                       )}
+                      <span className={cn('text-base', feat.muted ? 'text-white/30 italic' : 'text-white/70')}>
+                        {feat.label}
+                      </span>
                     </li>
                   ))}
                 </ul>
               </div>
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
-      </section>
 
-      {/* Cancellation policy */}
-      <section className="px-6 md:px-16 pb-10">
-        <div
-          className="rounded-2xl p-7 max-w-6xl mx-auto"
-          style={{ background: 'rgba(176,141,87,0.06)', border: '1px solid rgba(176,141,87,0.18)' }}
-        >
-          <h3 className="text-[10px] tracking-[4px] text-[#b08d57] uppercase mb-5">
+        {/* ── Cancellation policy ── */}
+        <div className="mt-8 rounded-xl p-8 [border:1px_solid_rgba(176,141,87,0.18)] bg-[rgba(176,141,87,0.04)]">
+          <p className="text-sm tracking-[4px] text-[#b08d57] uppercase mb-5">
             {t('cancellationTitle')}
-          </h3>
-          <div className="flex flex-col gap-4">
-            <div className="flex items-center justify-between gap-6">
-              <span className="text-sm text-white/60">{t('cancel6h')}</span>
-              <span className="text-sm text-white/85 whitespace-nowrap">{t('cancel6hFee')}</span>
+          </p>
+          <div className="flex flex-col sm:flex-row gap-4 sm:gap-10">
+            <div className="flex items-center gap-3">
+              <span className="w-2 h-2 rounded-full bg-[#b08d57] flex-none" />
+              <span className="text-base text-white/60">{t('cancel6h')}</span>
             </div>
-            <div className="border-b border-white/6" />
-            <div className="flex items-center justify-between gap-6">
-              <span className="text-sm text-white/60">{t('cancel2h')}</span>
-              <span className="text-sm text-white/85 whitespace-nowrap">{t('cancel2hFee')}</span>
+            <div className="hidden sm:block w-px bg-white/8" />
+            <div className="flex items-center gap-3">
+              <span className="w-2 h-2 rounded-full bg-[#b08d57] flex-none" />
+              <span className="text-base text-white/60">{t('cancel2h')}</span>
             </div>
           </div>
         </div>
-      </section>
 
-      {/* Logo note */}
-      <section className="px-6 md:px-16 pb-16 max-w-6xl mx-auto">
-        <p className="text-xs text-white/25 leading-relaxed">* {t('logoNote')}</p>
-      </section>
+        {/* ── Logo note ── */}
+        <p className="mt-6 mb-12 text-sm text-white/25 leading-relaxed">
+          * {t('logoNote')}
+        </p>
 
-      {/* CTA */}
-      <section
-        className="py-20 px-6 md:px-16 text-center"
-        style={{ borderTop: '1px solid rgba(255,255,255,0.06)' }}
-      >
-        <h2 className="font-serif text-3xl md:text-5xl font-light text-white mb-10">
+      </div>
+
+      {/* ── Final CTA ── */}
+      <div className="border-t border-white/6 py-24 px-6 text-center">
+        <h2 className="font-serif text-4xl md:text-5xl font-light text-white mb-10">
           {t('ctaTitle')}
         </h2>
         <Link
           href={`/${locale}/contact`}
-          className="inline-block text-[11px] tracking-[3px] uppercase text-white bg-[#b08d57] px-10 py-4 hover:bg-[#c9a867] transition-colors"
+          className="inline-block text-sm tracking-[3px] uppercase text-[#0a0f1a] bg-linear-to-br from-[#b08d57] to-[#c9a867] px-12 py-4 rounded-lg font-semibold hover:scale-[1.02] active:scale-[0.98] transition-all duration-200"
         >
           {t('cta')} →
         </Link>
-      </section>
+      </div>
 
-    </main>
+    </section>
   );
 }

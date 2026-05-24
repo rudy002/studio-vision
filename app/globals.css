@@ -26,6 +26,15 @@ body {
   font-family: Arial, Helvetica, sans-serif;
 }
 
+/* ── Shine animation (pricing card effect) ── */
+@keyframes background-shine {
+  from { background-position: 200% center; }
+  to   { background-position: -200% center; }
+}
+.animate-background-shine {
+  animation: background-shine 4s linear infinite;
+}
+
 .leaflet-popup-content-wrapper {
   border-radius: 12px !important;
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12) !important;
