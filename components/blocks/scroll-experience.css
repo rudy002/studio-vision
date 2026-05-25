@@ -591,6 +591,8 @@
 /* ============================================================
    ACT 5 — MATTERPORT 3D
    ============================================================ */
+/* ═══════════════  ACT 5 — MATTERPORT WALKTHROUGH  ═══════════════ */
+
 .sv-act-5 {
   height: 220vh;
   position: relative;
@@ -601,87 +603,165 @@
 .sv-act-5 .sv-stage {
   position: sticky; top: 0; height: 100vh; overflow: hidden;
 }
-.sv-act-5 .sv-grid-bg {
+
+/* ── Perspective container ── */
+.sv-act-5 .sv-wt-perspective {
   position: absolute; inset: 0;
-  background-image:
-    linear-gradient(0deg, rgba(255,255,255,0.04) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255,255,255,0.04) 1px, transparent 1px);
-  background-size: 48px 48px;
-  mask-image: radial-gradient(ellipse at center, black 30%, transparent 75%);
-  -webkit-mask-image: radial-gradient(ellipse at center, black 30%, transparent 75%);
-  transform: translateY(calc(var(--p5, 0) * 20px));
+  perspective: 1000px;
+  perspective-origin: 50% 50%;
 }
-.sv-act-5 .sv-plan-wrap {
+
+/* ── 3D scene that moves forward on scroll ── */
+.sv-act-5 .sv-wt-scene {
   position: absolute; inset: 0;
-  display: flex; align-items: center; justify-content: center;
-  perspective: 1600px;
-  perspective-origin: 50% 30%;
-}
-.sv-act-5 .sv-plan {
-  position: relative;
-  width: min(640px, 60vw);
-  aspect-ratio: 1.4 / 1;
   transform-style: preserve-3d;
-  transform:
-    rotateX(calc(var(--p5, 0) * 58deg))
-    rotateZ(calc(var(--p5, 0) * -8deg))
-    scale(calc(1 - var(--p5, 0) * 0.05));
+  transform: translateZ(calc(var(--p5, 0) * 960px));
   transition: transform 0.05s linear;
 }
-.sv-act-5 .sv-room-3d {
+
+/* ── Generic room frame ── */
+.sv-act-5 .sv-wt-room {
   position: absolute;
-  border: 1px solid rgba(176, 141, 87, 0.5);
-  background: rgba(176, 141, 87, 0.04);
-  transform-style: preserve-3d;
+  width: min(740px, 78vw);
+  height: min(480px, 50vh);
+  left: calc(50% - min(370px, 39vw));
+  top:  calc(50% - min(240px, 25vh));
+  border: 1px solid rgba(176, 141, 87, 0.45);
 }
-.sv-act-5 .sv-room-3d .sv-floor {
+
+/* Inner corner accent (no overflow needed — bg-image fills naturally) */
+.sv-act-5 .sv-wt-room::before {
+  content: '';
+  position: absolute; inset: 7px;
+  border: 1px solid rgba(176, 141, 87, 0.10);
+  pointer-events: none;
+  z-index: 5;
+}
+
+/* ── Z-depth + fade per room ── */
+/* R4 nearest → passes camera first; fade p5 0.10 → 0.30 */
+.sv-act-5 .sv-wt-r4 {
+  transform: translateZ(0px);
+  opacity: calc(1 - clamp(0, (var(--p5, 0) - 0.10) * 5, 1));
+}
+/* R3 → fade p5 0.35 → 0.55 */
+.sv-act-5 .sv-wt-r3 {
+  transform: translateZ(-260px);
+  opacity: calc(1 - clamp(0, (var(--p5, 0) - 0.35) * 5, 1));
+}
+/* R2 → fade p5 0.62 → 0.82 */
+.sv-act-5 .sv-wt-r2 {
+  transform: translateZ(-520px);
+  opacity: calc(1 - clamp(0, (var(--p5, 0) - 0.62) * 5, 1));
+}
+/* R1 destination — stays visible, gets slightly brighter on arrival */
+.sv-act-5 .sv-wt-r1 {
+  transform: translateZ(-780px);
+}
+
+/* ── Room photo ── */
+.sv-act-5 .sv-wt-photo {
   position: absolute; inset: 0;
-  background:
-    linear-gradient(135deg, rgba(176, 141, 87, 0.10), rgba(176, 141, 87, 0.02));
-  border: 1px solid rgba(176, 141, 87, 0.3);
+  background-size: cover;
+  background-position: center;
+  filter: saturate(0.45) brightness(0.25);
 }
-.sv-act-5 .sv-room-3d .sv-wall {
-  position: absolute;
-  background:
-    linear-gradient(180deg, rgba(255,255,255,0.06), rgba(255,255,255,0.02));
-  border: 1px solid rgba(176, 141, 87, 0.4);
-  transform-origin: bottom;
-  height: calc(var(--p5, 0) * 90px);
-  transform-style: preserve-3d;
+.sv-act-5 .sv-wt-r1 .sv-wt-photo {
+  /* Destination room brightens as you arrive */
+  filter: saturate(0.55) brightness(calc(0.25 + var(--p5, 0) * 0.25));
 }
-.sv-act-5 .sv-room-3d .sv-wall.sv-n { left: 0; right: 0; top: 0; transform: rotateX(-90deg) translateZ(0); }
-.sv-act-5 .sv-room-3d .sv-wall.sv-s { left: 0; right: 0; bottom: 0; transform: rotateX(-90deg) translateZ(0); }
-.sv-act-5 .sv-room-3d .sv-wall.sv-e { top: 0; bottom: 0; right: 0; width: calc(var(--p5, 0) * 90px); transform: rotateY(90deg); transform-origin: right; }
-.sv-act-5 .sv-room-3d .sv-wall.sv-w { top: 0; bottom: 0; left: 0; width: calc(var(--p5, 0) * 90px); transform: rotateY(-90deg); transform-origin: left; }
 
-.sv-act-5 .sv-label3d {
+/* ── Bottom vignette ── */
+.sv-act-5 .sv-wt-vignette {
+  position: absolute; inset: 0;
+  background: linear-gradient(to bottom, transparent 55%, rgba(0,0,12,0.65) 100%);
+  z-index: 1;
+}
+
+/* ── Room label ── */
+.sv-act-5 .sv-wt-rlabel {
   position: absolute;
+  bottom: 18px; left: 20px;
   font-family: var(--mono);
-  font-size: 9px; letter-spacing: 0.32em; text-transform: uppercase;
-  color: var(--gold);
-  white-space: nowrap;
-  transform: translateZ(calc(var(--p5, 0) * 90px + 4px));
-  opacity: calc(var(--p5, 0) * 1.4 - 0.2);
+  font-size: 10px; letter-spacing: 0.30em; text-transform: uppercase;
+  color: rgba(176, 141, 87, 0.88);
+  display: flex; align-items: center; gap: 12px;
+  z-index: 3;
 }
-.sv-act-5 .sv-label3d::before {
-  content: "·"; margin-right: 6px; color: var(--gold);
+.sv-act-5 .sv-wt-rlabel i {
+  font-style: normal;
+  color: rgba(176, 141, 87, 0.38);
 }
 
-.sv-act-5 .sv-hotspot {
+/* ── Matterport reticle on destination room ── */
+.sv-act-5 .sv-wt-reticle {
   position: absolute;
-  width: 14px; height: 14px;
+  left: 50%; top: 46%;
+  transform: translate(-50%, -50%);
+  width: 42px; height: 42px;
+  z-index: 4;
+  opacity: calc(clamp(0, (var(--p5, 0) - 0.78) * 5, 1));
+}
+.sv-act-5 .sv-wt-reticle::before {
+  content: '';
+  position: absolute; inset: 0;
+  border-radius: 50%;
+  border: 1px solid rgba(176, 141, 87, 0.75);
+  animation: wt-pulse 2s ease-out infinite;
+}
+.sv-act-5 .sv-wt-reticle::after {
+  content: '';
+  position: absolute;
+  left: 50%; top: 50%;
+  width: 6px; height: 6px;
+  margin: -3px 0 0 -3px;
   border-radius: 50%;
   background: var(--gold);
-  transform: translate(-50%, -50%) translateZ(calc(var(--p5, 0) * 90px + 8px));
-  box-shadow: 0 0 0 0 rgba(176, 141, 87, 0.6);
-  animation: ping 2s infinite;
-  opacity: calc(var(--p5, 0) * 1.5 - 0.4);
 }
-@keyframes ping {
-  0%   { box-shadow: 0 0 0 0 rgba(176, 141, 87, 0.7); }
-  100% { box-shadow: 0 0 0 22px rgba(176, 141, 87, 0); }
+@keyframes wt-pulse {
+  0%   { transform: scale(1);   opacity: 0.85; }
+  100% { transform: scale(2.4); opacity: 0; }
 }
 
+/* ── Navigation latérale ── */
+.sv-act-5 .sv-wt-nav {
+  position: absolute;
+  right: 44px; top: 50%;
+  transform: translateY(-50%);
+  display: flex; flex-direction: column; gap: 0;
+  align-items: flex-start;
+  z-index: 10;
+}
+.sv-act-5 .sv-wt-nav-item {
+  display: flex; align-items: center; gap: 10px;
+  position: relative;
+}
+/* Connecting line between dots */
+.sv-act-5 .sv-wt-nav-item:not(:last-child)::after {
+  content: '';
+  position: absolute;
+  left: 3px; top: 100%;
+  width: 1px; height: 26px;
+  background: linear-gradient(to bottom, rgba(176,141,87,0.35), rgba(176,141,87,0.12));
+}
+.sv-act-5 .sv-wt-nav-item:not(:last-child) {
+  margin-bottom: 26px;
+}
+.sv-act-5 .sv-wt-nav-dot {
+  width: 7px; height: 7px;
+  border-radius: 50%;
+  border: 1px solid rgba(176, 141, 87, 0.5);
+  background: transparent;
+  flex-shrink: 0;
+}
+.sv-act-5 .sv-wt-nav-lbl {
+  font-family: var(--mono);
+  font-size: 9px; letter-spacing: 0.26em; text-transform: uppercase;
+  color: rgba(255,255,255,0.28);
+  white-space: nowrap;
+}
+
+/* ── Caption & Stats ── */
 .sv-act-5 .sv-caption {
   position: absolute; left: 56px; bottom: 72px;
   max-width: 360px;
@@ -865,7 +945,14 @@
   .sv-act-4 .sv-label.sv-after { right: 20px; }
   .sv-act-4 .sv-caption { bottom: 56px; width: 90%; }
 
-  /* Acte 5 — Matterport 3D */
+  /* Acte 5 — Walkthrough */
+  .sv-act-5 .sv-wt-nav { display: none; }
+  .sv-act-5 .sv-wt-room {
+    width: min(340px, 88vw);
+    height: min(220px, 40vh);
+    left: calc(50% - min(170px, 44vw));
+    top:  calc(50% - min(110px, 20vh));
+  }
   .sv-act-5 .sv-caption,
   .sv-act-5 .sv-stats { position: static; padding: 0 20px; }
   .sv-act-5 .sv-caption { padding-top: 28px; }

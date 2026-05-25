@@ -323,19 +323,51 @@ export default function ScrollExperience({
         </div>
       </section>
 
-      {/* ACT 5 — MATTERPORT 3D */}
+      {/* ACT 5 — MATTERPORT WALKTHROUGH */}
       <section className="sv-act-5" data-act="5">
         <div className="sv-stage">
-          <div className="sv-grid-bg" />
-          <div className="sv-plan-wrap">
-            <div className="sv-plan">
-              <Room3D style={{ left: 0, top: 0, width: '55%', height: '60%' }} label="Salon" hotspots={[{ left: '50%', top: '50%' }]} />
-              <Room3D style={{ left: '55%', top: 0, width: '45%', height: '38%' }} label="Cuisine" hotspots={[{ left: '50%', top: '50%' }]} />
-              <Room3D style={{ left: 0, top: '60%', width: '32%', height: '40%' }} label="Entrée" />
-              <Room3D style={{ left: '32%', top: '60%', width: '32%', height: '40%' }} label="Chambre" hotspots={[{ left: '60%', top: '50%' }]} />
-              <Room3D style={{ left: '64%', top: '38%', width: '36%', height: '62%' }} label="Suite parentale" hotspots={[{ left: '40%', top: '40%' }, { left: '70%', top: '70%' }]} />
+
+          {/* CSS 3D perspective corridor — 4 pièces traversées au scroll */}
+          <div className="sv-wt-perspective">
+            <div className="sv-wt-scene">
+              {/* R4 — la plus proche, première à passer */}
+              <div className="sv-wt-room sv-wt-r4">
+                <div className="sv-wt-photo" style={{ backgroundImage: `url(${imgs.interior})` }} />
+                <div className="sv-wt-vignette" />
+                <span className="sv-wt-rlabel"><i>04</i>Entrée</span>
+              </div>
+              {/* R3 */}
+              <div className="sv-wt-room sv-wt-r3">
+                <div className="sv-wt-photo" style={{ backgroundImage: `url(${imgs.chambre})` }} />
+                <div className="sv-wt-vignette" />
+                <span className="sv-wt-rlabel"><i>03</i>Chambre</span>
+              </div>
+              {/* R2 */}
+              <div className="sv-wt-room sv-wt-r2">
+                <div className="sv-wt-photo" style={{ backgroundImage: `url(${imgs.cuisine})` }} />
+                <div className="sv-wt-vignette" />
+                <span className="sv-wt-rlabel"><i>02</i>Cuisine</span>
+              </div>
+              {/* R1 — destination finale */}
+              <div className="sv-wt-room sv-wt-r1">
+                <div className="sv-wt-photo" style={{ backgroundImage: `url(${imgs.salon})` }} />
+                <div className="sv-wt-vignette" />
+                <span className="sv-wt-rlabel"><i>01</i>Salon</span>
+                <div className="sv-wt-reticle" />
+              </div>
             </div>
           </div>
+
+          {/* Navigation latérale — fil de pièces */}
+          <nav className="sv-wt-nav" aria-label="Pièces visitées">
+            {[['04','Entrée'],['03','Chambre'],['02','Cuisine'],['01','Salon']].map(([num, name]) => (
+              <div key={num} className="sv-wt-nav-item">
+                <div className="sv-wt-nav-dot" />
+                <span className="sv-wt-nav-lbl">{name}</span>
+              </div>
+            ))}
+          </nav>
+
           <div className="sv-caption">
             <span className="sv-service-tag">{t.matterportTag}</span>
             <h2>{t.matterportTitle} <em>{t.matterportTitleAccent}</em></h2>
@@ -370,30 +402,6 @@ export default function ScrollExperience({
           </div>
         </div>
       </section>
-    </div>
-  );
-}
-
-function Room3D({
-  style,
-  label,
-  hotspots,
-}: {
-  style: React.CSSProperties;
-  label: string;
-  hotspots?: { left: string; top: string }[];
-}) {
-  return (
-    <div className="sv-room-3d" style={style}>
-      <div className="sv-floor" />
-      <div className="sv-wall sv-n" />
-      <div className="sv-wall sv-s" />
-      <div className="sv-wall sv-e" />
-      <div className="sv-wall sv-w" />
-      <span className="sv-label3d" style={{ left: 14, top: 14 }}>{label}</span>
-      {hotspots?.map((h, i) => (
-        <div key={i} className="sv-hotspot" style={{ left: h.left, top: h.top }} />
-      ))}
     </div>
   );
 }
