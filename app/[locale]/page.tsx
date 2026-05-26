@@ -1,6 +1,7 @@
 import { getTranslations } from 'next-intl/server';
 import { createClient } from '@supabase/supabase-js';
 import ScrollExperience from '../../components/blocks/ScrollExperience';
+import PhotoGallery from '../../components/blocks/PhotoGallery';
 import { FocusRail, FocusRailItem } from '../../components/ui/focus-rail';
 import Link from 'next/link';
 
@@ -33,6 +34,22 @@ export default async function Home({
       <ScrollExperience
         ctaPrimaryHref={`/${locale}/tarifs`}
         ctaSecondaryHref={`/${locale}/contact`}
+        images={{
+          // ACT 2 — Drone (couches sky → façade → intérieur)
+          sky:       '/lior-photos/IMG_7579.JPEG', // salle à manger panoramique vue mer
+          facade:    '/lior-photos/IMG_7586.JPEG', // grand living parquet chevrons
+          interior:  '/lior-photos/IMG_7574.PNG',  // salon chaleureux vue skyline
+          // ACT 3 — Visite des pièces
+          salon:     '/lior-photos/IMG_7584.JPEG', // salon artistique vue mer
+          cuisine:   '/lior-photos/IMG_7587.JPEG', // cuisine marbre parquet
+          chambre:   '/lior-photos/IMG_7577.JPEG', // séjour lumineux vue mer
+          sdb:       '/lior-photos/IMG_7581.JPEG', // bibliothèque design vue mer
+          // ACT 4 — Hadmaya avant / après
+          empty:     '/lior-photos/IMG_7585.JPEG', // grand séjour neutre vue mer
+          furnished: '/lior-photos/IMG_7575.JPEG', // séjour chaleureusement meublé
+          // ACT 6 — Poster vidéo showreel
+          poster:    '/lior-photos/IMG_7583.JPEG', // cuisine dramatique vue mer
+        }}
         texts={{
           introEyebrow:        tse('introEyebrow'),
           introTitleLine1:     tse('introTitleLine1'),
@@ -65,6 +82,9 @@ export default async function Home({
           brandSub:            tse('brandSub'),
         }}
       />
+
+      {/* Portfolio — galerie des réalisations */}
+      <PhotoGallery />
 
       {/* Biens en vedette */}
       {properties && properties.length > 0 && (
