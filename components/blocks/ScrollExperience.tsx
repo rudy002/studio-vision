@@ -53,6 +53,7 @@ type Props = {
     empty?: string;
     furnished?: string;
     poster?: string;
+    visitRooms?: string[];
   };
 };
 
@@ -69,6 +70,16 @@ const DEFAULTS = {
     empty:     'https://images.unsplash.com/photo-1505691938895-1758d7feb511?w=2200&q=80&auto=format&fit=crop',
     furnished: 'https://images.unsplash.com/photo-1567016526105-22da7c13161a?w=2200&q=80&auto=format&fit=crop',
     poster:    'https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=2200&q=80&auto=format&fit=crop',
+    visitRooms: [
+      'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=2200&q=80&auto=format&fit=crop',
+      'https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=2200&q=80&auto=format&fit=crop',
+      'https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=2200&q=80&auto=format&fit=crop',
+      'https://images.unsplash.com/photo-1631679706909-1844bbd07221?w=2200&q=80&auto=format&fit=crop',
+      'https://images.unsplash.com/photo-1552321554-5fefe8c9ef14?w=2200&q=80&auto=format&fit=crop',
+      'https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=2200&q=80&auto=format&fit=crop',
+      'https://images.unsplash.com/photo-1567016526105-22da7c13161a?w=2200&q=80&auto=format&fit=crop',
+      'https://images.unsplash.com/photo-1505691938895-1758d7feb511?w=2200&q=80&auto=format&fit=crop',
+    ],
   },
 };
 
@@ -327,43 +338,38 @@ export default function ScrollExperience({
       <section className="sv-act-5" data-act="5">
         <div className="sv-stage">
 
-          {/* CSS 3D perspective corridor — 4 pièces traversées au scroll */}
+          {/* CSS 3D perspective corridor */}
           <div className="sv-wt-perspective">
             <div className="sv-wt-scene">
-              {/* R4 — la plus proche, première à passer */}
-              <div className="sv-wt-room sv-wt-r4">
-                <div className="sv-wt-photo" style={{ backgroundImage: `url(${imgs.interior})` }} />
-                <div className="sv-wt-vignette" />
-                <span className="sv-wt-rlabel"><i>04</i>Entrée</span>
-              </div>
-              {/* R3 */}
-              <div className="sv-wt-room sv-wt-r3">
-                <div className="sv-wt-photo" style={{ backgroundImage: `url(${imgs.chambre})` }} />
-                <div className="sv-wt-vignette" />
-                <span className="sv-wt-rlabel"><i>03</i>Chambre</span>
-              </div>
-              {/* R2 */}
-              <div className="sv-wt-room sv-wt-r2">
-                <div className="sv-wt-photo" style={{ backgroundImage: `url(${imgs.cuisine})` }} />
-                <div className="sv-wt-vignette" />
-                <span className="sv-wt-rlabel"><i>02</i>Cuisine</span>
-              </div>
-              {/* R1 — destination finale */}
-              <div className="sv-wt-room sv-wt-r1">
-                <div className="sv-wt-photo" style={{ backgroundImage: `url(${imgs.salon})` }} />
-                <div className="sv-wt-vignette" />
-                <span className="sv-wt-rlabel"><i>01</i>Salon</span>
-                <div className="sv-wt-reticle" />
-              </div>
+              {(imgs.visitRooms ?? []).map((src, i, arr) => {
+                const isDestination = i === arr.length - 1;
+                const num = String(arr.length - i).padStart(2, '0');
+                const fadeStart = (i * 0.9 / (arr.length - 1)).toFixed(2);
+                return (
+                  <div
+                    key={i}
+                    className={`sv-wt-room${isDestination ? ' sv-wt-dest' : ''}`}
+                    style={{
+                      transform: `translateZ(${-i * 260}px)`,
+                      ...(!isDestination && { ['--rfade' as string]: fadeStart }),
+                    }}
+                  >
+                    <div className="sv-wt-photo" style={{ backgroundImage: `url(${src})` }} />
+                    <div className="sv-wt-vignette" />
+                    <span className="sv-wt-rlabel"><i>{num}</i>Hadmaya</span>
+                    {isDestination && <div className="sv-wt-reticle" />}
+                  </div>
+                );
+              })}
             </div>
           </div>
 
           {/* Navigation latérale — fil de pièces */}
           <nav className="sv-wt-nav" aria-label="Pièces visitées">
-            {[['04','Entrée'],['03','Chambre'],['02','Cuisine'],['01','Salon']].map(([num, name]) => (
-              <div key={num} className="sv-wt-nav-item">
+            {(imgs.visitRooms ?? []).map((_, i, arr) => (
+              <div key={i} className="sv-wt-nav-item">
                 <div className="sv-wt-nav-dot" />
-                <span className="sv-wt-nav-lbl">{name}</span>
+                <span className="sv-wt-nav-lbl">{String(arr.length - i).padStart(2, '0')}</span>
               </div>
             ))}
           </nav>

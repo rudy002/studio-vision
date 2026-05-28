@@ -615,17 +615,17 @@
 .sv-act-5 .sv-wt-scene {
   position: absolute; inset: 0;
   transform-style: preserve-3d;
-  transform: translateZ(calc(var(--p5, 0) * 960px));
+  transform: translateZ(calc(var(--p5, 0) * 2000px));
   transition: transform 0.05s linear;
 }
 
 /* ── Generic room frame ── */
 .sv-act-5 .sv-wt-room {
   position: absolute;
-  width: min(740px, 78vw);
-  height: min(480px, 50vh);
-  left: calc(50% - min(370px, 39vw));
-  top:  calc(50% - min(240px, 25vh));
+  width: min(960px, 92vw);
+  height: min(620px, 66vh);
+  left: calc(50% - min(480px, 46vw));
+  top:  calc(50% - min(310px, 33vh));
   border: 1px solid rgba(176, 141, 87, 0.45);
 }
 
@@ -638,25 +638,9 @@
   z-index: 5;
 }
 
-/* ── Z-depth + fade per room ── */
-/* R4 nearest → passes camera first; fade p5 0.10 → 0.30 */
-.sv-act-5 .sv-wt-r4 {
-  transform: translateZ(0px);
-  opacity: calc(1 - clamp(0, (var(--p5, 0) - 0.10) * 5, 1));
-}
-/* R3 → fade p5 0.35 → 0.55 */
-.sv-act-5 .sv-wt-r3 {
-  transform: translateZ(-260px);
-  opacity: calc(1 - clamp(0, (var(--p5, 0) - 0.35) * 5, 1));
-}
-/* R2 → fade p5 0.62 → 0.82 */
-.sv-act-5 .sv-wt-r2 {
-  transform: translateZ(-520px);
-  opacity: calc(1 - clamp(0, (var(--p5, 0) - 0.62) * 5, 1));
-}
-/* R1 destination — stays visible, gets slightly brighter on arrival */
-.sv-act-5 .sv-wt-r1 {
-  transform: translateZ(-780px);
+/* ── Z-depth + fade per room (data-driven via --rfade inline custom prop) ── */
+.sv-act-5 .sv-wt-room:not(.sv-wt-dest) {
+  opacity: calc(1 - clamp(0, (var(--p5, 0) - var(--rfade, 0)) * 10, 1));
 }
 
 /* ── Room photo ── */
@@ -664,11 +648,10 @@
   position: absolute; inset: 0;
   background-size: cover;
   background-position: center;
-  filter: saturate(0.45) brightness(0.25);
+  filter: saturate(0.80) brightness(0.72);
 }
-.sv-act-5 .sv-wt-r1 .sv-wt-photo {
-  /* Destination room brightens as you arrive */
-  filter: saturate(0.55) brightness(calc(0.25 + var(--p5, 0) * 0.25));
+.sv-act-5 .sv-wt-dest .sv-wt-photo {
+  filter: saturate(0.90) brightness(calc(0.72 + var(--p5, 0) * 0.28));
 }
 
 /* ── Bottom vignette ── */

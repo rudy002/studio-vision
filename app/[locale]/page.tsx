@@ -46,6 +46,17 @@ export default async function Home({
           // ACT 4 — Hadmaya avant / après
           empty:     '/before-after/before2.JPEG',
           furnished: '/before-after/after2.PNG',
+          // ACT 5 — Visite immersive (after* sauf after2)
+          visitRooms: [
+            '/before-after/after1.PNG',
+            '/before-after/after3.PNG',
+            '/before-after/after4.PNG',
+            '/before-after/after5.PNG',
+            '/before-after/after6.PNG',
+            '/before-after/after7.PNG',
+            '/before-after/after8.PNG',
+            '/before-after/after9.PNG',
+          ],
           // ACT 6 — Poster vidéo showreel
           poster:    '/lior-photos/IMG_7583.JPEG', // cuisine dramatique vue mer
         }}
