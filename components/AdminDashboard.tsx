@@ -67,6 +67,7 @@ export default function AdminDashboard() {
   const [properties, setProperties] = useState<Property[]>([]);
   const [form, setForm] = useState(emptyForm);
   const [photos, setPhotos] = useState<File[]>([]);
+  const [photoPreviews, setPhotoPreviews] = useState<string[]>([]);
   const [video, setVideo] = useState<File | null>(null);
   const [loading, setLoading] = useState(false);
   const [submitDone, setSubmitDone] = useState(false);
@@ -78,6 +79,12 @@ export default function AdminDashboard() {
   const [openSection, setOpenSection] = useState<number | null>(0);
   const [showConfirmModal, setShowConfirmModal] = useState(false);
   const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  useEffect(() => {
+    const urls = photos.map((f) => URL.createObjectURL(f));
+    setPhotoPreviews(urls);
+    return () => urls.forEach((u) => URL.revokeObjectURL(u));
+  }, [photos]);
 
   useEffect(() => {
     fetchProperties();
@@ -173,6 +180,10 @@ export default function AdminDashboard() {
 
   const removeExistingPhoto = (url: string) => {
     setExistingPhotos((prev) => prev.filter((u) => u !== url));
+  };
+
+  const removeNewPhoto = (index: number) => {
+    setPhotos((prev) => prev.filter((_, i) => i !== index));
   };
 
   const handleFormKeyDown = (e: React.KeyboardEvent<HTMLFormElement>) => {
@@ -731,7 +742,7 @@ export default function AdminDashboard() {
                         type="file"
                         accept="image/*"
                         multiple
-                        onChange={(e) => setPhotos(Array.from(e.target.files || []))}
+                        onChange={(e) => setPhotos((prev) => [...prev, ...Array.from(e.target.files || [])])}
                         className="bg-white/50 border border-white/60 rounded-xl px-4 py-3 text-sm text-[#1a1410] outline-none cursor-pointer"
                       />
                       {photos.length > 0 && !loading && (
@@ -742,6 +753,29 @@ export default function AdminDashboard() {
                           <SpinIris size="sm" />
                           <span className="text-[10px] text-[#8b6914]">Upload en cours…</span>
                         </span>
+                      )}
+                      {photoPreviews.length > 0 && (
+                        <div className="flex flex-wrap gap-3 mt-2">
+                          {photoPreviews.map((src, i) => (
+                            <div key={i} className="relative w-20 h-20 rounded-xl overflow-hidden group">
+                              <Image
+                                src={src}
+                                alt=""
+                                fill
+                                className="object-cover"
+                                sizes="80px"
+                                unoptimized
+                              />
+                              <button
+                                type="button"
+                                onClick={() => removeNewPhoto(i)}
+                                className="absolute inset-0 bg-red-500/70 text-white text-xs opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center cursor-pointer"
+                              >
+                                ×
+                              </button>
+                            </div>
+                          ))}
+                        </div>
                       )}
                     </div>
                     <div className="flex flex-col gap-2">
