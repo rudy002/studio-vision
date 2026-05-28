@@ -167,9 +167,14 @@
     "info": {
       "location": "ישראל",
       "email": "contact@studiovision.il",
-      "phone": "+972 53-708-4374"
+      "phone": "+972 53-708-4374",
+      "locationLabel": "מיקום",
+      "emailLabel": "אימייל",
+      "phoneLabel": "טלפון"
     },
     "form": {
+      "eyebrow": "טופס",
+      "title": "ההודעה שלך",
       "firstname": "שם פרטי",
       "lastname": "שם משפחה",
       "email": "אימייל",
@@ -180,6 +185,10 @@
       "buyer": "קונה",
       "seller": "מוכר",
       "agent": "סוכן נדל״ן"
+    },
+    "success": {
+      "title": "ההודעה נשלחה",
+      "message": "נחזור אליך בהקדם האפשרי."
     }
   },
   "splash": {

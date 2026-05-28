@@ -167,9 +167,14 @@
     "info": {
       "location": "Israël",
       "email": "contact@studiovision.il",
-      "phone": "+972 53-708-4374"
+      "phone": "+972 53-708-4374",
+      "locationLabel": "Localisation",
+      "emailLabel": "Email",
+      "phoneLabel": "Téléphone"
     },
     "form": {
+      "eyebrow": "Formulaire",
+      "title": "Votre message",
       "firstname": "Prénom",
       "lastname": "Nom",
       "email": "Email",
@@ -180,6 +185,10 @@
       "buyer": "Acheteur",
       "seller": "Vendeur",
       "agent": "Agent immobilier"
+    },
+    "success": {
+      "title": "Message envoyé",
+      "message": "Nous vous répondrons dans les plus brefs délais."
     }
   },
   "splash": {

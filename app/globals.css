@@ -50,6 +50,15 @@ body {
   display: none;
 }
 
+/* ── Hebrew locale — police et tailles ── */
+[lang="he"], [lang="he"] * {
+  font-family: var(--font-hebrew), 'Noto Sans Hebrew', Arial, sans-serif;
+  letter-spacing: 0 !important;
+}
+[lang="he"] .font-serif {
+  font-family: var(--font-hebrew), 'Noto Sans Hebrew', serif;
+}
+
 /* ── Splash screen keyframes ── */
 @keyframes sp-letter {
   to { opacity: 1; transform: translateY(0); filter: blur(0); }

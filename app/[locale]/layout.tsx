@@ -27,9 +27,11 @@ export default async function LocaleLayout({
   const dir = locale === 'he' ? 'rtl' : 'ltr';
 
   return (
-    <NextIntlClientProvider messages={messages}>
-      <Navbar />
-      {children}
-    </NextIntlClientProvider>
+    <div lang={locale} dir={dir} style={{ display: 'contents' }}>
+      <NextIntlClientProvider messages={messages}>
+        <Navbar />
+        {children}
+      </NextIntlClientProvider>
+    </div>
   );
 }
