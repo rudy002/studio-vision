@@ -522,7 +522,7 @@
   background-image:
     linear-gradient(180deg, rgba(10,15,26,0.1), rgba(10,15,26,0.35)),
     url("https://images.unsplash.com/photo-1567016526105-22da7c13161a?w=2200&q=80&auto=format&fit=crop");
-  clip-path: inset(0 calc((1 - var(--p4, 0)) * 100%) 0 0);
+  clip-path: inset(0 0 0 calc((1 - var(--p4, 0)) * 100%));
 }
 .sv-act-4 .sv-divider {
   position: absolute; top: 0; bottom: 0;

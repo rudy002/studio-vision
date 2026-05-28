@@ -1,7 +1,6 @@
 import { getTranslations } from 'next-intl/server';
 import { createClient } from '@supabase/supabase-js';
 import ScrollExperience from '../../components/blocks/ScrollExperience';
-import PhotoGallery from '../../components/blocks/PhotoGallery';
 import { FocusRail, FocusRailItem } from '../../components/ui/focus-rail';
 import Link from 'next/link';
 
@@ -45,8 +44,8 @@ export default async function Home({
           chambre:   '/lior-photos/IMG_7577.JPEG', // séjour lumineux vue mer
           sdb:       '/lior-photos/IMG_7581.JPEG', // bibliothèque design vue mer
           // ACT 4 — Hadmaya avant / après
-          empty:     '/lior-photos/IMG_7585.JPEG', // grand séjour neutre vue mer
-          furnished: '/lior-photos/IMG_7575.JPEG', // séjour chaleureusement meublé
+          empty:     '/before-after/before2.JPEG',
+          furnished: '/before-after/after2.PNG',
           // ACT 6 — Poster vidéo showreel
           poster:    '/lior-photos/IMG_7583.JPEG', // cuisine dramatique vue mer
         }}
@@ -82,9 +81,6 @@ export default async function Home({
           brandSub:            tse('brandSub'),
         }}
       />
-
-      {/* Portfolio — galerie des réalisations */}
-      <PhotoGallery />
 
       {/* Biens en vedette */}
       {properties && properties.length > 0 && (
