@@ -23,7 +23,7 @@ export default async function Home({
     .select('*')
     .eq('status', 'available')
     .order('created_at', { ascending: false })
-    .limit(3);
+    .limit(5);
 
   const fallbackImg = 'https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=800&q=80';
 
