@@ -1,9 +1,8 @@
 'use client';
 
 import { useEffect } from 'react';
-import Link from 'next/link';
 import { useLocale, useTranslations } from 'next-intl';
-import { X, MapPin, ArrowUpRight, Maximize2 } from 'lucide-react';
+import { X, MapPin, Maximize2 } from 'lucide-react';
 import { Property } from './PropertyCard';
 import { MediaCarousel, type CarouselMediaItem } from './ui/carousel-1';
 
@@ -171,6 +170,24 @@ export default function PropertyModal({
           {/* Divider */}
           <div className="mx-7 h-px" style={{ background: 'rgba(195,149,83,0.12)' }} />
 
+          {/* Description */}
+          {(() => {
+            const desc =
+              locale === 'fr' ? property.description_fr
+              : locale === 'en' ? property.description_en
+              : property.description_he;
+            return desc ? (
+              <div className="px-5 py-4 md:px-7 md:py-5">
+                <p className="text-[9px] tracking-[3px] text-[#c39553]/60 uppercase mb-2">
+                  {t('description')}
+                </p>
+                <p className="text-sm text-white/55 leading-relaxed">
+                  {desc}
+                </p>
+              </div>
+            ) : null;
+          })()}
+
           {/* Media count hint */}
           {mediaItems.length > 1 && (
             <div className="px-5 pt-3 pb-0 md:px-7 md:pt-5">
@@ -181,21 +198,7 @@ export default function PropertyModal({
             </div>
           )}
 
-          {/* Spacer pushes CTA to bottom */}
           <div className="flex-1" />
-
-          {/* CTA */}
-          <div className="px-5 pt-4 pb-5 md:px-7 md:pt-6 md:pb-8">
-            <Link
-              href={`/${locale}/biens/${property.id}`}
-              onClick={onClose}
-              className="group flex items-center justify-between w-full px-5 py-4 rounded-xl text-[11px] tracking-[2px] uppercase font-medium transition-all duration-300 hover:brightness-110 active:scale-[0.98]"
-              style={{ background: '#c39553', color: '#0a0f1a' }}
-            >
-              {t('seeMore').replace(' →', '')}
-              <ArrowUpRight className="h-4 w-4 transition-transform duration-200 group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
-            </Link>
-          </div>
         </div>
       </div>
     </>

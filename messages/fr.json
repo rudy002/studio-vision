@@ -48,6 +48,7 @@
     "surface": "m²",
     "rooms": "pièces",
     "bedrooms": "chambres",
+    "description": "Description",
     "seeMore": "Voir le bien →",
     "noResults": "Aucun bien disponible pour le moment",
     "errorTitle": "Une erreur est survenue",

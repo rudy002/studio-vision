@@ -48,6 +48,7 @@
     "surface": "m²",
     "rooms": "rooms",
     "bedrooms": "bedrooms",
+    "description": "Description",
     "seeMore": "View property →",
     "noResults": "No properties available at the moment",
     "errorTitle": "An error occurred",

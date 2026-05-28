@@ -20,6 +20,9 @@ export type Property = {
   status: string;
   photos: string[];
   video_url: string;
+  description_fr?: string;
+  description_en?: string;
+  description_he?: string;
   lat?: number;
   lng?: number;
 };
