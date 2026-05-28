@@ -164,17 +164,9 @@ export default function BiensPage() {
       });
   }, []);
 
-  // ── URL du modal → partage depuis la liste ─────────────────
-  useEffect(() => {
-    if (selected) {
-      window.history.replaceState(null, '', `/${locale}/biens/${selected.id}`);
-    } else {
-      window.history.replaceState(null, '', `/${locale}/biens`);
-    }
-  }, [selected, locale]);
-
   // ── Sync filtres → URL ──────────────────────────────────────
   useEffect(() => {
+    if (selected) return; // modal ouvert → ne pas toucher l'URL
     const params = new URLSearchParams();
     if (filters.type !== 'all')    params.set('type', filters.type);
     if (filters.city !== 'all')    params.set('city', filters.city);
@@ -187,7 +179,7 @@ export default function BiensPage() {
     if (filters.sort !== 'newest') params.set('sort', filters.sort);
     const qs = params.toString();
     router.replace(qs ? `${pathname}?${qs}` : pathname, { scroll: false });
-  }, [filters, pathname, router]);
+  }, [filters, pathname, router, selected]);
 
   // ── Debounce inputs numériques (300 ms) ────────────────────
   const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
