@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect, useRef } from 'react';
+import Image from 'next/image';
 import { signOut } from 'next-auth/react';
 import { createClient } from '@supabase/supabase-js';
 
@@ -14,8 +15,6 @@ type CityOption = {
   lat: number;
   lng: number;
 };
-
-
 
 type Property = {
   id: string;
@@ -61,16 +60,20 @@ const emptyForm = {
   video_url: '',
 };
 
+const FORM_SECTIONS = ['Titres', 'Informations', 'Localisation', 'Descriptions', 'Médias'];
+
 export default function AdminDashboard() {
   const [properties, setProperties] = useState<Property[]>([]);
-  const [showForm, setShowForm] = useState(false);
   const [form, setForm] = useState(emptyForm);
   const [photos, setPhotos] = useState<File[]>([]);
   const [video, setVideo] = useState<File | null>(null);
   const [loading, setLoading] = useState(false);
   const [activeTab, setActiveTab] = useState<'list' | 'add'>('list');
+  const [editingId, setEditingId] = useState<string | null>(null);
+  const [existingPhotos, setExistingPhotos] = useState<string[]>([]);
   const [citySuggestions, setCitySuggestions] = useState<CityOption[]>([]);
   const [showSuggestions, setShowSuggestions] = useState(false);
+  const [openSection, setOpenSection] = useState<number | null>(0);
   const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   useEffect(() => {
@@ -86,9 +89,7 @@ export default function AdminDashboard() {
   };
 
   const handleChange = (
-    e: React.ChangeEvent<
-      HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
-    >,
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>,
   ) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
@@ -130,26 +131,64 @@ export default function AdminDashboard() {
     return data.url;
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const startEdit = (p: Property) => {
+    setEditingId(p.id);
+    setForm({
+      title_fr: p.title_fr,
+      title_en: p.title_en,
+      title_he: p.title_he,
+      type: p.type,
+      price: p.price,
+      surface: p.surface,
+      rooms: p.rooms,
+      bedrooms: p.bedrooms,
+      bathrooms: p.bathrooms,
+      city: p.city,
+      address: p.address,
+      lat: p.lat,
+      lng: p.lng,
+      description_fr: p.description_fr,
+      description_en: p.description_en,
+      description_he: p.description_he,
+      status: p.status,
+      video_url: p.video_url || '',
+    });
+    setExistingPhotos(p.photos || []);
+    setPhotos([]);
+    setVideo(null);
+    setOpenSection(0);
+    setActiveTab('add');
+  };
+
+  const cancelEdit = () => {
+    setEditingId(null);
+    setForm(emptyForm);
+    setExistingPhotos([]);
+    setPhotos([]);
+    setVideo(null);
+  };
+
+  const removeExistingPhoto = (url: string) => {
+    setExistingPhotos((prev) => prev.filter((u) => u !== url));
+  };
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setLoading(true);
 
     try {
-      // Upload photos
-      const photoUrls: string[] = [];
+      const photoUrls: string[] = [...existingPhotos];
       for (const photo of photos) {
         const url = await uploadFile(photo, 'photos');
         photoUrls.push(url);
       }
 
-      // Upload vidéo
-      let videoUrl = '';
+      let videoUrl = form.video_url;
       if (video) {
         videoUrl = await uploadFile(video, 'videos');
       }
 
-      // Sauvegarder dans Supabase
-      await supabase.from('properties').insert({
+      const payload = {
         ...form,
         price: Number(form.price),
         surface: Number(form.surface),
@@ -160,11 +199,19 @@ export default function AdminDashboard() {
         lng: Number(form.lng),
         photos: photoUrls,
         video_url: videoUrl,
-      });
+      };
+
+      if (editingId) {
+        await supabase.from('properties').update(payload).eq('id', editingId);
+      } else {
+        await supabase.from('properties').insert(payload);
+      }
 
       setForm(emptyForm);
       setPhotos([]);
       setVideo(null);
+      setEditingId(null);
+      setExistingPhotos([]);
       setActiveTab('list');
       fetchProperties();
     } catch (err) {
@@ -175,20 +222,13 @@ export default function AdminDashboard() {
 
   const toggleStatus = async (id: string, currentStatus: string) => {
     const newStatus = currentStatus === 'available' ? 'sold' : 'available';
-    await supabase
-      .from('properties')
-      .update({ status: newStatus })
-      .eq('id', id);
+    await supabase.from('properties').update({ status: newStatus }).eq('id', id);
     fetchProperties();
   };
 
   const deleteProperty = async (id: string) => {
     if (!confirm('Supprimer ce bien ?')) return;
-
-    // Récupère les médias du bien
     const property = properties.find((p) => p.id === id);
-
-    // Supprime les fichiers dans R2
     if (property?.photos) {
       for (const photo of property.photos) {
         await fetch('/api/delete-file', {
@@ -205,23 +245,26 @@ export default function AdminDashboard() {
         body: JSON.stringify({ url: property.video_url }),
       });
     }
-
-    // Supprime de Supabase
     await supabase.from('properties').delete().eq('id', id);
     fetchProperties();
   };
+
+  const available = properties.filter((p) => p.status === 'available').length;
+  const sold = properties.filter((p) => p.status === 'sold').length;
+  const avgPrice =
+    properties.length > 0
+      ? Math.round(properties.reduce((acc, p) => acc + (p.price || 0), 0) / properties.length)
+      : 0;
+
+  const toggleSection = (i: number) => setOpenSection(openSection === i ? null : i);
 
   return (
     <div className="min-h-screen p-4 md:p-8">
       {/* Header */}
       <div className="flex justify-between items-center mb-8">
         <div>
-          <p className="text-[9px] tracking-[3px] text-[#8b6914] uppercase mb-1">
-            Administration
-          </p>
-          <h1 className="font-serif text-3xl font-light text-[#1a1410]">
-            Studio Vision
-          </h1>
+          <p className="text-[9px] tracking-[3px] text-[#8b6914] uppercase mb-1">Administration</p>
+          <h1 className="font-serif text-3xl font-light text-[#1a1410]">Studio Vision</h1>
         </div>
         <button
           onClick={() => signOut()}
@@ -231,10 +274,36 @@ export default function AdminDashboard() {
         </button>
       </div>
 
+      {/* Stats */}
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+        {[
+          { label: 'Total', value: properties.length, unit: 'biens' },
+          { label: 'Disponibles', value: available, unit: 'biens' },
+          { label: 'Vendus', value: sold, unit: 'biens' },
+          { label: 'Prix moyen', value: `₪ ${avgPrice.toLocaleString()}`, unit: '' },
+        ].map((stat) => (
+          <div
+            key={stat.label}
+            className="rounded-2xl p-5"
+            style={{
+              background: 'rgba(255,255,255,0.25)',
+              backdropFilter: 'blur(16px)',
+              border: '0.5px solid rgba(255,255,255,0.5)',
+            }}
+          >
+            <p className="text-[9px] tracking-[2px] text-[#8b6914] uppercase mb-2">{stat.label}</p>
+            <p className="font-serif text-2xl font-light text-[#1a1410]">{stat.value}</p>
+            {stat.unit && (
+              <p className="text-[9px] tracking-[1px] text-[#6b5d4a] uppercase mt-1">{stat.unit}</p>
+            )}
+          </div>
+        ))}
+      </div>
+
       {/* Tabs */}
       <div className="flex gap-4 mb-8">
         <button
-          onClick={() => setActiveTab('list')}
+          onClick={() => { setActiveTab('list'); cancelEdit(); }}
           className={`text-[10px] tracking-[2px] uppercase px-6 py-3 rounded-full transition-colors cursor-pointer ${
             activeTab === 'list'
               ? 'bg-[#1a1410] text-white'
@@ -244,7 +313,7 @@ export default function AdminDashboard() {
           Mes biens ({properties.length})
         </button>
         <button
-          onClick={() => setActiveTab('add')}
+          onClick={() => { cancelEdit(); setOpenSection(0); setActiveTab('add'); }}
           className={`text-[10px] tracking-[2px] uppercase px-6 py-3 rounded-full transition-colors cursor-pointer ${
             activeTab === 'add'
               ? 'bg-[#1a1410] text-white'
@@ -266,59 +335,84 @@ export default function AdminDashboard() {
           {properties.map((p) => (
             <div
               key={p.id}
-              className="rounded-2xl p-6"
+              className="rounded-2xl overflow-hidden"
               style={{
                 background: 'rgba(255,255,255,0.25)',
                 backdropFilter: 'blur(16px)',
                 border: '0.5px solid rgba(255,255,255,0.5)',
               }}
             >
-              <div className="flex justify-between items-start mb-4">
-                <div>
-                  <p className="text-[9px] tracking-[2px] text-[#8b6914] uppercase mb-1">
-                    {p.type} · {p.city}
-                  </p>
-                  <h3 className="font-serif text-lg font-light text-[#1a1410]">
-                    {p.title_fr}
-                  </h3>
+              {/* Photo preview */}
+              {p.photos?.[0] && (
+                <div className="relative w-full h-44">
+                  <Image
+                    src={p.photos[0]}
+                    alt={p.title_fr}
+                    fill
+                    className="object-cover"
+                    sizes="(max-width: 768px) 100vw, 33vw"
+                  />
+                  {p.photos.length > 1 && (
+                    <span
+                      className="absolute bottom-2 right-2 text-[9px] tracking-[1px] uppercase text-white px-2 py-1 rounded-full"
+                      style={{ background: 'rgba(0,0,0,0.45)', backdropFilter: 'blur(4px)' }}
+                    >
+                      +{p.photos.length - 1} photos
+                    </span>
+                  )}
                 </div>
-                <span
-                  className={`text-[8px] tracking-[2px] uppercase px-3 py-1 rounded-full ${
-                    p.status === 'available'
-                      ? 'bg-green-100 text-green-700'
-                      : 'bg-red-100 text-red-700'
-                  }`}
-                >
-                  {p.status === 'available' ? 'Disponible' : 'Vendu'}
-                </span>
-              </div>
+              )}
 
-              <p className="font-serif text-xl text-[#1a1410] mb-4">
-                ₪ {p.price?.toLocaleString()}
-              </p>
+              <div className="p-6">
+                <div className="flex justify-between items-start mb-4">
+                  <div>
+                    <p className="text-[9px] tracking-[2px] text-[#8b6914] uppercase mb-1">
+                      {p.type} · {p.city}
+                    </p>
+                    <h3 className="font-serif text-lg font-light text-[#1a1410]">{p.title_fr}</h3>
+                  </div>
+                  <span
+                    className={`text-[8px] tracking-[2px] uppercase px-3 py-1 rounded-full ${
+                      p.status === 'available'
+                        ? 'bg-green-100 text-green-700'
+                        : 'bg-red-100 text-red-700'
+                    }`}
+                  >
+                    {p.status === 'available' ? 'Disponible' : 'Vendu'}
+                  </span>
+                </div>
 
-              <div className="flex gap-2">
-                <button
-                  onClick={() => toggleStatus(p.id, p.status)}
-                  className="flex-1 text-[9px] tracking-[1px] uppercase py-2 rounded-full bg-white/50 text-[#1a1410] hover:bg-[#8b6914] hover:text-white transition-colors cursor-pointer"
-                >
-                  {p.status === 'available'
-                    ? 'Marquer vendu'
-                    : 'Marquer disponible'}
-                </button>
-                <button
-                  onClick={() => deleteProperty(p.id)}
-                  className="text-[9px] tracking-[1px] uppercase px-4 py-2 rounded-full bg-red-100 text-red-600 hover:bg-red-200 transition-colors cursor-pointer"
-                >
-                  Supprimer
-                </button>
+                <p className="font-serif text-xl text-[#1a1410] mb-4">
+                  ₪ {p.price?.toLocaleString()}
+                </p>
+
+                <div className="flex gap-2">
+                  <button
+                    onClick={() => startEdit(p)}
+                    className="flex-1 text-[9px] tracking-[1px] uppercase py-2 rounded-full bg-[#8b6914]/10 text-[#8b6914] hover:bg-[#8b6914] hover:text-white transition-colors cursor-pointer"
+                  >
+                    Éditer
+                  </button>
+                  <button
+                    onClick={() => toggleStatus(p.id, p.status)}
+                    className="flex-1 text-[9px] tracking-[1px] uppercase py-2 rounded-full bg-white/50 text-[#1a1410] hover:bg-[#8b6914] hover:text-white transition-colors cursor-pointer"
+                  >
+                    {p.status === 'available' ? 'Marquer vendu' : 'Marquer disponible'}
+                  </button>
+                  <button
+                    onClick={() => deleteProperty(p.id)}
+                    className="text-[9px] tracking-[1px] uppercase px-4 py-2 rounded-full bg-red-100 text-red-600 hover:bg-red-200 transition-colors cursor-pointer"
+                  >
+                    ×
+                  </button>
+                </div>
               </div>
             </div>
           ))}
         </div>
       )}
 
-      {/* Formulaire ajout */}
+      {/* Formulaire ajout / édition */}
       {activeTab === 'add' && (
         <form onSubmit={handleSubmit} className="flex justify-center">
           <div
@@ -329,254 +423,324 @@ export default function AdminDashboard() {
               border: '0.5px solid rgba(255,255,255,0.5)',
             }}
           >
-            <h2 className="font-serif text-2xl font-light text-[#1a1410] mb-8">
-              Nouveau bien
-            </h2>
+            <div className="flex justify-between items-center mb-8">
+              <h2 className="font-serif text-2xl font-light text-[#1a1410]">
+                {editingId ? 'Modifier le bien' : 'Nouveau bien'}
+              </h2>
+              {editingId && (
+                <button
+                  type="button"
+                  onClick={() => { cancelEdit(); setActiveTab('list'); }}
+                  className="text-[9px] tracking-[2px] text-[#6b5d4a] uppercase border-b border-[#6b5d4a]/30 pb-1 hover:text-[#8b6914] transition-colors cursor-pointer bg-transparent"
+                >
+                  Annuler
+                </button>
+              )}
+            </div>
 
-            {/* Titres */}
-            <div className="mb-6">
-              <p className="text-[9px] tracking-[3px] text-[#8b6914] uppercase mb-4">
-                Titres
-              </p>
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                {['fr', 'en', 'he'].map((lang) => (
-                  <div key={lang} className="flex flex-col gap-2">
-                    <label className="text-[9px] tracking-[2px] text-[#6b5d4a] uppercase">
-                      Titre ({lang.toUpperCase()})
-                    </label>
+            {/* Step indicator */}
+            <div className="flex gap-2 mb-8 overflow-x-auto pb-1">
+              {FORM_SECTIONS.map((section, i) => (
+                <button
+                  key={section}
+                  type="button"
+                  onClick={() => toggleSection(i)}
+                  className={`shrink-0 text-[9px] tracking-[2px] uppercase px-4 py-2 rounded-full transition-colors cursor-pointer ${
+                    openSection === i
+                      ? 'bg-[#1a1410] text-white'
+                      : 'bg-white/40 text-[#6b5d4a] hover:bg-white/60'
+                  }`}
+                >
+                  {i + 1}. {section}
+                </button>
+              ))}
+            </div>
+
+            {/* Section 0: Titres */}
+            {openSection === 0 && (
+              <div className="mb-2">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                  {['fr', 'en', 'he'].map((lang) => (
+                    <div key={lang} className="flex flex-col gap-2">
+                      <label className="text-[9px] tracking-[2px] text-[#6b5d4a] uppercase">
+                        Titre ({lang.toUpperCase()})
+                      </label>
+                      <input
+                        name={`title_${lang}`}
+                        value={form[`title_${lang}` as keyof typeof form] as string}
+                        onChange={handleChange}
+                        required
+                        className="bg-white/50 border border-white/60 rounded-xl px-4 py-3 text-sm text-[#1a1410] outline-none focus:border-[#8b6914]"
+                      />
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* Section 1: Informations */}
+            {openSection === 1 && (
+              <div className="mb-2">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                  <div className="flex flex-col gap-2">
+                    <label className="text-[9px] tracking-[2px] text-[#6b5d4a] uppercase">Type</label>
+                    <select
+                      name="type"
+                      value={form.type}
+                      onChange={handleChange}
+                      className="bg-white/50 border border-white/60 rounded-xl px-4 py-3 text-sm text-[#1a1410] outline-none focus:border-[#8b6914]"
+                    >
+                      {['Villa', 'Appartement', 'Maison', 'Penthouse', 'Duplex'].map((t) => (
+                        <option key={t} value={t}>{t}</option>
+                      ))}
+                    </select>
+                  </div>
+                  <div className="flex flex-col gap-2">
+                    <label className="text-[9px] tracking-[2px] text-[#6b5d4a] uppercase">Prix (₪)</label>
                     <input
-                      name={`title_${lang}`}
-                      value={
-                        form[`title_${lang}` as keyof typeof form] as string
-                      }
+                      name="price"
+                      type="number"
+                      value={form.price}
                       onChange={handleChange}
                       required
                       className="bg-white/50 border border-white/60 rounded-xl px-4 py-3 text-sm text-[#1a1410] outline-none focus:border-[#8b6914]"
                     />
                   </div>
-                ))}
-              </div>
-            </div>
-
-            {/* Infos */}
-            <div className="mb-6">
-              <p className="text-[9px] tracking-[3px] text-[#8b6914] uppercase mb-4">
-                Informations
-              </p>
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                <div className="flex flex-col gap-2">
-                  <label className="text-[9px] tracking-[2px] text-[#6b5d4a] uppercase">
-                    Type
-                  </label>
-                  <select
-                    name="type"
-                    value={form.type}
-                    onChange={handleChange}
-                    className="bg-white/50 border border-white/60 rounded-xl px-4 py-3 text-sm text-[#1a1410] outline-none focus:border-[#8b6914]"
-                  >
-                    {[
-                      'Villa',
-                      'Appartement',
-                      'Maison',
-                      'Penthouse',
-                      'Duplex',
-                    ].map((t) => (
-                      <option key={t} value={t}>
-                        {t}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-                <div className="flex flex-col gap-2">
-                  <label className="text-[9px] tracking-[2px] text-[#6b5d4a] uppercase">
-                    Prix (₪)
-                  </label>
-                  <input
-                    name="price"
-                    type="number"
-                    value={form.price}
-                    onChange={handleChange}
-                    required
-                    className="bg-white/50 border border-white/60 rounded-xl px-4 py-3 text-sm text-[#1a1410] outline-none focus:border-[#8b6914]"
-                  />
-                </div>
-                <div className="flex flex-col gap-2">
-                  <label className="text-[9px] tracking-[2px] text-[#6b5d4a] uppercase">
-                    Surface (m²)
-                  </label>
-                  <input
-                    name="surface"
-                    type="number"
-                    value={form.surface}
-                    onChange={handleChange}
-                    className="bg-white/50 border border-white/60 rounded-xl px-4 py-3 text-sm text-[#1a1410] outline-none focus:border-[#8b6914]"
-                  />
-                </div>
-                <div className="flex flex-col gap-2">
-                  <label className="text-[9px] tracking-[2px] text-[#6b5d4a] uppercase">
-                    Pièces
-                  </label>
-                  <input
-                    name="rooms"
-                    type="number"
-                    value={form.rooms}
-                    onChange={handleChange}
-                    className="bg-white/50 border border-white/60 rounded-xl px-4 py-3 text-sm text-[#1a1410] outline-none focus:border-[#8b6914]"
-                  />
-                </div>
-                <div className="flex flex-col gap-2">
-                  <label className="text-[9px] tracking-[2px] text-[#6b5d4a] uppercase">
-                    Chambres
-                  </label>
-                  <input
-                    name="bedrooms"
-                    type="number"
-                    value={form.bedrooms}
-                    onChange={handleChange}
-                    className="bg-white/50 border border-white/60 rounded-xl px-4 py-3 text-sm text-[#1a1410] outline-none focus:border-[#8b6914]"
-                  />
-                </div>
-                <div className="flex flex-col gap-2">
-                  <label className="text-[9px] tracking-[2px] text-[#6b5d4a] uppercase">
-                    Salles de bain
-                  </label>
-                  <input
-                    name="bathrooms"
-                    type="number"
-                    value={form.bathrooms}
-                    onChange={handleChange}
-                    className="bg-white/50 border border-white/60 rounded-xl px-4 py-3 text-sm text-[#1a1410] outline-none focus:border-[#8b6914]"
-                  />
-                </div>
-              </div>
-            </div>
-
-            {/* Localisation */}
-            <div className="mb-6">
-              <p className="text-[9px] tracking-[3px] text-[#8b6914] uppercase mb-4">
-                Localisation
-              </p>
-              <div className="relative flex flex-col gap-2">
-                <label className="text-[9px] tracking-[2px] text-[#6b5d4a] uppercase">
-                  Ville
-                </label>
-                <input
-                  name="city"
-                  value={form.city}
-                  onChange={handleCityInput}
-                  onBlur={() => setTimeout(() => setShowSuggestions(false), 150)}
-                  onFocus={() => citySuggestions.length > 0 && setShowSuggestions(true)}
-                  required
-                  placeholder="Rechercher une ville en Israël..."
-                  className="bg-white/50 border border-white/60 rounded-xl px-4 py-3 text-sm text-[#1a1410] outline-none focus:border-[#8b6914]"
-                />
-                {showSuggestions && citySuggestions.length > 0 && (
-                  <ul
-                    style={{
-                      background: 'rgba(255,255,255,0.9)',
-                      backdropFilter: 'blur(16px)',
-                      borderRadius: '12px',
-                      border: '0.5px solid rgba(255,255,255,0.7)',
-                      boxShadow: '0 8px 32px rgba(0,0,0,0.12)',
-                    }}
-                    className="absolute top-full left-0 right-0 mt-1 z-50 overflow-hidden"
-                  >
-                    {citySuggestions.map((city) => (
-                      <li
-                        key={city.label}
-                        onMouseDown={() => handleCitySuggestionClick(city)}
-                        style={{ padding: '10px 16px', cursor: 'pointer', transition: 'background 0.15s' }}
-                        className="text-sm text-[#1a1410] hover:bg-[#8b6914]/10 hover:text-[#8b6914]"
-                      >
-                        {city.label}
-                      </li>
-                    ))}
-                  </ul>
-                )}
-                {form.lat !== emptyForm.lat && form.lng !== emptyForm.lng && (
-                  <p className="text-[10px] text-[#8b6914]">
-                    {form.lat.toFixed(4)}, {form.lng.toFixed(4)}
-                  </p>
-                )}
-              </div>
-            </div>
-
-            {/* Descriptions */}
-            <div className="mb-6">
-              <p className="text-[9px] tracking-[3px] text-[#8b6914] uppercase mb-4">
-                Descriptions
-              </p>
-              <div className="flex flex-col gap-4">
-                {['fr', 'en', 'he'].map((lang) => (
-                  <div key={lang} className="flex flex-col gap-2">
-                    <label className="text-[9px] tracking-[2px] text-[#6b5d4a] uppercase">
-                      Description ({lang.toUpperCase()})
-                    </label>
-                    <textarea
-                      name={`description_${lang}`}
-                      value={
-                        form[
-                          `description_${lang}` as keyof typeof form
-                        ] as string
-                      }
+                  <div className="flex flex-col gap-2">
+                    <label className="text-[9px] tracking-[2px] text-[#6b5d4a] uppercase">Surface (m²)</label>
+                    <input
+                      name="surface"
+                      type="number"
+                      value={form.surface}
                       onChange={handleChange}
-                      rows={3}
-                      className="bg-white/50 border border-white/60 rounded-xl px-4 py-3 text-sm text-[#1a1410] outline-none focus:border-[#8b6914] resize-none"
+                      className="bg-white/50 border border-white/60 rounded-xl px-4 py-3 text-sm text-[#1a1410] outline-none focus:border-[#8b6914]"
                     />
                   </div>
-                ))}
+                  <div className="flex flex-col gap-2">
+                    <label className="text-[9px] tracking-[2px] text-[#6b5d4a] uppercase">Pièces</label>
+                    <input
+                      name="rooms"
+                      type="number"
+                      value={form.rooms}
+                      onChange={handleChange}
+                      className="bg-white/50 border border-white/60 rounded-xl px-4 py-3 text-sm text-[#1a1410] outline-none focus:border-[#8b6914]"
+                    />
+                  </div>
+                  <div className="flex flex-col gap-2">
+                    <label className="text-[9px] tracking-[2px] text-[#6b5d4a] uppercase">Chambres</label>
+                    <input
+                      name="bedrooms"
+                      type="number"
+                      value={form.bedrooms}
+                      onChange={handleChange}
+                      className="bg-white/50 border border-white/60 rounded-xl px-4 py-3 text-sm text-[#1a1410] outline-none focus:border-[#8b6914]"
+                    />
+                  </div>
+                  <div className="flex flex-col gap-2">
+                    <label className="text-[9px] tracking-[2px] text-[#6b5d4a] uppercase">Salles de bain</label>
+                    <input
+                      name="bathrooms"
+                      type="number"
+                      value={form.bathrooms}
+                      onChange={handleChange}
+                      className="bg-white/50 border border-white/60 rounded-xl px-4 py-3 text-sm text-[#1a1410] outline-none focus:border-[#8b6914]"
+                    />
+                  </div>
+                  <div className="flex flex-col gap-2">
+                    <label className="text-[9px] tracking-[2px] text-[#6b5d4a] uppercase">Statut</label>
+                    <select
+                      name="status"
+                      value={form.status}
+                      onChange={handleChange}
+                      className="bg-white/50 border border-white/60 rounded-xl px-4 py-3 text-sm text-[#1a1410] outline-none focus:border-[#8b6914]"
+                    >
+                      <option value="available">Disponible</option>
+                      <option value="sold">Vendu</option>
+                    </select>
+                  </div>
+                </div>
               </div>
-            </div>
+            )}
 
-            {/* Médias */}
-            <div className="mb-8">
-              <p className="text-[9px] tracking-[3px] text-[#8b6914] uppercase mb-4">
-                Médias
-              </p>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div className="flex flex-col gap-2">
-                  <label className="text-[9px] tracking-[2px] text-[#6b5d4a] uppercase">
-                    Photos
-                  </label>
+            {/* Section 2: Localisation */}
+            {openSection === 2 && (
+              <div className="mb-2">
+                <div className="relative flex flex-col gap-2">
+                  <label className="text-[9px] tracking-[2px] text-[#6b5d4a] uppercase">Ville</label>
                   <input
-                    type="file"
-                    accept="image/*"
-                    multiple
-                    onChange={(e) =>
-                      setPhotos(Array.from(e.target.files || []))
-                    }
-                    className="bg-white/50 border border-white/60 rounded-xl px-4 py-3 text-sm text-[#1a1410] outline-none cursor-pointer"
+                    name="city"
+                    value={form.city}
+                    onChange={handleCityInput}
+                    onBlur={() => setTimeout(() => setShowSuggestions(false), 150)}
+                    onFocus={() => citySuggestions.length > 0 && setShowSuggestions(true)}
+                    required
+                    placeholder="Rechercher une ville en Israël..."
+                    className="bg-white/50 border border-white/60 rounded-xl px-4 py-3 text-sm text-[#1a1410] outline-none focus:border-[#8b6914]"
                   />
-                  {photos.length > 0 && (
+                  {showSuggestions && citySuggestions.length > 0 && (
+                    <ul
+                      style={{
+                        background: 'rgba(255,255,255,0.9)',
+                        backdropFilter: 'blur(16px)',
+                        borderRadius: '12px',
+                        border: '0.5px solid rgba(255,255,255,0.7)',
+                        boxShadow: '0 8px 32px rgba(0,0,0,0.12)',
+                      }}
+                      className="absolute top-full left-0 right-0 mt-1 z-50 overflow-hidden"
+                    >
+                      {citySuggestions.map((city) => (
+                        <li
+                          key={city.label}
+                          onMouseDown={() => handleCitySuggestionClick(city)}
+                          style={{ padding: '10px 16px', cursor: 'pointer', transition: 'background 0.15s' }}
+                          className="text-sm text-[#1a1410] hover:bg-[#8b6914]/10 hover:text-[#8b6914]"
+                        >
+                          {city.label}
+                        </li>
+                      ))}
+                    </ul>
+                  )}
+                  {form.lat !== emptyForm.lat && form.lng !== emptyForm.lng && (
                     <p className="text-[10px] text-[#8b6914]">
-                      {photos.length} photo(s) sélectionnée(s)
+                      {form.lat.toFixed(4)}, {form.lng.toFixed(4)}
                     </p>
                   )}
                 </div>
-                <div className="flex flex-col gap-2">
-                  <label className="text-[9px] tracking-[2px] text-[#6b5d4a] uppercase">
-                    Vidéo
-                  </label>
-                  <input
-                    type="file"
-                    accept="video/*"
-                    onChange={(e) => setVideo(e.target.files?.[0] || null)}
-                    className="bg-white/50 border border-white/60 rounded-xl px-4 py-3 text-sm text-[#1a1410] outline-none cursor-pointer"
-                  />
-                  {video && (
-                    <p className="text-[10px] text-[#8b6914]">{video.name}</p>
-                  )}
+              </div>
+            )}
+
+            {/* Section 3: Descriptions */}
+            {openSection === 3 && (
+              <div className="mb-2">
+                <div className="flex flex-col gap-4">
+                  {['fr', 'en', 'he'].map((lang) => (
+                    <div key={lang} className="flex flex-col gap-2">
+                      <label className="text-[9px] tracking-[2px] text-[#6b5d4a] uppercase">
+                        Description ({lang.toUpperCase()})
+                      </label>
+                      <textarea
+                        name={`description_${lang}`}
+                        value={form[`description_${lang}` as keyof typeof form] as string}
+                        onChange={handleChange}
+                        rows={4}
+                        className="bg-white/50 border border-white/60 rounded-xl px-4 py-3 text-sm text-[#1a1410] outline-none focus:border-[#8b6914] resize-none"
+                      />
+                    </div>
+                  ))}
                 </div>
               </div>
-            </div>
+            )}
 
-            <button
-              type="submit"
-              disabled={loading}
-              className="w-full bg-[#1a1410] text-white text-[11px] tracking-[3px] uppercase py-4 rounded-full hover:bg-[#8b6914] transition-colors cursor-pointer disabled:opacity-50"
-            >
-              {loading ? 'Publication en cours...' : 'Publier le bien'}
-            </button>
+            {/* Section 4: Médias */}
+            {openSection === 4 && (
+              <div className="mb-2">
+                <div className="flex flex-col gap-6">
+                  {/* Photos existantes en mode édition */}
+                  {editingId && existingPhotos.length > 0 && (
+                    <div className="flex flex-col gap-2">
+                      <label className="text-[9px] tracking-[2px] text-[#6b5d4a] uppercase">
+                        Photos actuelles ({existingPhotos.length})
+                      </label>
+                      <div className="flex flex-wrap gap-3">
+                        {existingPhotos.map((url) => (
+                          <div key={url} className="relative w-20 h-20 rounded-xl overflow-hidden group">
+                            <Image
+                              src={url}
+                              alt=""
+                              fill
+                              className="object-cover"
+                              sizes="80px"
+                            />
+                            <button
+                              type="button"
+                              onClick={() => removeExistingPhoto(url)}
+                              className="absolute inset-0 bg-red-500/70 text-white text-xs opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center cursor-pointer"
+                            >
+                              ×
+                            </button>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div className="flex flex-col gap-2">
+                      <label className="text-[9px] tracking-[2px] text-[#6b5d4a] uppercase">
+                        {editingId ? 'Ajouter des photos' : 'Photos'}
+                      </label>
+                      <input
+                        type="file"
+                        accept="image/*"
+                        multiple
+                        onChange={(e) => setPhotos(Array.from(e.target.files || []))}
+                        className="bg-white/50 border border-white/60 rounded-xl px-4 py-3 text-sm text-[#1a1410] outline-none cursor-pointer"
+                      />
+                      {photos.length > 0 && (
+                        <p className="text-[10px] text-[#8b6914]">{photos.length} photo(s) sélectionnée(s)</p>
+                      )}
+                    </div>
+                    <div className="flex flex-col gap-2">
+                      <label className="text-[9px] tracking-[2px] text-[#6b5d4a] uppercase">
+                        {editingId ? 'Remplacer la vidéo' : 'Vidéo'}
+                      </label>
+                      <input
+                        type="file"
+                        accept="video/*"
+                        onChange={(e) => setVideo(e.target.files?.[0] || null)}
+                        className="bg-white/50 border border-white/60 rounded-xl px-4 py-3 text-sm text-[#1a1410] outline-none cursor-pointer"
+                      />
+                      {video && <p className="text-[10px] text-[#8b6914]">{video.name}</p>}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {/* Nav entre sections + submit */}
+            <div className="flex justify-between items-center mt-10">
+              <button
+                type="button"
+                onClick={() => setOpenSection((s) => Math.max(0, (s ?? 0) - 1))}
+                disabled={openSection === 0}
+                className="text-[10px] tracking-[2px] uppercase px-6 py-3 rounded-full bg-white/40 text-[#6b5d4a] hover:bg-white/60 transition-colors cursor-pointer disabled:opacity-30"
+              >
+                ← Précédent
+              </button>
+
+              {openSection === FORM_SECTIONS.length - 1 ? (
+                <button
+                  type="submit"
+                  disabled={loading}
+                  className="bg-[#1a1410] text-white text-[11px] tracking-[3px] uppercase px-10 py-4 rounded-full hover:bg-[#8b6914] transition-colors cursor-pointer disabled:opacity-50"
+                >
+                  {loading
+                    ? 'Publication en cours...'
+                    : editingId
+                    ? 'Enregistrer les modifications'
+                    : 'Publier le bien'}
+                </button>
+              ) : (
+                <div className="flex gap-3">
+                  {editingId && (
+                    <button
+                      type="submit"
+                      disabled={loading}
+                      className="text-[11px] tracking-[3px] uppercase px-8 py-4 rounded-full border border-[#1a1410] text-[#1a1410] hover:bg-[#1a1410] hover:text-white transition-colors cursor-pointer disabled:opacity-50"
+                    >
+                      {loading ? '...' : 'Terminer'}
+                    </button>
+                  )}
+                <button
+                  type="button"
+                  onClick={() => setOpenSection((s) => Math.min(FORM_SECTIONS.length - 1, (s ?? 0) + 1))}
+                  className="bg-[#1a1410] text-white text-[11px] tracking-[3px] uppercase px-10 py-4 rounded-full hover:bg-[#8b6914] transition-colors cursor-pointer"
+                >
+                  Suivant →
+                </button>
+                </div>
+              )}
+            </div>
           </div>
         </form>
       )}
