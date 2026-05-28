@@ -2,13 +2,14 @@
 
 import { useState, useEffect, useRef } from 'react';
 import { useTranslations, useLocale } from 'next-intl';
-import { useRouter, usePathname } from 'next/navigation';
-import Link from 'next/link';
+import { usePathname } from 'next/navigation';
+import { TransitionLink } from './TransitionLink';
+import { usePageTransition } from './PageTransitionProvider';
 
 export default function Navbar() {
   const t = useTranslations('nav');
   const locale = useLocale();
-  const router = useRouter();
+  const navigate = usePageTransition();
   const pathname = usePathname();
   const [menuOpen, setMenuOpen] = useState(false);
   const navRef = useRef<HTMLElement>(null);
@@ -44,9 +45,9 @@ export default function Navbar() {
   }, [isHome]);
 
   const switchLocale = (newLocale: string) => {
-    const newPath = pathname.replace(`/${locale}`, `/${newLocale}`);
-    router.push(newPath);
     setMenuOpen(false);
+    const newPath = pathname.replace(`/${locale}`, `/${newLocale}`);
+    navigate(newPath);
   };
 
   const navStyle = !isHome
@@ -69,28 +70,28 @@ export default function Navbar() {
       style={navStyle}
     >
       {/* Logo */}
-      <Link
+      <TransitionLink
         href={`/${locale}`}
         className={`font-serif text-xl tracking-widest uppercase transition-colors ${logoClass}`}
       >
         Studio<span className="text-[#b08d57]">.</span>Vision
         <span className="text-[10px] tracking-wider font-sans font-light opacity-70 ml-2 normal-case">by Lior Haddad</span>
-      </Link>
+      </TransitionLink>
 
       {/* Desktop links */}
       <div className="hidden md:flex gap-8 items-center">
-        <Link href={`/${locale}`} className={`text-[13px] tracking-widest uppercase transition-colors ${linkClass}`}>
+        <TransitionLink href={`/${locale}`} className={`text-[13px] tracking-widest uppercase transition-colors ${linkClass}`}>
           {t('home')}
-        </Link>
-        <Link href={`/${locale}/biens`} className={`text-[13px] tracking-widest uppercase transition-colors ${linkClass}`}>
+        </TransitionLink>
+        <TransitionLink href={`/${locale}/biens`} className={`text-[13px] tracking-widest uppercase transition-colors ${linkClass}`}>
           {t('properties')}
-        </Link>
-        <Link href={`/${locale}/tarifs`} className={`text-[13px] tracking-widest uppercase transition-colors ${linkClass}`}>
+        </TransitionLink>
+        <TransitionLink href={`/${locale}/tarifs`} className={`text-[13px] tracking-widest uppercase transition-colors ${linkClass}`}>
           {t('tarifs')}
-        </Link>
-        <Link href={`/${locale}/contact`} className={`text-[13px] tracking-widest uppercase transition-colors ${linkClass}`}>
+        </TransitionLink>
+        <TransitionLink href={`/${locale}/contact`} className={`text-[13px] tracking-widest uppercase transition-colors ${linkClass}`}>
           {t('contact')}
-        </Link>
+        </TransitionLink>
       </div>
 
       {/* Desktop language switcher */}
@@ -125,34 +126,34 @@ export default function Navbar() {
             borderBottom: '0.5px solid rgba(255,255,255,0.1)',
           }}
         >
-          <Link
+          <TransitionLink
             href={`/${locale}`}
-            onClick={() => setMenuOpen(false)}
+            onNavigate={() => setMenuOpen(false)}
             className="px-6 py-4 text-[13px] tracking-widest text-white/80 uppercase hover:text-[#b08d57] transition-colors border-b border-white/10"
           >
             {t('home')}
-          </Link>
-          <Link
+          </TransitionLink>
+          <TransitionLink
             href={`/${locale}/biens`}
-            onClick={() => setMenuOpen(false)}
+            onNavigate={() => setMenuOpen(false)}
             className="px-6 py-4 text-[13px] tracking-widest text-white/80 uppercase hover:text-[#b08d57] transition-colors border-b border-white/10"
           >
             {t('properties')}
-          </Link>
-          <Link
+          </TransitionLink>
+          <TransitionLink
             href={`/${locale}/tarifs`}
-            onClick={() => setMenuOpen(false)}
+            onNavigate={() => setMenuOpen(false)}
             className="px-6 py-4 text-[13px] tracking-widest text-white/80 uppercase hover:text-[#b08d57] transition-colors border-b border-white/10"
           >
             {t('tarifs')}
-          </Link>
-          <Link
+          </TransitionLink>
+          <TransitionLink
             href={`/${locale}/contact`}
-            onClick={() => setMenuOpen(false)}
+            onNavigate={() => setMenuOpen(false)}
             className="px-6 py-4 text-[13px] tracking-widest text-white/80 uppercase hover:text-[#b08d57] transition-colors border-b border-white/10"
           >
             {t('contact')}
-          </Link>
+          </TransitionLink>
           <div className="flex gap-6 px-6 py-4">
             {['fr', 'en', 'he'].map((lang) => (
               <button

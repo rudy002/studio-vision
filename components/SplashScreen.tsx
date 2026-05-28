@@ -7,14 +7,20 @@ const VISION = ['V', 'i', 's', 'i', 'o', 'n'] as const;
 const LD = (i: number) => `${(0.55 + i * 0.055).toFixed(3)}s`;
 const TICK_DELAY = '1.430s';
 
+// Module-level flag: false on hard refresh, true after the splash has played
+// once in the current tab session. Never set server-side.
+let splashHasPlayed = false;
+
 export default function SplashScreen() {
-  const [show, setShow] = useState(true);
-  const [alive, setAlive] = useState(true);
+  // On SPA return-navigation splashHasPlayed is already true → skip entirely
+  const [alive, setAlive] = useState(!splashHasPlayed);
+  const [show,  setShow]  = useState(!splashHasPlayed);
   const ran = useRef(false);
 
   useEffect(() => {
-    if (ran.current) return;
+    if (ran.current || splashHasPlayed) return;
     ran.current = true;
+    splashHasPlayed = true;
 
     const t1 = window.setTimeout(() => setShow(false), 3400);
     const t2 = window.setTimeout(() => setAlive(false), 4300);

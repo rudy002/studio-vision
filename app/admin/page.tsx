@@ -3,12 +3,14 @@
 import { useState } from 'react';
 import { signIn, useSession } from 'next-auth/react';
 import AdminDashboard from '../../components/AdminDashboard';
+import { SpinRing } from '../../components/loaders';
 
 export default function AdminPage() {
   const { data: session, status } = useSession();
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
+  const [done, setDone] = useState(false);
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -22,14 +24,20 @@ export default function AdminPage() {
 
     if (result?.error) {
       setError('Mot de passe incorrect');
+      setLoading(false);
+    } else {
+      setLoading(false);
+      setDone(true);
     }
-    setLoading(false);
   };
 
   if (status === 'loading') {
     return (
-      <div className="min-h-screen flex items-center justify-center">
-        <p className="font-serif text-2xl text-[#1a1410]">...</p>
+      <div className="min-h-screen flex items-center justify-center gap-3">
+        <SpinRing size="sm" light />
+        <span className="text-[11px] tracking-[2px] uppercase text-[#6b5d4a]/70 font-light">
+          Synchronisation des médias
+        </span>
       </div>
     );
   }
@@ -77,10 +85,31 @@ export default function AdminPage() {
 
           <button
             type="submit"
-            disabled={loading}
-            className="mt-2 bg-[#1a1410] text-white text-[11px] tracking-[3px] uppercase py-4 rounded-full hover:bg-[#8b6914] transition-colors cursor-pointer disabled:opacity-50"
+            disabled={loading || done}
+            className={[
+              'mt-2 text-[11px] tracking-[3px] uppercase py-4 rounded-full transition-all duration-200 cursor-pointer flex items-center justify-center gap-2',
+              loading
+                ? 'bg-transparent border border-[rgba(176,141,87,0.55)] text-[#b08d57]'
+                : done
+                ? 'bg-transparent border border-[rgba(176,141,87,0.55)] text-[#b08d57]'
+                : 'bg-[#1a1410] text-white hover:bg-[#8b6914] disabled:opacity-50',
+            ].join(' ')}
           >
-            {loading ? '...' : 'Connexion'}
+            {loading ? (
+              <>
+                <SpinRing size="sm" />
+                Chargement…
+              </>
+            ) : done ? (
+              <>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                  <path d="M5 12l5 5L20 7" stroke="#b08d57" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                </svg>
+                Confirmé
+              </>
+            ) : (
+              'Connexion'
+            )}
           </button>
         </form>
       </div>

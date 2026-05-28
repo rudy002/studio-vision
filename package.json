@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "fetch-borders": "node scripts/fetch-israel-geojson.mjs",
-    "dev": "next dev",
+    "dev": "next dev --port 3000",
     "build": "next build",
     "start": "next start",
     "lint": "eslint"

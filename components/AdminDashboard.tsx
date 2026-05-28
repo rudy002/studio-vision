@@ -3,6 +3,7 @@
 import { useState, useEffect, useRef } from 'react';
 import Image from 'next/image';
 import { signOut } from 'next-auth/react';
+import { SpinRing, SpinIris } from './loaders';
 import { createClient } from '@supabase/supabase-js';
 
 const supabase = createClient(
@@ -68,6 +69,7 @@ export default function AdminDashboard() {
   const [photos, setPhotos] = useState<File[]>([]);
   const [video, setVideo] = useState<File | null>(null);
   const [loading, setLoading] = useState(false);
+  const [submitDone, setSubmitDone] = useState(false);
   const [activeTab, setActiveTab] = useState<'list' | 'add'>('list');
   const [editingId, setEditingId] = useState<string | null>(null);
   const [existingPhotos, setExistingPhotos] = useState<string[]>([]);
@@ -212,12 +214,17 @@ export default function AdminDashboard() {
       setVideo(null);
       setEditingId(null);
       setExistingPhotos([]);
-      setActiveTab('list');
+      setLoading(false);
+      setSubmitDone(true);
       fetchProperties();
+      setTimeout(() => {
+        setSubmitDone(false);
+        setActiveTab('list');
+      }, 1200);
     } catch (err) {
       console.error(err);
+      setLoading(false);
     }
-    setLoading(false);
   };
 
   const toggleStatus = async (id: string, currentStatus: string) => {
@@ -676,8 +683,14 @@ export default function AdminDashboard() {
                         onChange={(e) => setPhotos(Array.from(e.target.files || []))}
                         className="bg-white/50 border border-white/60 rounded-xl px-4 py-3 text-sm text-[#1a1410] outline-none cursor-pointer"
                       />
-                      {photos.length > 0 && (
+                      {photos.length > 0 && !loading && (
                         <p className="text-[10px] text-[#8b6914]">{photos.length} photo(s) sélectionnée(s)</p>
+                      )}
+                      {loading && photos.length > 0 && (
+                        <span className="flex items-center gap-2">
+                          <SpinIris size="sm" />
+                          <span className="text-[10px] text-[#8b6914]">Upload en cours…</span>
+                        </span>
                       )}
                     </div>
                     <div className="flex flex-col gap-2">
@@ -711,24 +724,51 @@ export default function AdminDashboard() {
               {openSection === FORM_SECTIONS.length - 1 ? (
                 <button
                   type="submit"
-                  disabled={loading}
-                  className="bg-[#1a1410] text-white text-[11px] tracking-[3px] uppercase px-10 py-4 rounded-full hover:bg-[#8b6914] transition-colors cursor-pointer disabled:opacity-50"
+                  disabled={loading || submitDone}
+                  className={[
+                    'text-[11px] tracking-[3px] uppercase px-10 py-4 rounded-full transition-all duration-200 cursor-pointer flex items-center gap-2',
+                    loading || submitDone
+                      ? 'bg-transparent border border-[rgba(176,141,87,0.55)] text-[#b08d57]'
+                      : 'bg-[#1a1410] text-white hover:bg-[#8b6914] disabled:opacity-50',
+                  ].join(' ')}
                 >
-                  {loading
-                    ? 'Publication en cours...'
-                    : editingId
-                    ? 'Enregistrer les modifications'
-                    : 'Publier le bien'}
+                  {loading ? (
+                    <>
+                      <SpinRing size="sm" light />
+                      Publication en cours…
+                    </>
+                  ) : submitDone ? (
+                    <>
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                        <path d="M5 12l5 5L20 7" stroke="#b08d57" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                      </svg>
+                      Confirmé
+                    </>
+                  ) : editingId ? (
+                    'Enregistrer les modifications'
+                  ) : (
+                    'Publier le bien'
+                  )}
                 </button>
               ) : (
                 <div className="flex gap-3">
                   {editingId && (
                     <button
                       type="submit"
-                      disabled={loading}
-                      className="text-[11px] tracking-[3px] uppercase px-8 py-4 rounded-full border border-[#1a1410] text-[#1a1410] hover:bg-[#1a1410] hover:text-white transition-colors cursor-pointer disabled:opacity-50"
+                      disabled={loading || submitDone}
+                      className={[
+                        'text-[11px] tracking-[3px] uppercase px-8 py-4 rounded-full transition-all duration-200 cursor-pointer flex items-center gap-2',
+                        loading || submitDone
+                          ? 'border border-[rgba(176,141,87,0.55)] text-[#b08d57]'
+                          : 'border border-[#1a1410] text-[#1a1410] hover:bg-[#1a1410] hover:text-white disabled:opacity-50',
+                      ].join(' ')}
                     >
-                      {loading ? '...' : 'Terminer'}
+                      {loading ? <SpinRing size="sm" light /> : submitDone ? (
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                          <path d="M5 12l5 5L20 7" stroke="#b08d57" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                        </svg>
+                      ) : null}
+                      {loading ? 'En cours…' : submitDone ? 'Confirmé' : 'Terminer'}
                     </button>
                   )}
                 <button

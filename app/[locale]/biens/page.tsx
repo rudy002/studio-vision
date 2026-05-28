@@ -7,6 +7,7 @@ import { useTranslations, useLocale } from 'next-intl';
 import { useRouter, useSearchParams, usePathname } from 'next/navigation';
 import PropertyCard, { Property } from '../../../components/PropertyCard';
 import PropertyModal from '../../../components/PropertyModal';
+import { SpinBar } from '../../../components/loaders';
 
 const MapView = dynamic(() => import('../../../components/MapView'), { ssr: false });
 
@@ -47,12 +48,67 @@ const DEFAULT_FILTERS: Filters = {
 // ── Skeleton card ──────────────────────────────────────────────
 function SkeletonCard() {
   return (
-    <div className="rounded-2xl overflow-hidden bg-white/3 border border-white/6 h-104 animate-pulse">
-      <div className="h-full flex flex-col justify-end p-5 gap-3">
-        <div className="h-2 w-20 rounded-full bg-white/10" />
-        <div className="h-5 w-3/4 rounded bg-white/8" />
-        <div className="h-3 w-1/2 rounded bg-white/6" />
-        <div className="mt-2 h-12 rounded-xl bg-white/6" />
+    <div className="rounded-2xl overflow-hidden border border-white/6 h-104 flex flex-col" style={{ background: 'rgba(255,255,255,0.03)' }}>
+      {/* Image placeholder — cream background with 2 pulsing gold bars */}
+      <div className="relative flex-1 flex flex-col items-center justify-center gap-3 overflow-hidden" style={{ background: '#0f1420' }}>
+        <div
+          className="h-px origin-left rounded-full"
+          style={{
+            width: '56px',
+            background: '#b08d57',
+            animation: 'spin-bar-pulse 1.4s ease-in-out infinite',
+          }}
+        />
+        <div
+          className="h-px origin-left rounded-full"
+          style={{
+            width: '32px',
+            background: '#b08d57',
+            animation: 'spin-bar-pulse 1.4s ease-in-out infinite',
+            animationDelay: '0.3s',
+          }}
+        />
+      </div>
+      {/* Text shimmer lines */}
+      <div className="p-5 flex flex-col gap-3">
+        <div
+          className="h-px rounded-full"
+          style={{
+            width: '80px',
+            backgroundImage: 'linear-gradient(90deg, #d4cdc4, #ede8df, #d4cdc4)',
+            backgroundSize: '200% 100%',
+            animation: 'spin-shimmer 1.6s linear infinite',
+          }}
+        />
+        <div
+          className="h-[5px] rounded"
+          style={{
+            width: '75%',
+            backgroundImage: 'linear-gradient(90deg, #d4cdc4, #ede8df, #d4cdc4)',
+            backgroundSize: '200% 100%',
+            animation: 'spin-shimmer 1.6s linear infinite',
+            animationDelay: '0.1s',
+          }}
+        />
+        <div
+          className="h-px rounded"
+          style={{
+            width: '50%',
+            backgroundImage: 'linear-gradient(90deg, #d4cdc4, #ede8df, #d4cdc4)',
+            backgroundSize: '200% 100%',
+            animation: 'spin-shimmer 1.6s linear infinite',
+            animationDelay: '0.2s',
+          }}
+        />
+        <div
+          className="mt-2 h-12 rounded-xl"
+          style={{
+            backgroundImage: 'linear-gradient(90deg, rgba(212,205,196,0.08), rgba(237,232,223,0.15), rgba(212,205,196,0.08))',
+            backgroundSize: '200% 100%',
+            animation: 'spin-shimmer 1.6s linear infinite',
+            animationDelay: '0.15s',
+          }}
+        />
       </div>
     </div>
   );
@@ -86,6 +142,8 @@ export default function BiensPage() {
 
   const [selected, setSelected] = useState<Property | null>(null);
   const [loading, setLoading] = useState(true);
+  const [tabLoading, setTabLoading] = useState(false);
+  const tabTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [filtersOpen, setFiltersOpen] = useState(false);
 
@@ -150,6 +208,13 @@ export default function BiensPage() {
     setSurfaceMaxInput('');
   }, []);
 
+  const setTypeWithTransition = useCallback((type: PropertyType) => {
+    if (tabTimerRef.current) clearTimeout(tabTimerRef.current);
+    setTabLoading(true);
+    setFilter('type', type);
+    tabTimerRef.current = setTimeout(() => setTabLoading(false), 380);
+  }, [setFilter]);
+
   const hasActiveFilters = useMemo(
     () =>
       filters.type !== 'all' ||
@@ -211,7 +276,7 @@ export default function BiensPage() {
         {/* Filtres type pills */}
         <div className="flex flex-wrap gap-2 mb-6">
           {PROPERTY_TYPES.map((type) => (
-            <button key={type} onClick={() => setFilter('type', type)} className={pillClass(filters.type === type)}>
+            <button key={type} onClick={() => setTypeWithTransition(type)} className={pillClass(filters.type === type)}>
               {t(`filters.${type}`)}
             </button>
           ))}
@@ -400,18 +465,27 @@ export default function BiensPage() {
           </div>
         )}
 
-        {/* Pas de résultats */}
-        {!loading && !error && filtered.length === 0 && (
-          <p className="font-serif text-2xl text-white/30 text-center py-24">
-            {t('noResults')}
-          </p>
+        {/* Tab transition overlay */}
+        {!loading && !error && tabLoading && (
+          <div className="flex flex-col items-center gap-4 py-24">
+            <SpinBar />
+            <p className="text-[11px] tracking-[2px] uppercase text-white/50">Chargement</p>
+          </div>
         )}
 
         {/* Grille de cards */}
-        {!loading && !error && filtered.length > 0 && (
+        {!loading && !error && !tabLoading && filtered.length > 0 && (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {filtered.map((property) => (
-              <div key={property.id} className="h-104">
+            {filtered.map((property, idx) => (
+              <div
+                key={property.id}
+                className="h-104"
+                style={{
+                  animation: 'sp-fade-in 0.35s ease forwards',
+                  animationDelay: `${Math.min(idx, 5) * 0.07}s`,
+                  opacity: 0,
+                }}
+              >
                 <PropertyCard
                   property={property}
                   onClick={() => setSelected(property)}
@@ -419,6 +493,13 @@ export default function BiensPage() {
               </div>
             ))}
           </div>
+        )}
+
+        {/* Pas de résultats après tab switch */}
+        {!loading && !error && !tabLoading && filtered.length === 0 && (
+          <p className="font-serif text-2xl text-white/30 text-center py-24">
+            {t('noResults')}
+          </p>
         )}
       </div>
 
