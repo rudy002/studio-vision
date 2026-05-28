@@ -29,7 +29,7 @@ export default async function Home({
   const fallbackImg = 'https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=800&q=80';
 
   return (
-    <main className="bg-[#0e1612] min-h-screen">
+    <main className="bg-[#0a0f1a] min-h-screen">
       <SplashScreen />
 
       <ScrollExperience
@@ -100,7 +100,7 @@ export default async function Home({
 
       {/* Biens en vedette */}
       {properties && properties.length > 0 && (
-        <section className="px-6 md:px-16 py-16 md:py-24 bg-[#0e1612]">
+        <section className="px-6 md:px-16 py-16 md:py-24 bg-[#0a0f1a]">
           <p className="text-[10px] tracking-[5px] text-[#c39553] uppercase mb-5">
             {th('sectionEyebrow')}
           </p>

@@ -33,7 +33,7 @@ export default function SplashScreen() {
     <div
       role="status"
       aria-live="polite"
-      className="fixed inset-0 z-[100] flex items-center justify-center bg-[#0a0f1a]"
+      className="fixed inset-0 z-100 flex items-center justify-center bg-[#0a0f1a]"
       style={{
         opacity: show ? 1 : 0,
         pointerEvents: show ? undefined : 'none',
@@ -50,7 +50,7 @@ export default function SplashScreen() {
       />
 
       {/* Stack */}
-      <div className="relative z-[1] flex flex-col items-center" style={{ gap: '28px' }}>
+      <div className="relative z-1 flex flex-col items-center" style={{ gap: '28px' }}>
 
         {/* Eyebrow */}
         <p

@@ -81,7 +81,7 @@ function SkeletonCard() {
           }}
         />
         <div
-          className="h-[5px] rounded"
+          className="h-1.25 rounded"
           style={{
             width: '75%',
             backgroundImage: 'linear-gradient(90deg, #d4cdc4, #ede8df, #d4cdc4)',
