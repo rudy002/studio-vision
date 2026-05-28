@@ -2,6 +2,7 @@ import { getTranslations } from 'next-intl/server';
 import { createClient } from '@supabase/supabase-js';
 import ScrollExperience from '../../components/blocks/ScrollExperience';
 import { FocusRail, FocusRailItem } from '../../components/ui/focus-rail';
+import SplashScreen from '../../components/SplashScreen';
 import Link from 'next/link';
 
 export default async function Home({
@@ -29,6 +30,7 @@ export default async function Home({
 
   return (
     <main className="bg-[#0e1612] min-h-screen">
+      <SplashScreen />
 
       <ScrollExperience
         ctaPrimaryHref={`/${locale}/tarifs`}
