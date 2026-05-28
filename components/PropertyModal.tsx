@@ -1,8 +1,8 @@
 'use client';
 
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useLocale, useTranslations } from 'next-intl';
-import { X, MapPin, Maximize2 } from 'lucide-react';
+import { X, MapPin, Maximize2, Share2 } from 'lucide-react';
 import { Property } from './PropertyCard';
 import { MediaCarousel, type CarouselMediaItem } from './ui/carousel-1';
 
@@ -17,6 +17,7 @@ export default function PropertyModal({
 }) {
   const locale = useLocale();
   const t = useTranslations('properties');
+  const [copied, setCopied] = useState(false);
 
   const title =
     locale === 'fr' ? property.title_fr
@@ -25,6 +26,24 @@ export default function PropertyModal({
 
   const intlLocale = locale === 'fr' ? 'fr-FR' : locale === 'he' ? 'he-IL' : 'en-US';
   const isAvailable = property.status === 'available';
+
+  const shareUrl = typeof window !== 'undefined'
+    ? `${window.location.origin}/${locale}/biens/${property.id}`
+    : '';
+
+  const handleShare = async () => {
+    if (navigator.share) {
+      try {
+        await navigator.share({ title: `${title} — Studio Vision`, url: shareUrl });
+      } catch { /* cancelled */ }
+    } else {
+      try {
+        await navigator.clipboard.writeText(shareUrl);
+        setCopied(true);
+        setTimeout(() => setCopied(false), 2200);
+      } catch { /* clipboard non dispo */ }
+    }
+  };
 
   const mediaItems: CarouselMediaItem[] = [
     ...(property.video_url ? [{ type: 'video' as const, url: property.video_url }] : []),
@@ -197,6 +216,22 @@ export default function PropertyModal({
               </p>
             </div>
           )}
+
+          {/* Share */}
+          <div className="px-5 pb-5 pt-4 md:px-7 md:pb-7">
+            <button
+              onClick={handleShare}
+              className="w-full flex items-center justify-center gap-2.5 py-3 rounded-xl text-[11px] tracking-[2px] uppercase transition-all duration-200 cursor-pointer"
+              style={{
+                background: copied ? 'rgba(176,141,87,0.15)' : 'rgba(255,255,255,0.04)',
+                border: `1px solid ${copied ? 'rgba(176,141,87,0.5)' : 'rgba(255,255,255,0.1)'}`,
+                color: copied ? '#b08d57' : 'rgba(255,255,255,0.5)',
+              }}
+            >
+              <Share2 className="h-3.5 w-3.5 shrink-0" strokeWidth={1.5} />
+              {copied ? t('shareCopied') : t('share')}
+            </button>
+          </div>
 
           <div className="flex-1" />
         </div>

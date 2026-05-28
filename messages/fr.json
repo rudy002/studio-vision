@@ -52,7 +52,9 @@
     "seeMore": "Voir le bien →",
     "noResults": "Aucun bien disponible pour le moment",
     "errorTitle": "Une erreur est survenue",
-    "retry": "Réessayer"
+    "retry": "Réessayer",
+    "share": "Partager",
+    "shareCopied": "Lien copié !"
   },
   "status": {
     "available": "Disponible",

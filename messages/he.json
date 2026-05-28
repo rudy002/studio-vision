@@ -52,7 +52,9 @@
     "seeMore": "צפה בנכס →",
     "noResults": "אין נכסים זמינים כרגע",
     "errorTitle": "אירעה שגיאה",
-    "retry": "נסה שוב"
+    "retry": "נסה שוב",
+    "share": "שיתוף",
+    "shareCopied": "הקישור הועתק!"
   },
   "status": {
     "available": "זמין",

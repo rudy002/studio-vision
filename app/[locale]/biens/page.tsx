@@ -164,6 +164,15 @@ export default function BiensPage() {
       });
   }, []);
 
+  // ── URL du modal → partage depuis la liste ─────────────────
+  useEffect(() => {
+    if (selected) {
+      window.history.replaceState(null, '', `/${locale}/biens/${selected.id}`);
+    } else {
+      window.history.replaceState(null, '', `/${locale}/biens`);
+    }
+  }, [selected, locale]);
+
   // ── Sync filtres → URL ──────────────────────────────────────
   useEffect(() => {
     const params = new URLSearchParams();
