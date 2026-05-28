@@ -63,6 +63,7 @@ export default async function Home({
           poster:    '/lior-photos/IMG_7583.JPEG', // cuisine dramatique vue mer
         }}
         texts={{
+          chapters:            tse.raw('chapters') as string[],
           introEyebrow:        tse('introEyebrow'),
           introTitleLine1:     tse('introTitleLine1'),
           introTitleAccent:    tse('introTitleAccent'),
@@ -73,6 +74,7 @@ export default async function Home({
           droneTitleAccent:    tse('droneTitleAccent'),
           visiteLead:          tse('visiteLead'),
           visiteCount:         tse('visiteCount'),
+          rooms:               tse.raw('rooms') as { num: string; title: string; accent: string; desc: string }[],
           hadmayaTag:          tse('hadmayaTag'),
           hadmayaTitle:        tse('hadmayaTitle'),
           hadmayaTitleAccent:  tse('hadmayaTitleAccent'),
@@ -84,6 +86,7 @@ export default async function Home({
           matterportTitle:     tse('matterportTitle'),
           matterportTitleAccent: tse('matterportTitleAccent'),
           matterportDesc:      tse('matterportDesc'),
+          matterportStats:     tse.raw('matterportStats') as { value: string; label: string }[],
           reelEyebrow:         tse('reelEyebrow'),
           reelTitleLine1:      tse('reelTitleLine1'),
           reelTitleAccent:     tse('reelTitleAccent'),

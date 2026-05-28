@@ -386,6 +386,9 @@
   transform: translateX(calc(var(--p, 0) * -75%));
   will-change: transform;
 }
+[dir="rtl"] .sv-act-3 .sv-rail {
+  transform: translateX(calc(var(--p, 0) * 75%));
+}
 .sv-act-3 .sv-room {
   width: 25%; height: 100%;
   position: relative;
@@ -408,6 +411,11 @@
   position: absolute; left: 56px; bottom: 80px;
   z-index: 3;
   color: #fff;
+}
+[dir="rtl"] .sv-act-3 .sv-room .sv-info {
+  left: auto;
+  right: 56px;
+  text-align: right;
 }
 .sv-act-3 .sv-room .sv-info .sv-num {
   font-family: var(--mono);
@@ -475,6 +483,10 @@
   content: ""; position: absolute; left: 0; top: 0; bottom: 0;
   background: var(--gold);
   width: calc(var(--p, 0) * 100%);
+}
+[dir="rtl"] .sv-act-3 .sv-progress::after {
+  left: auto;
+  right: 0;
 }
 
 /* Service badge */
@@ -919,6 +931,7 @@
 
   /* Acte 3 — visite horizontale */
   .sv-act-3 .sv-room .sv-info { left: 20px; bottom: 56px; }
+  [dir="rtl"] .sv-act-3 .sv-room .sv-info { left: auto; right: 20px; }
   .sv-act-3 .sv-room .sv-info p { display: none; }
   .sv-act-3 .sv-strip { padding: 20px 20px 0; }
   .sv-act-3 .sv-progress { left: 20px; right: 20px; bottom: 20px; }

@@ -160,7 +160,19 @@
     "reelTitleAccent": "autrement.",
     "reelTagline": "Photo · Drone · Matterport · Hadmaya",
     "ctaPrimary": "Découvrir nos tarifs →",
-    "ctaSecondary": "Nous contacter"
+    "ctaSecondary": "Nous contacter",
+    "chapters": ["01 — Studio Vision", "02 — Vue drone", "03 — Visite", "04 — Hadmaya", "05 — Matterport", "06 — Showreel"],
+    "rooms": [
+      { "num": "01 / 04 · Salon",         "title": "Lumière",         "accent": "traversante", "desc": "Cadrages larges au 16 mm, exposition équilibrée façade & intérieur — heure dorée privilégiée." },
+      { "num": "02 / 04 · Cuisine",       "title": "Détails",         "accent": "matières",    "desc": "Plans serrés sur les finitions, marbre, bois, laiton — le grain de l'image fait la différence." },
+      { "num": "03 / 04 · Chambre",       "title": "Volume &",        "accent": "intimité",    "desc": "Compositions feutrées, draps tendus, contre-jour maîtrisé pour révéler le calme du lieu." },
+      { "num": "04 / 04 · Salle de bain", "title": "Architecture du", "accent": "détail",      "desc": "Réflexions, miroirs, robinetterie — un soin maniaque pour transformer une pièce technique en bijou." }
+    ],
+    "matterportStats": [
+      { "value": "·01",  "label": "Scan 3D" },
+      { "value": "·1cm", "label": "Précision" },
+      { "value": "360°", "label": "Liberté" }
+    ]
   },
   "contact": {
     "eyebrow": "Contactez-nous",

@@ -6,6 +6,7 @@ import './scroll-experience.css';
 type Texts = {
   brand?: string;
   brandSub?: string;
+  chapters?: string[];
   introEyebrow?: string;
   introTitleLine1?: string;
   introTitleAccent?: string;
@@ -86,7 +87,8 @@ const DEFAULTS = {
 const DEFAULT_TEXTS: Required<Texts> = {
   brand: 'Studio Vision',
   brandSub: 'Cinématographie immobilière',
-  introEyebrow: 'Studio Vision · Israël · 2026',
+  chapters: ['01 — Studio Vision', '02 — Vue drone', '03 — Visite', '04 — Hadmaya', '05 — Matterport', '06 — Showreel'],
+  introEyebrow: 'Studio Vision · Israël',
   introTitleLine1: "L'art de révéler",
   introTitleAccent: 'chaque espace',
   introSubtitle: 'Photo · Vidéo drone · Matterport · Hadmaya',
@@ -242,7 +244,7 @@ export default function ScrollExperience({
     <div className="sv-root" ref={rootRef}>
       {/* Chapter indicator */}
       <aside className="sv-chapters" aria-label="Chapitres">
-        {['01 — Studio Vision', '02 — Vue drone', '03 — Visite', '04 — Hadmaya', '05 — Matterport', '06 — Showreel'].map((label, i) => (
+        {t.chapters.map((label, i) => (
           <button key={i} data-chapter={i + 1} aria-current={i === 0 ? 'true' : 'false'}>
             <span className="sv-label">{label}</span>
             <span className="sv-dot" />
