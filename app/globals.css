@@ -49,3 +49,24 @@ body {
 .leaflet-popup-tip-container {
   display: none;
 }
+
+/* ── Splash screen keyframes ── */
+@keyframes sp-letter {
+  to { opacity: 1; transform: translateY(0); filter: blur(0); }
+}
+@keyframes sp-fade-in {
+  to { opacity: 1; }
+}
+@keyframes sp-div {
+  to { width: 96px; }
+}
+@keyframes sp-dot-drop {
+  0%   { transform: translateY(-32px); opacity: 0; }
+  60%  { opacity: 1; }
+  100% { transform: translateY(0); opacity: 1; }
+}
+@keyframes sp-tick {
+  0%   { transform: scale(0.4); opacity: 0; }
+  35%  { opacity: 1; }
+  100% { transform: scale(2.8); opacity: 0; }
+}

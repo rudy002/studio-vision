@@ -181,5 +181,9 @@
       "seller": "Vendeur",
       "agent": "Agent immobilier"
     }
+  },
+  "splash": {
+    "eyebrow": "Cinématographie immobilière",
+    "baseline": "by Lior Haddad"
   }
 }

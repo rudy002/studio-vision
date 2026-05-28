@@ -181,5 +181,9 @@
       "seller": "Seller",
       "agent": "Real estate agent"
     }
+  },
+  "splash": {
+    "eyebrow": "Real estate cinematography",
+    "baseline": "by Lior Haddad"
   }
 }
