@@ -76,6 +76,7 @@ export default function AdminDashboard() {
   const [citySuggestions, setCitySuggestions] = useState<CityOption[]>([]);
   const [showSuggestions, setShowSuggestions] = useState(false);
   const [openSection, setOpenSection] = useState<number | null>(0);
+  const [showConfirmModal, setShowConfirmModal] = useState(false);
   const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   useEffect(() => {
@@ -174,8 +175,14 @@ export default function AdminDashboard() {
     setExistingPhotos((prev) => prev.filter((u) => u !== url));
   };
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
+  const handleFormKeyDown = (e: React.KeyboardEvent<HTMLFormElement>) => {
+    if (e.key === 'Enter' && (e.target as HTMLElement).tagName !== 'TEXTAREA') {
+      e.preventDefault();
+    }
+  };
+
+  const performSubmit = async () => {
+    setShowConfirmModal(false);
     setLoading(true);
 
     try {
@@ -419,9 +426,53 @@ export default function AdminDashboard() {
         </div>
       )}
 
+      {/* Modal de confirmation publication */}
+      {showConfirmModal && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center p-4"
+          style={{ background: 'rgba(26,20,16,0.55)', backdropFilter: 'blur(6px)' }}
+        >
+          <div
+            className="rounded-3xl p-10 max-w-sm w-full text-center"
+            style={{
+              background: 'rgba(255,255,255,0.92)',
+              backdropFilter: 'blur(20px)',
+              border: '0.5px solid rgba(255,255,255,0.7)',
+              boxShadow: '0 24px 64px rgba(0,0,0,0.18)',
+            }}
+          >
+            <p className="text-[9px] tracking-[3px] text-[#8b6914] uppercase mb-3">Confirmation</p>
+            <h3 className="font-serif text-xl font-light text-[#1a1410] mb-3">
+              {editingId ? 'Enregistrer les modifications ?' : 'Publier ce bien ?'}
+            </h3>
+            <p className="text-sm text-[#6b5d4a] font-light mb-8">
+              {editingId
+                ? 'Les modifications seront visibles immédiatement sur le site.'
+                : 'Ce bien sera visible immédiatement sur le site.'}
+            </p>
+            <div className="flex gap-3 justify-center">
+              <button
+                type="button"
+                onClick={() => setShowConfirmModal(false)}
+                className="text-[10px] tracking-[2px] uppercase px-6 py-3 rounded-full bg-white border border-[#1a1410]/20 text-[#6b5d4a] hover:bg-[#f5f0ea] transition-colors cursor-pointer"
+              >
+                Annuler
+              </button>
+              <button
+                type="button"
+                onClick={performSubmit}
+                className="text-[10px] tracking-[2px] uppercase px-8 py-3 rounded-full bg-[#1a1410] text-white hover:bg-[#8b6914] transition-colors cursor-pointer"
+              >
+                {editingId ? 'Enregistrer' : 'Publier'}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* Formulaire ajout / édition */}
       {activeTab === 'add' && (
-        <form onSubmit={handleSubmit} className="flex justify-center">
+        <form onSubmit={(e) => e.preventDefault()} onKeyDown={handleFormKeyDown} className="flex justify-center">
           <div
             className="rounded-3xl p-10 max-w-4xl w-full"
             style={{
@@ -723,7 +774,8 @@ export default function AdminDashboard() {
 
               {openSection === FORM_SECTIONS.length - 1 ? (
                 <button
-                  type="submit"
+                  type="button"
+                  onClick={() => setShowConfirmModal(true)}
                   disabled={loading || submitDone}
                   className={[
                     'text-[11px] tracking-[3px] uppercase px-10 py-4 rounded-full transition-all duration-200 cursor-pointer flex items-center gap-2',
@@ -754,7 +806,8 @@ export default function AdminDashboard() {
                 <div className="flex gap-3">
                   {editingId && (
                     <button
-                      type="submit"
+                      type="button"
+                      onClick={() => setShowConfirmModal(true)}
                       disabled={loading || submitDone}
                       className={[
                         'text-[11px] tracking-[3px] uppercase px-8 py-4 rounded-full transition-all duration-200 cursor-pointer flex items-center gap-2',
