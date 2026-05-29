@@ -54,10 +54,10 @@ export default function SplashScreen() {
 
         {/* Eyebrow */}
         <p
-          className="text-[20px] uppercase text-[#b08d57]"
+          className="text-[14px] md:text-[20px] uppercase text-[#b08d57] text-center px-4"
           style={{
             fontFamily: 'var(--font-jakarta), sans-serif',
-            letterSpacing: '0.36em',
+            letterSpacing: '0.28em',
             opacity: 0,
             animation: 'sp-fade-in 0.7s ease-out 0.2s forwards',
           }}
