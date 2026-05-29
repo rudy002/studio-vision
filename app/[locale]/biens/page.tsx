@@ -3,7 +3,7 @@
 import { useEffect, useState, useMemo, useCallback, useRef } from 'react';
 import dynamic from 'next/dynamic';
 import { createClient } from '@supabase/supabase-js';
-import { useTranslations, useLocale } from 'next-intl';
+import { useTranslations } from 'next-intl';
 import { useRouter, useSearchParams, usePathname } from 'next/navigation';
 import PropertyCard, { Property } from '../../../components/PropertyCard';
 import PropertyModal from '../../../components/PropertyModal';
@@ -116,12 +116,12 @@ function SkeletonCard() {
 
 export default function BiensPage() {
   const t = useTranslations('properties');
-  const locale = useLocale();
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
 
   const [properties, setProperties] = useState<Property[]>([]);
+  const [fetchTick, setFetchTick] = useState(0);
   const [filters, setFilters] = useState<Filters>(() => ({
     type: (searchParams.get('type') as PropertyType) || 'all',
     city: searchParams.get('city') || 'all',
@@ -149,7 +149,6 @@ export default function BiensPage() {
 
   // ── Fetch Supabase ──────────────────────────────────────────
   useEffect(() => {
-    setError(null);
     supabase
       .from('properties')
       .select('*')
@@ -162,7 +161,7 @@ export default function BiensPage() {
         }
         setLoading(false);
       });
-  }, []);
+  }, [fetchTick]);
 
   // ── Sync filtres → URL ──────────────────────────────────────
   useEffect(() => {
@@ -451,7 +450,7 @@ export default function BiensPage() {
             <p className="font-serif text-2xl text-white/40">{t('errorTitle')}</p>
             <p className="text-sm text-white/25 max-w-xs">{error}</p>
             <button
-              onClick={() => { setLoading(true); setError(null); }}
+              onClick={() => { setLoading(true); setError(null); setFetchTick((n) => n + 1); }}
               className="mt-4 text-[11px] tracking-[2px] uppercase text-[#c39553] border border-[#c39553]/40 px-6 py-2 rounded-lg hover:bg-[#c39553]/10 transition-colors cursor-pointer"
             >
               {t('retry')}
@@ -470,7 +469,7 @@ export default function BiensPage() {
         {!loading && !error && tabLoading && (
           <div className="flex flex-col items-center gap-4 py-24">
             <SpinBar />
-            <p className="text-[11px] tracking-[2px] uppercase text-white/50">Chargement</p>
+            <p className="text-[11px] tracking-[2px] uppercase text-white/50">{t('loading')}</p>
           </div>
         )}
 

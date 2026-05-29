@@ -16,7 +16,6 @@ export default function Navbar() {
   const lastScrollY = useRef(0);
 
   const isHome = pathname === `/${locale}` || pathname === `/${locale}/`;
-  const isLight = false;
 
   useEffect(() => {
     const nav = navRef.current;
@@ -54,13 +53,13 @@ export default function Navbar() {
     ? { background: 'rgba(10,15,26,0.92)', backdropFilter: 'blur(14px)', borderBottom: '1px solid rgba(255,255,255,0.07)' }
     : { background: 'transparent' };
 
-  const logoClass = isLight ? 'text-[#1c1917]' : 'text-white';
-  const linkClass = isLight ? 'text-[#4a4540] hover:text-[#b08d57]' : 'text-white/80 hover:text-white';
-  const burgerClass = isLight ? 'text-[#1c1917]' : 'text-white';
+  const logoClass = 'text-white';
+  const linkClass = 'text-white/80 hover:text-white';
+  const burgerClass = 'text-white';
 
   const langClass = (lang: string) => {
     if (locale === lang) return 'text-[#b08d57] border-b border-[#b08d57]';
-    return isLight ? 'text-[#8a8078] hover:text-[#b08d57]' : 'text-white/60 hover:text-white';
+    return 'text-white/60 hover:text-white';
   };
 
   return (

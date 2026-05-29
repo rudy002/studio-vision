@@ -7,7 +7,7 @@ import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import { Property } from './PropertyCard';
 
-delete (L.Icon.Default.prototype as any)._getIconUrl;
+delete (L.Icon.Default.prototype as L.Icon.Default & { _getIconUrl?: unknown })._getIconUrl;
 L.Icon.Default.mergeOptions({
   iconRetinaUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-icon-2x.png',
   iconUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-icon.png',
@@ -36,6 +36,9 @@ const WORLD_RING: [number, number][] = [
 
 const israelBounds = [[29.4, 33.8], [33.4, 35.9]] as L.LatLngBoundsExpression;
 
+type GeoJSONGeometry = { type: 'Polygon'; coordinates: number[][][] } | { type: 'MultiPolygon'; coordinates: number[][][][] };
+type GeoJSONFeature = { type: 'Feature'; properties: Record<string, unknown>; geometry: GeoJSONGeometry };
+
 interface MapViewProps {
   properties: Property[];
   onPropertyClick: (property: Property) => void;
@@ -43,7 +46,7 @@ interface MapViewProps {
 }
 
 export default function MapView({ properties, onPropertyClick, className = 'h-130' }: MapViewProps) {
-  const [maskFeature, setMaskFeature] = useState<any>(null);
+  const [maskFeature, setMaskFeature] = useState<GeoJSONFeature | null>(null);
 
   useEffect(() => {
     Promise.all([
@@ -52,7 +55,7 @@ export default function MapView({ properties, onPropertyClick, className = 'h-13
     ]).then(([israelData, westBankData]) => {
       const holeRings: number[][][] = [];
 
-      const addRings = (geom: any) => {
+      const addRings = (geom: GeoJSONGeometry | null | undefined) => {
         if (!geom) return;
         if (geom.type === 'Polygon') {
           holeRings.push(geom.coordinates[0]);

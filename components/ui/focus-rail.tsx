@@ -67,7 +67,7 @@ export function FocusRail({
       const isHorizontal = Math.abs(e.deltaX) > Math.abs(e.deltaY);
       const delta = isHorizontal ? e.deltaX : e.deltaY;
       if (Math.abs(delta) > 20) {
-        delta > 0 ? handleNext() : handlePrev();
+        if (delta > 0) { handleNext(); } else { handlePrev(); }
         lastWheelTime.current = now;
       }
     },

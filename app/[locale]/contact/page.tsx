@@ -9,6 +9,7 @@ export default function ContactPage() {
   const isHe = locale === 'he';
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
+  const [submitError, setSubmitError] = useState(false);
   const [visible, setVisible] = useState(false);
   const [form, setForm] = useState({
     firstname: '', lastname: '', email: '', phone: '', role: '', message: '',
@@ -26,15 +27,21 @@ export default function ContactPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
+    setSubmitError(false);
     try {
       const res = await fetch('/api/contact', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(form),
       });
-      if (res.ok) setSuccess(true);
+      if (res.ok) {
+        setSuccess(true);
+      } else {
+        setSubmitError(true);
+      }
     } catch (err) {
       console.error(err);
+      setSubmitError(true);
     }
     setLoading(false);
   };
@@ -218,6 +225,12 @@ export default function ContactPage() {
                       placeholder={t('form.message')}
                       className={inputClass + ' resize-none'} />
                   </div>
+
+                  {submitError && (
+                    <p className={`text-red-400/80 ${isHe ? 'text-sm' : 'text-[11px] tracking-[1px]'}`}>
+                      {t('form.error')}
+                    </p>
+                  )}
 
                   <button
                     type="submit"

@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useMemo, useRef } from 'react';
 import Image from 'next/image';
 import { signOut } from 'next-auth/react';
 import { SpinRing, SpinIris } from './loaders';
@@ -67,7 +67,7 @@ export default function AdminDashboard() {
   const [properties, setProperties] = useState<Property[]>([]);
   const [form, setForm] = useState(emptyForm);
   const [photos, setPhotos] = useState<File[]>([]);
-  const [photoPreviews, setPhotoPreviews] = useState<string[]>([]);
+  const photoPreviews = useMemo(() => photos.map((f) => URL.createObjectURL(f)), [photos]);
   const [video, setVideo] = useState<File | null>(null);
   const [loading, setLoading] = useState(false);
   const [submitDone, setSubmitDone] = useState(false);
@@ -81,14 +81,8 @@ export default function AdminDashboard() {
   const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   useEffect(() => {
-    const urls = photos.map((f) => URL.createObjectURL(f));
-    setPhotoPreviews(urls);
-    return () => urls.forEach((u) => URL.revokeObjectURL(u));
-  }, [photos]);
-
-  useEffect(() => {
-    fetchProperties();
-  }, []);
+    return () => photoPreviews.forEach((u) => URL.revokeObjectURL(u));
+  }, [photoPreviews]);
 
   const fetchProperties = async () => {
     const { data } = await supabase
@@ -97,6 +91,11 @@ export default function AdminDashboard() {
       .order('created_at', { ascending: false });
     setProperties(data || []);
   };
+
+  useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    fetchProperties();
+  }, []);
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>,

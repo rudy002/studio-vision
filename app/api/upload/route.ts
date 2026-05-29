@@ -23,17 +23,6 @@ export async function POST(request: NextRequest) {
     const bytes = await file.arrayBuffer();
     const buffer = Buffer.from(bytes);
 
-    // Nettoie le nom : décode HTML entities, supprime tout caractère spécial
-    const cleanName = file.name
-      .replace(/&amp;/g, '-')
-      .replace(/&#x5[Bb];/gi, '-')
-      .replace(/&#x5[Dd];/gi, '-')
-      .replace(/ampx5[Bb]/gi, '-')
-      .replace(/ampx5[Dd]/gi, '-')
-      .replace(/[^a-zA-Z0-9._-]/g, '-')
-      .replace(/-+/g, '-')
-      .toLowerCase();
-
     const ext = file.name.split('.').pop()?.toLowerCase() || 'mp4';
     const filename = `${folder}/${Date.now()}.${ext}`;
 
