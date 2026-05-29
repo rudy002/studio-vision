@@ -195,9 +195,9 @@ export function FocusRail({
         </motion.div>
 
         {/* Info + contrôles */}
-        <div className="mx-auto mt-10 flex w-full max-w-4xl flex-col items-center justify-between gap-6 md:flex-row pointer-events-auto">
+        <div className="mx-auto mt-4 md:mt-10 flex w-full max-w-4xl flex-col items-center justify-between gap-4 md:gap-6 md:flex-row pointer-events-auto">
           {/* Titre / meta */}
-          <div className="flex flex-1 flex-col items-center text-center md:items-start md:text-left h-28 justify-center">
+          <div className="flex flex-1 flex-col items-center text-center md:items-start md:text-left h-auto md:h-28 justify-center">
             <AnimatePresence mode="wait">
               <motion.div
                 key={activeItem.id}
@@ -208,17 +208,17 @@ export function FocusRail({
                 className="space-y-1"
               >
                 {activeItem.meta && (
-                  <span className="text-[10px] font-medium uppercase tracking-[0.35em]"
+                  <span className="hidden md:inline text-[10px] font-medium uppercase tracking-[0.35em]"
                     style={{ color: '#c39553' }}>
                     {activeItem.meta}
                   </span>
                 )}
-                <h2 className="text-2xl font-light tracking-tight md:text-3xl text-white"
+                <h2 className="text-xl md:text-3xl font-light tracking-tight text-white"
                   style={{ fontFamily: 'var(--font-serif, "Cormorant Garamond", serif)' }}>
                   {activeItem.title}
                 </h2>
                 {activeItem.description && (
-                  <p className="max-w-md text-sm" style={{ color: 'rgba(239,231,214,0.55)' }}>
+                  <p className="hidden md:block max-w-md text-sm" style={{ color: 'rgba(239,231,214,0.55)' }}>
                     {activeItem.description}
                   </p>
                 )}
