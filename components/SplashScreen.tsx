@@ -13,8 +13,9 @@ let splashHasPlayed = false;
 
 export default function SplashScreen() {
   // On SPA return-navigation splashHasPlayed is already true → skip entirely
-  const [alive, setAlive] = useState(!splashHasPlayed);
-  const [show,  setShow]  = useState(!splashHasPlayed);
+  const [alive,       setAlive]       = useState(!splashHasPlayed);
+  const [show,        setShow]        = useState(!splashHasPlayed);
+  const [showContent, setShowContent] = useState(!splashHasPlayed);
   const ran = useRef(false);
 
   useEffect(() => {
@@ -22,9 +23,12 @@ export default function SplashScreen() {
     ran.current = true;
     splashHasPlayed = true;
 
+    // Text fades out first so the background overlay is already empty
+    // when the container itself starts fading — avoids overlay with Navbar
+    const t0 = window.setTimeout(() => setShowContent(false), 3000);
     const t1 = window.setTimeout(() => setShow(false), 3400);
     const t2 = window.setTimeout(() => setAlive(false), 4300);
-    return () => { window.clearTimeout(t1); window.clearTimeout(t2); };
+    return () => { window.clearTimeout(t0); window.clearTimeout(t1); window.clearTimeout(t2); };
   }, []);
 
   if (!alive) return null;
@@ -49,8 +53,11 @@ export default function SplashScreen() {
         }}
       />
 
-      {/* Stack */}
-      <div className="relative z-1 flex flex-col items-center" style={{ gap: '28px' }}>
+      {/* Stack — fades out before the container background so text never overlaps Navbar */}
+      <div
+        className="relative z-1 flex flex-col items-center"
+        style={{ gap: '28px', opacity: showContent ? 1 : 0, transition: 'opacity 0.35s ease-in' }}
+      >
 
         {/* Eyebrow */}
         <p

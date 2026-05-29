@@ -397,7 +397,7 @@ export default function ScrollExperience({
           </video>
           <div className="sv-overlay" />
           <div className="sv-reel-frame" />
-          <div className="sv-reel-info"><span className="sv-rec" />REEL · 2026</div>
+          <div className="sv-reel-info"><span className="sv-rec" />REC</div>
           <div className="sv-reel-meta"><strong>{t.brand}</strong>{t.brandSub}</div>
           <div className="sv-center-block">
             <span className="sv-eyebrow">{t.reelEyebrow}</span>

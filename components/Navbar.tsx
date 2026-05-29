@@ -74,7 +74,7 @@ export default function Navbar() {
         className={`font-serif text-xl tracking-widest uppercase transition-colors ${logoClass}`}
       >
         Studio<span className="text-[#b08d57]">.</span>Vision
-        <span className="text-[10px] tracking-wider font-sans font-light opacity-70 ml-2 normal-case">by Lior Haddad</span>
+        <span className="hidden md:inline text-[10px] tracking-wider font-sans font-light opacity-70 ml-2 normal-case">by Lior Haddad</span>
       </TransitionLink>
 
       {/* Desktop links */}

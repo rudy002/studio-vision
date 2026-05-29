@@ -840,7 +840,7 @@
 .sv-act-6 .sv-reel-frame::before { top: -1px; left: -1px; border-right: 0; border-bottom: 0; }
 .sv-act-6 .sv-reel-frame::after  { bottom: -1px; right: -1px; border-left: 0; border-top: 0; }
 .sv-act-6 .sv-reel-info {
-  position: absolute; left: 64px; top: 64px;
+  position: absolute; left: 64px; bottom: 64px;
   font-family: var(--mono);
   font-size: 10px;
   letter-spacing: 0.32em;
@@ -855,7 +855,7 @@
 @keyframes blink { 50% { opacity: 0.2; } }
 
 .sv-act-6 .sv-reel-meta {
-  position: absolute; right: 64px; top: 64px;
+  position: absolute; right: 64px; top: 90px;
   font-family: var(--mono);
   font-size: 10px; letter-spacing: 0.28em; color: var(--white-60);
   text-align: right;
@@ -972,8 +972,8 @@
 
   /* Acte 6 — showreel */
   .sv-act-6 .sv-reel-frame { inset: 12px; }
-  .sv-act-6 .sv-reel-info { left: 20px; top: 24px; }
-  .sv-act-6 .sv-reel-meta { right: 20px; top: 24px; }
+  .sv-act-6 .sv-reel-info { left: 20px; top: auto; bottom: 20px; transform: none; }
+  .sv-act-6 .sv-reel-meta { right: 20px; top: 76px; }
   .sv-act-6 .sv-cta-row {
     flex-direction: column;
     align-items: stretch;
