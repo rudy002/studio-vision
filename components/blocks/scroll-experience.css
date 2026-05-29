@@ -923,6 +923,7 @@
 
   /* Acte 1 */
   .sv-act-1 .sv-frame { inset: 14px; }
+  .sv-act-1 .sv-subtitle { letter-spacing: 0.22em; text-align: center; padding: 0 16px; }
 
   /* Acte 2 — drone HUD */
   .sv-act-2 .sv-hud { inset: 18px; font-size: 9px; }
