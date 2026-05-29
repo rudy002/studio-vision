@@ -1,22 +1,61 @@
 'use client';
 
+import { useEffect, useState, useRef } from 'react';
+
 export default function WhatsAppButton() {
   const url = 'https://wa.me/972537084374';
+  const [visible, setVisible] = useState(true);
+  const hideTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  useEffect(() => {
+    const onScroll = () => {
+      setVisible(false);
+      if (hideTimer.current) clearTimeout(hideTimer.current);
+      hideTimer.current = setTimeout(() => setVisible(true), 1500);
+    };
+
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => {
+      window.removeEventListener('scroll', onScroll);
+      if (hideTimer.current) clearTimeout(hideTimer.current);
+    };
+  }, []);
 
   return (
     <>
       <style>{`
         @keyframes wa-float {
           0%, 100% { transform: translateY(0px); }
-          50% { transform: translateY(-8px); }
-        }
-        @keyframes wa-ping {
-          0% { transform: scale(1); opacity: 0.55; }
-          100% { transform: scale(1.8); opacity: 0; }
+          50% { transform: translateY(-6px); }
         }
         .wa-float { animation: wa-float 3s ease-in-out infinite; }
-        .wa-float:hover { animation: none; transform: scale(1.1) !important; transition: transform 0.2s; }
-        .wa-ping { animation: wa-ping 2s ease-out infinite; }
+        .wa-float:hover { animation: none; transform: scale(1.08) !important; transition: transform 0.2s; }
+        .wa-btn {
+          position: fixed;
+          bottom: 24px;
+          right: 24px;
+          z-index: 99999;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          text-decoration: none;
+          width: 48px;
+          height: 48px;
+          transition: opacity 0.35s ease, transform 0.35s ease;
+        }
+        .wa-btn.hidden {
+          opacity: 0;
+          transform: translateY(12px);
+          pointer-events: none;
+        }
+        @media (min-width: 768px) {
+          .wa-btn {
+            width: 56px;
+            height: 56px;
+            bottom: 28px;
+            right: 28px;
+          }
+        }
       `}</style>
 
       <a
@@ -24,53 +63,28 @@ export default function WhatsAppButton() {
         target="_blank"
         rel="noopener noreferrer"
         aria-label="WhatsApp"
-        style={{
-          position: 'fixed',
-          bottom: '28px',
-          right: '28px',
-          zIndex: 99999,
-          width: '60px',
-          height: '60px',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          textDecoration: 'none',
-        }}
+        className={`wa-btn${visible ? '' : ' hidden'}`}
       >
-        {/* Anneau de pulsation */}
-        <span
-          className="wa-ping"
-          style={{
-            position: 'absolute',
-            inset: 0,
-            borderRadius: '50%',
-            backgroundColor: '#25D366',
-            display: 'block',
-          }}
-        />
-
-        {/* Bouton vert flottant */}
         <span
           className="wa-float"
           style={{
             position: 'relative',
-            width: '60px',
-            height: '60px',
+            width: '100%',
+            height: '100%',
             borderRadius: '50%',
             backgroundColor: '#25D366',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-            boxShadow: '0 4px 20px rgba(37,211,102,0.55)',
+            boxShadow: '0 4px 16px rgba(37,211,102,0.4)',
             cursor: 'pointer',
           }}
         >
-          {/* Logo WhatsApp — chemin FontAwesome officiel, viewBox 448×512 */}
           <svg
             xmlns="http://www.w3.org/2000/svg"
             viewBox="0 0 448 512"
-            width="32"
-            height="32"
+            width="26"
+            height="26"
             fill="white"
             style={{ display: 'block', flexShrink: 0 }}
           >
