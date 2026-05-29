@@ -928,6 +928,9 @@
   /* Acte 2 — drone HUD */
   .sv-act-2 .sv-hud { inset: 18px; font-size: 9px; }
   .sv-act-2 .sv-hud .sv-crosshair { width: 140px; height: 140px; }
+  .sv-act-2 .sv-hud .sv-corner.sv-bl,
+  .sv-act-2 .sv-hud .sv-corner.sv-br { display: none; }
+  .sv-act-2 .sv-hud .sv-corner.sv-bc { grid-column: 1 / -1; justify-self: center; white-space: nowrap; }
   .sv-act-2 .sv-caption { bottom: 72px; }
 
   /* Acte 3 — visite horizontale */

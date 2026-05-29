@@ -279,8 +279,6 @@ export default function ScrollExperience({
           <div className="sv-interior" style={{ backgroundImage: `linear-gradient(180deg, rgba(10,15,26,0.30) 0%, rgba(10,15,26,0.45) 100%), url(${imgs.interior})` }} />
           <div className="sv-vignette" />
           <div className="sv-hud">
-            <div className="sv-corner sv-tl"><span>CAM 01 · A7S III</span></div>
-            <div className="sv-corner sv-tr"><span className="sv-altitude">ALT 142 m</span></div>
             <div className="sv-crosshair">
               <span className="sv-tl" /><span className="sv-tr" /><span className="sv-bl" /><span className="sv-br" />
             </div>
