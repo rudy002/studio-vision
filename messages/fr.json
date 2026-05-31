@@ -162,7 +162,7 @@
     "reelTagline": "Photo · Drone · Matterport · Hadmaya",
     "ctaPrimary": "Découvrir nos tarifs →",
     "ctaSecondary": "Nous contacter",
-    "chapters": ["01 — Studio Vision", "02 — Vue drone", "03 — Visite", "04 — Hadmaya", "05 — Matterport", "06 — Showreel"],
+    "chapters": ["01 — Studio Vision", "02 — Vue drone", "03 — Visite", "04 — Hadmaya", "05 — Matterport", "06 — Showreel", "07 — Biens en vedette"],
     "rooms": [
       { "num": "01 / 04 · Salon",         "title": "Lumière",         "accent": "traversante", "desc": "Cadrages larges au 16 mm, exposition équilibrée façade & intérieur — heure dorée privilégiée." },
       { "num": "02 / 04 · Cuisine",       "title": "Détails",         "accent": "matières",    "desc": "Plans serrés sur les finitions, marbre, bois, laiton — le grain de l'image fait la différence." },

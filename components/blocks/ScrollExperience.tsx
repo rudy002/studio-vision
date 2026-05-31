@@ -87,7 +87,7 @@ const DEFAULTS = {
 const DEFAULT_TEXTS: Required<Texts> = {
   brand: 'Studio Vision',
   brandSub: 'Cinématographie immobilière',
-  chapters: ['01 — Studio Vision', '02 — Vue drone', '03 — Visite', '04 — Hadmaya', '05 — Matterport', '06 — Showreel'],
+  chapters: ['01 — Studio Vision', '02 — Vue drone', '03 — Visite', '04 — Hadmaya', '05 — Matterport', '06 — Showreel', '07 — Biens en vedette'],
   introEyebrow: 'Studio Vision · Israël',
   introTitleLine1: "L'art de révéler",
   introTitleAccent: 'chaque espace',
@@ -148,6 +148,7 @@ export default function ScrollExperience({
     const sections = Array.from(root.querySelectorAll<HTMLElement>('[data-act]'));
     const chapterButtons = Array.from(root.querySelectorAll<HTMLButtonElement>('[data-chapter]'));
     const chaptersEl = root.querySelector<HTMLElement>('.sv-chapters');
+    const externalSection = document.querySelector<HTMLElement>('[data-sv-chapter="7"]');
     const video = videoRef.current;
 
     const clamp = (v: number, lo: number, hi: number) => Math.max(lo, Math.min(hi, v));
@@ -158,10 +159,12 @@ export default function ScrollExperience({
       let bestScore = -Infinity;
 
       const rootRect = root.getBoundingClientRect();
+      const extRect = externalSection?.getBoundingClientRect();
       const rootInView = rootRect.bottom > 0 && rootRect.top < vh;
+      const extInView = extRect ? (extRect.bottom > 0 && extRect.top < vh) : false;
       if (chaptersEl) {
-        chaptersEl.style.opacity = rootInView ? '' : '0';
-        chaptersEl.style.pointerEvents = rootInView ? '' : 'none';
+        chaptersEl.style.opacity = (rootInView || extInView) ? '' : '0';
+        chaptersEl.style.pointerEvents = (rootInView || extInView) ? '' : 'none';
       }
 
       sections.forEach((s, i) => {
@@ -188,6 +191,13 @@ export default function ScrollExperience({
         const visible = Math.max(0, visibleBottom - visibleTop);
         if (visible > bestScore) { bestScore = visible; activeIndex = i; }
       });
+
+      if (extRect) {
+        const visibleTop = Math.max(0, extRect.top);
+        const visibleBottom = Math.min(vh, extRect.bottom);
+        const visible = Math.max(0, visibleBottom - visibleTop);
+        if (visible > bestScore) { bestScore = visible; activeIndex = sections.length; }
+      }
 
       chapterButtons.forEach((b, i) => {
         b.setAttribute('aria-current', i === activeIndex ? 'true' : 'false');
@@ -219,7 +229,10 @@ export default function ScrollExperience({
 
     const chapterHandlers: Array<() => void> = [];
     chapterButtons.forEach((b, i) => {
-      const fn = () => sections[i]?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      const fn = () => {
+        const target = i < sections.length ? sections[i] : externalSection;
+        target?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      };
       b.addEventListener('click', fn);
       chapterHandlers.push(() => b.removeEventListener('click', fn));
     });
