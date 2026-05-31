@@ -64,6 +64,7 @@
   flex-direction: column;
   gap: 18px;
   pointer-events: auto;
+  transition: opacity 0.4s ease;
 }
 .sv-chapters button {
   appearance: none;

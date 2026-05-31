@@ -147,6 +147,7 @@ export default function ScrollExperience({
 
     const sections = Array.from(root.querySelectorAll<HTMLElement>('[data-act]'));
     const chapterButtons = Array.from(root.querySelectorAll<HTMLButtonElement>('[data-chapter]'));
+    const chaptersEl = root.querySelector<HTMLElement>('.sv-chapters');
     const video = videoRef.current;
 
     const clamp = (v: number, lo: number, hi: number) => Math.max(lo, Math.min(hi, v));
@@ -155,6 +156,13 @@ export default function ScrollExperience({
       const vh = window.innerHeight;
       let activeIndex = 0;
       let bestScore = -Infinity;
+
+      const rootRect = root.getBoundingClientRect();
+      const rootInView = rootRect.bottom > 0 && rootRect.top < vh;
+      if (chaptersEl) {
+        chaptersEl.style.opacity = rootInView ? '' : '0';
+        chaptersEl.style.pointerEvents = rootInView ? '' : 'none';
+      }
 
       sections.forEach((s, i) => {
         const rect = s.getBoundingClientRect();
@@ -191,6 +199,8 @@ export default function ScrollExperience({
           const rect = act6.getBoundingClientRect();
           if (rect.top < vh * 0.6 && rect.bottom > 0 && video.paused) {
             video.play().catch(() => {});
+          } else if ((rect.bottom <= 0 || rect.top >= vh) && !video.paused) {
+            video.pause();
           }
         }
       }

@@ -100,7 +100,7 @@ export default async function Home({
 
       {/* Biens en vedette */}
       {properties && properties.length > 0 && (
-        <section className="px-6 md:px-16 py-16 md:py-24 bg-[#0a0f1a]">
+        <section className="px-6 md:px-16 py-16 md:pt-10 md:pb-24 bg-[#0a0f1a] min-h-screen">
           <style>{`@media (max-width: 767px) { .fp-header { margin-top: 80px; } }`}</style>
           <div className="fp-header flex flex-col gap-4 md:flex-row md:justify-between md:items-end mb-10 md:mb-12">
             <div>
