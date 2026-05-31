@@ -101,13 +101,16 @@ export default async function Home({
       {/* Biens en vedette */}
       {properties && properties.length > 0 && (
         <section className="px-6 md:px-16 py-16 md:py-24 bg-[#0a0f1a]">
-          <p className="text-[10px] tracking-[5px] text-[#c39553] uppercase mb-5">
-            {th('sectionEyebrow')}
-          </p>
-          <div className="flex flex-col gap-4 md:flex-row md:justify-between md:items-end mb-10 md:mb-12">
-            <h2 className="font-serif text-3xl md:text-5xl font-light text-white">
-              {th('sectionTitle')}
-            </h2>
+          <style>{`@media (max-width: 767px) { .fp-header { margin-top: 80px; } }`}</style>
+          <div className="fp-header flex flex-col gap-4 md:flex-row md:justify-between md:items-end mb-10 md:mb-12">
+            <div>
+              <p className="text-[10px] tracking-[5px] text-[#c39553] uppercase mb-1">
+                {th('sectionEyebrow')}
+              </p>
+              <h2 className="font-serif text-3xl md:text-5xl font-light text-white">
+                {th('sectionTitle')}
+              </h2>
+            </div>
             <Link
               href={`/${locale}/biens`}
               className="text-[11px] tracking-[3px] uppercase text-white border-b-2 border-[#c39553] pb-1 hover:text-[#c39553] transition-colors self-start md:self-auto"
