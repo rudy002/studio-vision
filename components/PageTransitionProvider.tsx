@@ -78,7 +78,7 @@ export function PageTransitionProvider({ children }: { children: ReactNode }) {
       {phase !== 'idle' && (
         <div
           key={phase}
-          className="page-curtain fixed inset-0 z-[200] bg-[#0a0f1a] will-change-transform"
+          className="page-curtain fixed inset-0 z-200 bg-[#0a0f1a] will-change-transform"
           style={overlayStyle}
           onAnimationEnd={phase !== 'navigating' ? handleAnimEnd : undefined}
           aria-hidden="true"

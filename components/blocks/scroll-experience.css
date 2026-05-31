@@ -71,7 +71,8 @@
   background: transparent;
   border: 0;
   cursor: pointer;
-  display: flex; align-items: center; gap: 12px;
+  position: relative;
+  display: flex; align-items: center;
   color: var(--white-40);
   font-family: var(--sans);
   font-size: 9px;
@@ -93,6 +94,10 @@
   background: var(--gold);
 }
 .sv-chapters button .sv-label {
+  position: absolute;
+  right: 100%;
+  padding-right: 12px;
+  white-space: nowrap;
   opacity: 0;
   transform: translateX(8px);
   transition: opacity 0.3s ease, transform 0.3s ease;
@@ -203,7 +208,7 @@
   opacity: calc(1 - var(--p, 0));
 }
 .sv-act-1 .sv-frame {
-  position: absolute; inset: 28px;
+  position: absolute; inset: 64px 28px 28px;
   border: 1px solid rgba(176, 141, 87, 0.18);
   pointer-events: none;
   transform: scale(calc(1 + var(--p, 0) * 0.06));
@@ -923,7 +928,7 @@
   .sv-chapters button .sv-label { display: none; }
 
   /* Acte 1 */
-  .sv-act-1 .sv-frame { inset: 14px; }
+  .sv-act-1 .sv-frame { inset: 64px 14px 14px; }
   .sv-act-1 .sv-subtitle { letter-spacing: 0.22em; text-align: center; padding: 0 16px; }
 
   /* Acte 2 — drone HUD */
