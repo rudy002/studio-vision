@@ -833,7 +833,7 @@
   pointer-events: none;
 }
 .sv-act-6 .sv-reel-frame {
-  position: absolute; inset: 36px;
+  position: absolute; inset: 50px 36px 36px;
   border: 1px solid rgba(255,255,255,0.12);
   pointer-events: none;
 }
