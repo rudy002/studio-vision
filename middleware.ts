@@ -6,15 +6,26 @@ const handleI18nRouting = createMiddleware({
   defaultLocale: 'en'
 });
 
+const locales = ['fr', 'en', 'he'];
+
 export function middleware(request: NextRequest) {
   const pathname = request.nextUrl.pathname;
-  
-  // Ne pas rediriger les routes admin et api
+
   if (pathname.startsWith('/admin') || pathname.startsWith('/api')) {
     return NextResponse.next();
   }
-  
-  return handleI18nRouting(request);
+
+  const response = handleI18nRouting(request);
+
+  const locale = locales.find(
+    (l) => pathname.startsWith(`/${l}/`) || pathname === `/${l}`
+  ) ?? 'fr';
+
+  if (response && 'headers' in response) {
+    response.headers.set('x-locale', locale);
+  }
+
+  return response;
 }
 
 export const config = {

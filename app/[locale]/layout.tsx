@@ -25,16 +25,12 @@ export default async function LocaleLayout({
   if (!locales.includes(locale)) notFound();
 
   const messages = await getMessages();
-  const dir = locale === 'he' ? 'rtl' : 'ltr';
-
   return (
-    <div lang={locale} dir={dir} style={{ display: 'contents' }}>
-      <NextIntlClientProvider messages={messages}>
-        <PageTransitionProvider>
-          <Navbar />
-          {children}
-        </PageTransitionProvider>
-      </NextIntlClientProvider>
-    </div>
+    <NextIntlClientProvider messages={messages}>
+      <PageTransitionProvider>
+        <Navbar />
+        {children}
+      </PageTransitionProvider>
+    </NextIntlClientProvider>
   );
 }

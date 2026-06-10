@@ -1,4 +1,5 @@
 import { Cormorant_Garamond, Plus_Jakarta_Sans, JetBrains_Mono, Noto_Sans_Hebrew } from 'next/font/google';
+import { headers } from 'next/headers';
 import NextAuthProvider from '../components/SessionProvider';
 import WhatsAppButton from '../components/WhatsAppButton';
 
@@ -31,13 +32,21 @@ const hebrewSans = Noto_Sans_Hebrew({
   display: 'swap',
 });
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const headersList = await headers();
+  const locale = headersList.get('x-locale') ?? 'fr';
+  const dir = locale === 'he' ? 'rtl' : 'ltr';
+
   return (
-    <html className={`${serif.variable} ${jakarta.variable} ${mono.variable} ${hebrewSans.variable}`}>
+    <html
+      lang={locale}
+      dir={dir}
+      className={`${serif.variable} ${jakarta.variable} ${mono.variable} ${hebrewSans.variable}`}
+    >
       <body>
         <NextAuthProvider>
           {children}
