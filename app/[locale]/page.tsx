@@ -1,6 +1,46 @@
+import type { Metadata } from 'next';
 import { getTranslations } from 'next-intl/server';
 import { createClient } from '@supabase/supabase-js';
 import ScrollExperience from '../../components/blocks/ScrollExperience';
+
+const seo = {
+  fr: {
+    title: 'Studio Vision | Photographie & Vidéo Immobilière en Israël',
+    description: 'Photo professionnelle, vidéo drone 4K, visite virtuelle Matterport et simulation d\'ameublement pour valoriser votre bien immobilier en Israël.',
+  },
+  en: {
+    title: 'Studio Vision | Real Estate Photography & Video in Israel',
+    description: 'Professional photography, 4K drone video, Matterport virtual tours and furniture simulation to showcase your property in Israel.',
+  },
+  he: {
+    title: 'סטודיו ויז\'ן | צילום ווידאו נדל"ן בישראל',
+    description: 'צילום מקצועי, וידאו רחפן 4K, סיור וירטואלי Matterport וסימולציית ריהוט לשיווק נכסי נדל"ן בישראל.',
+  },
+} as const;
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}): Promise<Metadata> {
+  const { locale } = await params;
+  const meta = seo[locale as keyof typeof seo] ?? seo.fr;
+
+  return {
+    title: meta.title,
+    description: meta.description,
+    openGraph: {
+      title: meta.title,
+      description: meta.description,
+      type: 'website',
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: meta.title,
+      description: meta.description,
+    },
+  };
+}
 import { FocusRail, FocusRailItem } from '../../components/ui/focus-rail';
 import SplashScreen from '../../components/SplashScreen';
 import Link from 'next/link';

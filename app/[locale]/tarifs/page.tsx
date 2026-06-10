@@ -1,13 +1,51 @@
+import type { Metadata } from 'next';
 import { getTranslations } from 'next-intl/server';
 import Link from 'next/link';
 import { cn } from '@/lib/utils';
+
+type Params = Promise<{ locale: string }>;
+
+const seo = {
+  fr: {
+    title: 'Tarifs & Prestations | Studio Vision',
+    description: 'Packs photo, vidéo cinématique et visite virtuelle 360° pour valoriser votre bien immobilier en Israël. Devis sur mesure.',
+  },
+  en: {
+    title: 'Pricing & Services | Studio Vision',
+    description: 'Photo, cinematic video and 360° virtual tour packages for real estate in Israel. Custom quotes available.',
+  },
+  he: {
+    title: 'מחירים ושירותים | סטודיו ויז\'ן',
+    description: 'חבילות צילום, וידאו קולנועי וסיור וירטואלי 360° לנדל"ן בישראל. הצעות מחיר מותאמות אישית.',
+  },
+} as const;
+
+export async function generateMetadata({ params }: { params: Params }): Promise<Metadata> {
+  const { locale } = await params;
+  const meta = seo[locale as keyof typeof seo] ?? seo.fr;
+
+  return {
+    title: meta.title,
+    description: meta.description,
+    openGraph: {
+      title: meta.title,
+      description: meta.description,
+      type: 'website',
+    },
+    twitter: {
+      card: 'summary',
+      title: meta.title,
+      description: meta.description,
+    },
+  };
+}
 
 type Feature = { label: string; subtitle?: string };
 
 export default async function TarifsPage({
   params,
 }: {
-  params: Promise<{ locale: string }>;
+  params: Params;
 }) {
   const { locale } = await params;
   const t = await getTranslations('tarifs');
