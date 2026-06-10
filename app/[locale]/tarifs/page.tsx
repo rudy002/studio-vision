@@ -52,6 +52,44 @@ export default async function TarifsPage({
   const { locale } = await params;
   const t = await getTranslations('tarifs');
 
+  const serviceList = {
+    '@context': 'https://schema.org',
+    '@type': 'ItemList',
+    name: t('title'),
+    itemListElement: [
+      {
+        '@type': 'ListItem',
+        position: 1,
+        item: {
+          '@type': 'Service',
+          name: t('photoTitle'),
+          description: t('packPhotosDesc'),
+          provider: { '@type': 'LocalBusiness', name: 'Studio Vision' },
+        },
+      },
+      {
+        '@type': 'ListItem',
+        position: 2,
+        item: {
+          '@type': 'Service',
+          name: t('packVideoTitle'),
+          description: t('packVideoDesc'),
+          provider: { '@type': 'LocalBusiness', name: 'Studio Vision' },
+        },
+      },
+      {
+        '@type': 'ListItem',
+        position: 3,
+        item: {
+          '@type': 'Service',
+          name: t('packVirtualTitle'),
+          description: t('packVirtualDesc'),
+          provider: { '@type': 'LocalBusiness', name: 'Studio Vision' },
+        },
+      },
+    ],
+  };
+
   const plans: {
     icon: string;
     name: string;
@@ -106,6 +144,10 @@ export default async function TarifsPage({
 
   return (
     <section className="py-14 relative bg-[#0a0f1a] min-h-screen">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(serviceList) }}
+      />
 
       <div className="absolute top-0 z-0 min-h-full w-full bg-[radial-gradient(ellipse_20%_80%_at_50%_-20%,rgba(176,141,87,0.22),rgba(255,255,255,0))]" />
 

@@ -63,7 +63,7 @@ export async function generateMetadata({ params }: { params: Params }): Promise<
 }
 
 export default async function BienPage({ params }: { params: Params }) {
-  const { id } = await params;
+  const { id, locale } = await params;
 
   const { data: property } = await supabase
     .from('properties')
@@ -73,8 +73,47 @@ export default async function BienPage({ params }: { params: Params }) {
 
   if (!property) notFound();
 
+  const title =
+    locale === 'fr' ? property.title_fr
+    : locale === 'en' ? property.title_en
+    : property.title_he;
+
+  const jsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'RealEstateListing',
+    name: title,
+    url: `${BASE_URL}/${locale}/biens/${id}`,
+    ...(property.photos?.[0] && { image: property.photos[0] }),
+    ...(property.description_fr && { description: property.description_fr }),
+    ...(property.price && {
+      offers: {
+        '@type': 'Offer',
+        price: String(property.price),
+        priceCurrency: 'ILS',
+      },
+    }),
+    ...(property.surface && {
+      floorSize: {
+        '@type': 'QuantitativeValue',
+        value: property.surface,
+        unitCode: 'MTK',
+      },
+    }),
+    ...(property.city && {
+      address: {
+        '@type': 'PostalAddress',
+        addressLocality: property.city,
+        addressCountry: 'IL',
+      },
+    }),
+  };
+
   return (
     <main className="bg-[#0a0f1a] min-h-screen">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
       <PropertyPageWrapper property={property} />
     </main>
   );
