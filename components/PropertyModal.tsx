@@ -121,7 +121,7 @@ export default function PropertyModal({
             </span>
 
             {/* City + type */}
-            <p className="flex items-center gap-1.5 text-[10px] tracking-[2.5px] text-white/30 uppercase mb-3">
+            <p className="flex items-center gap-1.5 text-[10px] tracking-[2.5px] text-white/55 uppercase mb-3">
               <MapPin className="h-2.5 w-2.5 shrink-0 text-[#c39553]/50" />
               {property.city}
               {property.type && (
@@ -161,7 +161,7 @@ export default function PropertyModal({
               >
                 {property.surface}
               </p>
-              <p className="text-[9px] tracking-[2px] text-white/28 uppercase">{t('surface')}</p>
+              <p className="text-[9px] tracking-[2px] text-white/50 uppercase">{t('surface')}</p>
             </div>
             <div
               className="text-center"
@@ -173,7 +173,7 @@ export default function PropertyModal({
               >
                 {property.rooms}
               </p>
-              <p className="text-[9px] tracking-[2px] text-white/28 uppercase">{t('rooms')}</p>
+              <p className="text-[9px] tracking-[2px] text-white/50 uppercase">{t('rooms')}</p>
             </div>
             <div className="text-center">
               <p
@@ -182,7 +182,7 @@ export default function PropertyModal({
               >
                 {property.bedrooms}
               </p>
-              <p className="text-[9px] tracking-[2px] text-white/28 uppercase">{t('bedrooms')}</p>
+              <p className="text-[9px] tracking-[2px] text-white/50 uppercase">{t('bedrooms')}</p>
             </div>
           </div>
 
@@ -210,7 +210,7 @@ export default function PropertyModal({
           {/* Media count hint */}
           {mediaItems.length > 1 && (
             <div className="px-5 pt-3 pb-0 md:px-7 md:pt-5">
-              <p className="text-[9px] tracking-[3px] text-white/20 uppercase flex items-center gap-2">
+              <p className="text-[9px] tracking-[3px] text-white/50 uppercase flex items-center gap-2">
                 <Maximize2 className="h-3 w-3 text-[#c39553]/40" />
                 {mediaItems.length} média{mediaItems.length > 1 ? 's' : ''} disponible{mediaItems.length > 1 ? 's' : ''}
               </p>

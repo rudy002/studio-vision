@@ -26,7 +26,7 @@ export function MediaCarousel({ items, className }: MediaCarouselProps) {
         className={cn("flex items-center justify-center bg-black", className)}
         style={{ height: '100%' }}
       >
-        <p className="text-white/20 text-[10px] tracking-[4px] uppercase">Aucun média</p>
+        <p className="text-white/50 text-[10px] tracking-[4px] uppercase">Aucun média</p>
       </div>
     );
   }

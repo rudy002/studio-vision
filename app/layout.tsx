@@ -1,7 +1,14 @@
+import type { Viewport } from 'next';
 import { Cormorant_Garamond, Plus_Jakarta_Sans, JetBrains_Mono, Noto_Sans_Hebrew } from 'next/font/google';
 import { headers } from 'next/headers';
 import NextAuthProvider from '../components/SessionProvider';
 import WhatsAppButton from '../components/WhatsAppButton';
+
+export const viewport: Viewport = {
+  width: 'device-width',
+  initialScale: 1,
+  maximumScale: 5,
+};
 
 const serif = Cormorant_Garamond({
   subsets: ['latin'],
