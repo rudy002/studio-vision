@@ -710,11 +710,11 @@ export default function AdminDashboard() {
                         Photos actuelles ({existingPhotos.length})
                       </label>
                       <div className="flex flex-wrap gap-3">
-                        {existingPhotos.map((url) => (
+                        {existingPhotos.map((url, i) => (
                           <div key={url} className="relative w-20 h-20 rounded-xl overflow-hidden group">
                             <Image
                               src={url}
-                              alt=""
+                              alt={`Photo du bien ${i + 1}`}
                               fill
                               className="object-cover"
                               sizes="80px"
@@ -759,7 +759,7 @@ export default function AdminDashboard() {
                             <div key={i} className="relative w-20 h-20 rounded-xl overflow-hidden group">
                               <Image
                                 src={src}
-                                alt=""
+                                alt={`Aperçu photo ${i + 1}`}
                                 fill
                                 className="object-cover"
                                 sizes="80px"

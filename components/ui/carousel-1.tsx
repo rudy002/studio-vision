@@ -5,8 +5,8 @@ import { ChevronLeft, ChevronRight, Play } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 export type CarouselMediaItem =
-  | { type: 'photo'; url: string }
-  | { type: 'video'; url: string };
+  | { type: 'photo'; url: string; alt?: string }
+  | { type: 'video'; url: string; alt?: string };
 
 interface MediaCarouselProps {
   items: CarouselMediaItem[];
@@ -83,7 +83,7 @@ export function MediaCarousel({ items, className }: MediaCarouselProps) {
                   {/* Full image, never cropped */}
                   <img
                     src={item.url}
-                    alt={`Photo ${i + 1}`}
+                    alt={item.alt ?? `Photo ${i + 1}`}
                     className="absolute inset-0 w-full h-full object-contain z-10"
                   />
                 </>
@@ -178,7 +178,7 @@ export function MediaCarousel({ items, className }: MediaCarouselProps) {
                   </div>
                 </div>
               ) : (
-                <img src={item.url} alt="" className="w-full h-full object-cover" />
+                <img src={item.url} alt={item.alt ? `Miniature — ${item.alt}` : ''} className="w-full h-full object-cover" />
               )}
             </button>
           ))}

@@ -46,10 +46,10 @@ export default function PropertyModal({
   };
 
   const mediaItems: CarouselMediaItem[] = [
-    ...(property.video_url ? [{ type: 'video' as const, url: property.video_url }] : []),
+    ...(property.video_url ? [{ type: 'video' as const, url: property.video_url, alt: title }] : []),
     ...(property.photos && property.photos.length > 0
-      ? property.photos.map((url: string) => ({ type: 'photo' as const, url }))
-      : [{ type: 'photo' as const, url: PLACEHOLDER }]),
+      ? property.photos.map((url: string, i: number) => ({ type: 'photo' as const, url, alt: `${title} — photo ${i + 1}` }))
+      : [{ type: 'photo' as const, url: PLACEHOLDER, alt: title }]),
   ];
 
   useEffect(() => {
