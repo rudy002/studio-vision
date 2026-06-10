@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { getTranslations } from 'next-intl/server';
 import { createClient } from '@supabase/supabase-js';
 import ScrollExperience from '../../components/blocks/ScrollExperience';
+import { buildAlternates } from '../../lib/seo';
 
 const seo = {
   fr: {
@@ -29,6 +30,7 @@ export async function generateMetadata({
   return {
     title: meta.title,
     description: meta.description,
+    alternates: buildAlternates(''),
     openGraph: {
       title: meta.title,
       description: meta.description,

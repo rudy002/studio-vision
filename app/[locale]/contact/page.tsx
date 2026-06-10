@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import ContactClient from '../../../components/ContactClient';
+import { buildAlternates } from '../../../lib/seo';
 
 type Params = Promise<{ locale: string }>;
 
@@ -25,6 +26,7 @@ export async function generateMetadata({ params }: { params: Params }): Promise<
   return {
     title: meta.title,
     description: meta.description,
+    alternates: buildAlternates('/contact'),
     openGraph: {
       title: meta.title,
       description: meta.description,

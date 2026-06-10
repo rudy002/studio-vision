@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { getTranslations } from 'next-intl/server';
 import Link from 'next/link';
 import { cn } from '@/lib/utils';
+import { buildAlternates } from '@/lib/seo';
 
 type Params = Promise<{ locale: string }>;
 
@@ -27,6 +28,7 @@ export async function generateMetadata({ params }: { params: Params }): Promise<
   return {
     title: meta.title,
     description: meta.description,
+    alternates: buildAlternates('/tarifs'),
     openGraph: {
       title: meta.title,
       description: meta.description,

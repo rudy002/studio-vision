@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { createClient } from '@supabase/supabase-js';
 import { notFound } from 'next/navigation';
 import PropertyPageWrapper from '../../../../components/PropertyPageWrapper';
+import { BASE_URL } from '../../../../lib/seo';
 
 const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL!,
@@ -37,6 +38,15 @@ export async function generateMetadata({ params }: { params: Params }): Promise<
   return {
     title: `${title} — Studio Vision`,
     description: metaDesc,
+    alternates: {
+      canonical: `${BASE_URL}/fr/biens/${id}`,
+      languages: {
+        fr: `${BASE_URL}/fr/biens/${id}`,
+        en: `${BASE_URL}/en/biens/${id}`,
+        he: `${BASE_URL}/he/biens/${id}`,
+        'x-default': `${BASE_URL}/en/biens/${id}`,
+      },
+    },
     openGraph: {
       title: `${title} — Studio Vision`,
       description: metaDesc,
