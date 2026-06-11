@@ -132,12 +132,30 @@ export default function AdminDashboard() {
   };
 
   const uploadFile = async (file: File, folder: string) => {
-    const formData = new FormData();
-    formData.append('file', file);
-    formData.append('folder', folder);
-    const res = await fetch('/api/upload', { method: 'POST', body: formData });
-    const data = await res.json();
-    return data.url;
+    const presignRes = await fetch('/api/upload/presign', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ filename: file.name, contentType: file.type, folder }),
+    });
+
+    if (!presignRes.ok) {
+      const err = await presignRes.text();
+      throw new Error(`Erreur presign: ${err}`);
+    }
+
+    const { presignedUrl, publicUrl } = await presignRes.json();
+
+    const uploadRes = await fetch(presignedUrl, {
+      method: 'PUT',
+      headers: { 'Content-Type': file.type },
+      body: file,
+    });
+
+    if (!uploadRes.ok) {
+      throw new Error(`Erreur upload R2: ${uploadRes.status}`);
+    }
+
+    return publicUrl;
   };
 
   const startEdit = (p: Property) => {
@@ -366,8 +384,8 @@ export default function AdminDashboard() {
                 border: '0.5px solid rgba(255,255,255,0.5)',
               }}
             >
-              {/* Photo preview */}
-              {p.photos?.[0] && (
+              {/* Media preview */}
+              {p.photos?.[0] ? (
                 <div className="relative w-full h-44">
                   <Image
                     src={p.photos[0]}
@@ -385,7 +403,22 @@ export default function AdminDashboard() {
                     </span>
                   )}
                 </div>
-              )}
+              ) : p.video_url ? (
+                <div className="relative w-full h-44 bg-black">
+                  <video
+                    src={p.video_url}
+                    className="w-full h-full object-cover"
+                    preload="metadata"
+                    muted
+                  />
+                  <span
+                    className="absolute bottom-2 right-2 text-[9px] tracking-[1px] uppercase text-white px-2 py-1 rounded-full"
+                    style={{ background: 'rgba(0,0,0,0.45)', backdropFilter: 'blur(4px)' }}
+                  >
+                    vidéo
+                  </span>
+                </div>
+              ) : null}
 
               <div className="p-6">
                 <div className="flex justify-between items-start mb-4">
