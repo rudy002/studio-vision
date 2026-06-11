@@ -196,6 +196,29 @@ export default function PropertyModal({
             ) : null;
           })()}
 
+          {/* Packages */}
+          {property.packages && property.packages.length > 0 && (
+            <>
+              <div className="mx-7 h-px" style={{ background: 'rgba(195,149,83,0.12)' }} />
+              <div className="px-5 py-4 md:px-7 md:py-5">
+                <p className="text-[9px] tracking-[3px] text-[#c39553]/60 uppercase mb-3">
+                  Packages
+                </p>
+                <div className="flex flex-wrap gap-2">
+                  {property.packages.map((pkg) => (
+                    <span
+                      key={pkg}
+                      className="text-[9px] tracking-[1.5px] uppercase px-3 py-1.5 rounded-full border border-[#c39553]/25 text-[#c39553]/70"
+                      style={{ background: 'rgba(195,149,83,0.06)' }}
+                    >
+                      {pkg}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            </>
+          )}
+
           {/* Media count hint */}
           {mediaItems.length > 1 && (
             <div className="px-5 pt-3 pb-0 md:px-7 md:pt-5">

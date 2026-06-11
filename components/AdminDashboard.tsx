@@ -38,7 +38,17 @@ type Property = {
   status: string;
   photos: string[];
   video_url: string;
+  packages: string[];
 };
+
+const PACKAGES = [
+  'Photos',
+  'Vidéo basique',
+  'Vidéo avancé',
+  'Admaya',
+  'Construction',
+  'Visite virtuelle',
+] as const;
 
 const emptyForm = {
   title_fr: '',
@@ -59,6 +69,7 @@ const emptyForm = {
   description_he: '',
   status: 'available',
   video_url: '',
+  packages: [] as string[],
 };
 
 const FORM_SECTIONS = ['Informations', 'Localisation', 'Descriptions', 'Médias'];
@@ -103,6 +114,15 @@ export default function AdminDashboard() {
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>,
   ) => {
     setForm({ ...form, [e.target.name]: e.target.value });
+  };
+
+  const handlePackageToggle = (pkg: string) => {
+    setForm((prev) => ({
+      ...prev,
+      packages: prev.packages.includes(pkg)
+        ? prev.packages.filter((p) => p !== pkg)
+        : [...prev.packages, pkg],
+    }));
   };
 
   const handleCityInput = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -181,6 +201,7 @@ export default function AdminDashboard() {
       description_he: p.description_he,
       status: p.status,
       video_url: p.video_url || '',
+      packages: p.packages || [],
     });
     setExistingPhotos(p.photos || []);
     setPhotos([]);
@@ -660,6 +681,30 @@ export default function AdminDashboard() {
                       <option value="available">Disponible</option>
                       <option value="sold">Vendu</option>
                     </select>
+                  </div>
+                </div>
+
+                {/* Packages */}
+                <div className="mt-6 flex flex-col gap-3">
+                  <label className="text-[9px] tracking-[2px] text-[#6b5d4a] uppercase">Packages</label>
+                  <div className="flex flex-wrap gap-2">
+                    {PACKAGES.map((pkg) => {
+                      const active = form.packages.includes(pkg);
+                      return (
+                        <button
+                          key={pkg}
+                          type="button"
+                          onClick={() => handlePackageToggle(pkg)}
+                          className={`text-[10px] tracking-[1.5px] uppercase px-4 py-2 rounded-full border transition-all duration-150 cursor-pointer ${
+                            active
+                              ? 'bg-[#1a1410] text-white border-[#1a1410]'
+                              : 'bg-white/40 text-[#6b5d4a] border-white/60 hover:bg-white/60'
+                          }`}
+                        >
+                          {pkg}
+                        </button>
+                      );
+                    })}
                   </div>
                 </div>
               </div>

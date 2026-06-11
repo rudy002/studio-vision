@@ -23,6 +23,7 @@ export type Property = {
   description_fr?: string;
   description_en?: string;
   description_he?: string;
+  packages?: string[];
   lat?: number;
   lng?: number;
 };
@@ -109,6 +110,20 @@ function PropertyCard({
             <MapPin className="h-2.5 w-2.5 shrink-0" />
             {property.city}
           </p>
+
+          {property.packages && property.packages.length > 0 && (
+            <div className="flex flex-wrap gap-1 mb-2.5">
+              {property.packages.map((pkg) => (
+                <span
+                  key={pkg}
+                  className="text-[7px] tracking-[1.5px] uppercase px-2 py-0.5 rounded-full border border-[#c39553]/25 text-[#c39553]/65"
+                  style={{ background: 'rgba(195,149,83,0.07)' }}
+                >
+                  {pkg}
+                </span>
+              ))}
+            </div>
+          )}
 
           <div className="flex items-center gap-2.5 text-[10px] text-white/55 mb-4 font-mono">
             {property.surface > 0 && <span>{property.surface} m²</span>}
