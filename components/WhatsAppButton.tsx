@@ -2,9 +2,21 @@
 
 import { useEffect, useState, useRef } from 'react';
 
+const WA_MESSAGES: Record<string, string> = {
+  fr: 'Bonjour, je suis intéressé(e) par vos services de photographie et vidéo immobilière. Seriez-vous disponible pour en discuter ?',
+  en: 'Hello, I am interested in your real estate photography and video services. Would you be available to discuss my project?',
+  he: 'שלום, אני מעוניין/ת בשירותי הצילום והוידאו שלכם לנדל"ן. האם תוכלו ליצור איתי קשר?',
+};
+
 export default function WhatsAppButton() {
-  const url = 'https://wa.me/972537084374';
+  const [url, setUrl] = useState('https://wa.me/972537084374');
   const [visible, setVisible] = useState(true);
+
+  useEffect(() => {
+    const locale = document.documentElement.lang || 'fr';
+    const message = WA_MESSAGES[locale] ?? WA_MESSAGES.fr;
+    setUrl(`https://wa.me/972537084374?text=${encodeURIComponent(message)}`);
+  }, []);
   const hideTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   useEffect(() => {

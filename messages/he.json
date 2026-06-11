@@ -29,6 +29,8 @@
       "status_sold": "נמכר",
       "rooms": "חדרים",
       "roomsAll": "הכל",
+      "packages": "חבילה",
+      "packagesAll": "הכל",
       "priceRange": "תקציב",
       "surfaceRange": "שטח",
       "min": "מינ׳",
@@ -211,5 +213,13 @@
   "splash": {
     "eyebrow": "צילום נדל\"ן קולנועי",
     "baseline": "מאת ליאור חדד"
+  },
+  "packages": {
+    "photos":       "צילום",
+    "videoBasic":   "וידאו בסיסי",
+    "videoAdvanced":"וידאו מתקדם",
+    "admaya":       "אדמאיה",
+    "construction": "בנייה",
+    "virtualTour":  "סיור וירטואלי"
   }
 }

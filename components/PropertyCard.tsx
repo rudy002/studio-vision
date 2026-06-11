@@ -5,6 +5,7 @@ import { memo } from 'react';
 import { useTranslations, useLocale } from 'next-intl';
 import { ArrowRight, MapPin } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { PACKAGE_KEY } from '@/lib/packages';
 
 export type Property = {
   id: string;
@@ -47,6 +48,7 @@ function PropertyCard({
   className?: string;
 }) {
   const t = useTranslations('properties');
+  const tPkg = useTranslations('packages');
   const locale = useLocale();
 
   const intlLocale =
@@ -119,7 +121,7 @@ function PropertyCard({
                   className="text-[7px] tracking-[1.5px] uppercase px-2 py-0.5 rounded-full border border-[#c39553]/25 text-[#c39553]/65"
                   style={{ background: 'rgba(195,149,83,0.07)' }}
                 >
-                  {pkg}
+                  {PACKAGE_KEY[pkg] ? tPkg(PACKAGE_KEY[pkg]) : pkg}
                 </span>
               ))}
             </div>

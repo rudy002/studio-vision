@@ -29,6 +29,8 @@
       "status_sold": "Vendu",
       "rooms": "Pièces",
       "roomsAll": "Toutes",
+      "packages": "Package",
+      "packagesAll": "Tous",
       "priceRange": "Budget",
       "surfaceRange": "Superficie",
       "min": "Min",
@@ -211,5 +213,13 @@
   "splash": {
     "eyebrow": "Cinématographie immobilière",
     "baseline": "by Lior Haddad"
+  },
+  "packages": {
+    "photos":       "Photos",
+    "videoBasic":   "Vidéo basique",
+    "videoAdvanced":"Vidéo avancé",
+    "admaya":       "Admaya",
+    "construction": "Construction",
+    "virtualTour":  "Visite virtuelle"
   }
 }

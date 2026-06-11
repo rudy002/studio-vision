@@ -4,6 +4,7 @@ import { useEffect, useState, useMemo, useCallback, useRef } from 'react';
 import dynamic from 'next/dynamic';
 import { createClient } from '@supabase/supabase-js';
 import { useTranslations } from 'next-intl';
+import { PACKAGES, PACKAGE_KEY } from '../../../lib/packages';
 import { useRouter, useSearchParams, usePathname } from 'next/navigation';
 import PropertyCard, { Property } from '../../../components/PropertyCard';
 import PropertyModal from '../../../components/PropertyModal';
@@ -21,6 +22,7 @@ type PropertyType = (typeof PROPERTY_TYPES)[number];
 type StatusFilter = 'all' | 'available' | 'sold';
 type SortKey = 'newest' | 'price_asc' | 'price_desc' | 'surface_asc' | 'surface_desc';
 
+
 interface Filters {
   type: PropertyType;
   city: string;
@@ -30,6 +32,7 @@ interface Filters {
   surfaceMin: string;
   surfaceMax: string;
   rooms: number | null;
+  packages: string | null;
   sort: SortKey;
 }
 
@@ -42,6 +45,7 @@ const DEFAULT_FILTERS: Filters = {
   surfaceMin: '',
   surfaceMax: '',
   rooms: null,
+  packages: null,
   sort: 'newest',
 };
 
@@ -116,6 +120,7 @@ function SkeletonCard() {
 
 export default function BiensPage() {
   const t = useTranslations('properties');
+  const tPkg = useTranslations('packages');
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
@@ -131,6 +136,7 @@ export default function BiensPage() {
     surfaceMin: searchParams.get('surfaceMin') || '',
     surfaceMax: searchParams.get('surfaceMax') || '',
     rooms: searchParams.get('rooms') ? Number(searchParams.get('rooms')) : null,
+    packages: searchParams.get('packages') || null,
     sort: (searchParams.get('sort') as SortKey) || 'newest',
   }));
 
@@ -175,6 +181,7 @@ export default function BiensPage() {
     if (filters.surfaceMin)        params.set('surfaceMin', filters.surfaceMin);
     if (filters.surfaceMax)        params.set('surfaceMax', filters.surfaceMax);
     if (filters.rooms !== null) params.set('rooms', String(filters.rooms));
+    if (filters.packages !== null) params.set('packages', filters.packages);
     if (filters.sort !== 'newest') params.set('sort', filters.sort);
     const qs = params.toString();
     router.replace(qs ? `${pathname}?${qs}` : pathname, { scroll: false });
@@ -225,6 +232,7 @@ export default function BiensPage() {
       filters.surfaceMin !== '' ||
       filters.surfaceMax !== '' ||
       filters.rooms !== null ||
+      filters.packages !== null ||
       filters.sort !== 'newest',
     [filters]
   );
@@ -240,6 +248,7 @@ export default function BiensPage() {
       if (filters.surfaceMin !== '' && p.surface < Number(filters.surfaceMin)) return false;
       if (filters.surfaceMax !== '' && p.surface > Number(filters.surfaceMax)) return false;
       if (filters.rooms !== null && p.rooms < filters.rooms) return false;
+      if (filters.packages !== null && !(p.packages || []).includes(filters.packages)) return false;
       return true;
     });
     if (filters.sort === 'price_asc')    result.sort((a, b) => a.price - b.price);
@@ -343,7 +352,22 @@ export default function BiensPage() {
               </div>
             </div>
 
-            {/* Ligne 2 : Prix · Surface · Tri · Reset */}
+            {/* Ligne 2 : Packages */}
+            <div className="flex flex-col gap-1.5">
+              <label className="text-[10px] tracking-[2px] uppercase text-white/60">{t('filters.packages')}</label>
+              <div className="flex flex-wrap gap-2">
+                <button onClick={() => setFilter('packages', null)} className={pillClass(filters.packages === null)}>
+                  {t('filters.packagesAll')}
+                </button>
+                {PACKAGES.map((pkg) => (
+                  <button key={pkg} onClick={() => setFilter('packages', pkg)} className={pillClass(filters.packages === pkg)}>
+                    {PACKAGE_KEY[pkg] ? tPkg(PACKAGE_KEY[pkg]) : pkg}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {/* Ligne 3 : Prix · Surface · Tri · Reset */}
             <div className="flex flex-wrap gap-x-6 gap-y-4 items-end">
 
               <div className="flex flex-col gap-1.5">
