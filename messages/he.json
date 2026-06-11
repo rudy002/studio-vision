@@ -27,8 +27,8 @@
       "status_all": "הכל",
       "status_available": "זמין",
       "status_sold": "נמכר",
-      "bedrooms": "חדרי שינה",
-      "bedroomsAll": "הכל",
+      "rooms": "חדרים",
+      "roomsAll": "הכל",
       "priceRange": "תקציב",
       "surfaceRange": "שטח",
       "min": "מינ׳",
@@ -55,7 +55,8 @@
     "errorTitle": "אירעה שגיאה",
     "retry": "נסה שוב",
     "share": "שיתוף",
-    "shareCopied": "הקישור הועתק!"
+    "shareCopied": "הקישור הועתק!",
+    "priceOnRequest": "מחיר על פי דרישה"
   },
   "status": {
     "available": "זמין",

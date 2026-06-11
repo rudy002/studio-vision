@@ -27,8 +27,8 @@
       "status_all": "Tous",
       "status_available": "Disponible",
       "status_sold": "Vendu",
-      "bedrooms": "Chambres",
-      "bedroomsAll": "Toutes",
+      "rooms": "Pièces",
+      "roomsAll": "Toutes",
       "priceRange": "Budget",
       "surfaceRange": "Superficie",
       "min": "Min",
@@ -55,7 +55,8 @@
     "errorTitle": "Une erreur est survenue",
     "retry": "Réessayer",
     "share": "Partager",
-    "shareCopied": "Lien copié !"
+    "shareCopied": "Lien copié !",
+    "priceOnRequest": "Prix sur demande"
   },
   "status": {
     "available": "Disponible",

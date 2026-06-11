@@ -29,7 +29,7 @@ interface Filters {
   priceMax: string;
   surfaceMin: string;
   surfaceMax: string;
-  bedrooms: number | null;
+  rooms: number | null;
   sort: SortKey;
 }
 
@@ -41,7 +41,7 @@ const DEFAULT_FILTERS: Filters = {
   priceMax: '',
   surfaceMin: '',
   surfaceMax: '',
-  bedrooms: null,
+  rooms: null,
   sort: 'newest',
 };
 
@@ -130,7 +130,7 @@ export default function BiensPage() {
     priceMax: searchParams.get('priceMax') || '',
     surfaceMin: searchParams.get('surfaceMin') || '',
     surfaceMax: searchParams.get('surfaceMax') || '',
-    bedrooms: searchParams.get('bedrooms') ? Number(searchParams.get('bedrooms')) : null,
+    rooms: searchParams.get('rooms') ? Number(searchParams.get('rooms')) : null,
     sort: (searchParams.get('sort') as SortKey) || 'newest',
   }));
 
@@ -174,7 +174,7 @@ export default function BiensPage() {
     if (filters.priceMax)          params.set('priceMax', filters.priceMax);
     if (filters.surfaceMin)        params.set('surfaceMin', filters.surfaceMin);
     if (filters.surfaceMax)        params.set('surfaceMax', filters.surfaceMax);
-    if (filters.bedrooms !== null) params.set('bedrooms', String(filters.bedrooms));
+    if (filters.rooms !== null) params.set('rooms', String(filters.rooms));
     if (filters.sort !== 'newest') params.set('sort', filters.sort);
     const qs = params.toString();
     router.replace(qs ? `${pathname}?${qs}` : pathname, { scroll: false });
@@ -224,7 +224,7 @@ export default function BiensPage() {
       filters.priceMax !== '' ||
       filters.surfaceMin !== '' ||
       filters.surfaceMax !== '' ||
-      filters.bedrooms !== null ||
+      filters.rooms !== null ||
       filters.sort !== 'newest',
     [filters]
   );
@@ -239,7 +239,7 @@ export default function BiensPage() {
       if (filters.priceMax !== '' && p.price > Number(filters.priceMax)) return false;
       if (filters.surfaceMin !== '' && p.surface < Number(filters.surfaceMin)) return false;
       if (filters.surfaceMax !== '' && p.surface > Number(filters.surfaceMax)) return false;
-      if (filters.bedrooms !== null && p.bedrooms < filters.bedrooms) return false;
+      if (filters.rooms !== null && p.rooms < filters.rooms) return false;
       return true;
     });
     if (filters.sort === 'price_asc')    result.sort((a, b) => a.price - b.price);
@@ -329,13 +329,13 @@ export default function BiensPage() {
               </div>
 
               <div className="flex flex-col gap-1.5">
-                <label className="text-[10px] tracking-[2px] uppercase text-white/60">{t('filters.bedrooms')}</label>
+                <label className="text-[10px] tracking-[2px] uppercase text-white/60">{t('filters.rooms')}</label>
                 <div className="flex gap-2">
-                  <button onClick={() => setFilter('bedrooms', null)} className={pillClass(filters.bedrooms === null)}>
-                    {t('filters.bedroomsAll')}
+                  <button onClick={() => setFilter('rooms', null)} className={pillClass(filters.rooms === null)}>
+                    {t('filters.roomsAll')}
                   </button>
                   {[1, 2, 3, 4].map((n) => (
-                    <button key={n} onClick={() => setFilter('bedrooms', n)} className={pillClass(filters.bedrooms === n)}>
+                    <button key={n} onClick={() => setFilter('rooms', n)} className={pillClass(filters.rooms === n)}>
                       {n === 4 ? '4+' : String(n)}
                     </button>
                   ))}

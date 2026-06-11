@@ -68,7 +68,7 @@ export default async function Home({
     .order('created_at', { ascending: false })
     .limit(5);
 
-  const fallbackImg = 'https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=800&q=80';
+  const propertiesWithMedia = (properties || []).filter((p) => !!p.photos?.[0]);
 
   return (
     <main className="bg-[#0a0f1a] min-h-screen">
@@ -141,7 +141,7 @@ export default async function Home({
       />
 
       {/* Biens en vedette */}
-      {properties && properties.length > 0 && (
+      {propertiesWithMedia.length > 0 && (
         <section data-sv-chapter="7" className="px-6 md:px-16 py-16 md:pt-10 md:pb-24 bg-[#0a0f1a] min-h-screen">
           <style>{`@media (max-width: 767px) { .fp-header { margin-top: 80px; } }`}</style>
           <div className="fp-header flex flex-col gap-4 md:flex-row md:justify-between md:items-end mb-10 md:mb-12">
@@ -162,10 +162,9 @@ export default async function Home({
           </div>
 
           <FocusRail
-            items={properties.map((p): FocusRailItem => ({
+            items={propertiesWithMedia.map((p): FocusRailItem => ({
               id:          p.id,
-              title:       locale === 'fr' ? p.title_fr : locale === 'en' ? p.title_en : p.title_he,
-              imageSrc:    p.photos?.[0] ?? fallbackImg,
+              imageSrc:    p.photos[0],
               href:        `/${locale}/biens/${p.id}`,
               meta:        [p.city, p.type].filter(Boolean).join(' · '),
               description: [p.surface && `${p.surface} m²`, p.rooms && `${p.rooms} pièces`, p.price && `${Number(p.price).toLocaleString('fr-FR')} ₪`].filter(Boolean).join('  ·  '),

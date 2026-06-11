@@ -116,12 +116,16 @@ export default function MapView({ properties, onPropertyClick, className = 'h-13
                 <p style={{ fontSize: '10px', letterSpacing: '2px', textTransform: 'uppercase', color: '#8a8078', margin: '0 0 6px' }}>
                   {property.city}
                 </p>
-                <p style={{ fontSize: '15px', fontWeight: 300, color: '#1c1917', margin: '0 0 4px', lineHeight: 1.3 }}>
-                  {property.title_fr}
-                </p>
-                <p style={{ fontSize: '14px', color: '#8b6914', margin: '0 0 12px', fontWeight: 400 }}>
-                  {property.price.toLocaleString()} ₪
-                </p>
+                {(property.rooms > 0 || property.surface > 0) && (
+                  <p style={{ fontSize: '15px', fontWeight: 300, color: '#1c1917', margin: '0 0 4px', lineHeight: 1.3 }}>
+                    {[property.rooms > 0 && `${property.rooms} pièces`, property.surface > 0 && `${property.surface} m²`].filter(Boolean).join(' · ')}
+                  </p>
+                )}
+                {property.price > 0 && (
+                  <p style={{ fontSize: '14px', color: '#8b6914', margin: '0 0 12px', fontWeight: 400 }}>
+                    {property.price.toLocaleString()} ₪
+                  </p>
+                )}
                 <button
                   onClick={() => onPropertyClick(property)}
                   style={{

@@ -27,8 +27,8 @@
       "status_all": "All",
       "status_available": "Available",
       "status_sold": "Sold",
-      "bedrooms": "Bedrooms",
-      "bedroomsAll": "All",
+      "rooms": "Rooms",
+      "roomsAll": "All",
       "priceRange": "Budget",
       "surfaceRange": "Surface",
       "min": "Min",
@@ -55,7 +55,8 @@
     "errorTitle": "An error occurred",
     "retry": "Retry",
     "share": "Share",
-    "shareCopied": "Link copied!"
+    "shareCopied": "Link copied!",
+    "priceOnRequest": "Price on request"
   },
   "status": {
     "available": "Available",

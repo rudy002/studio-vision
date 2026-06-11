@@ -8,9 +8,9 @@ import { cn } from '@/lib/utils';
 
 export type Property = {
   id: string;
-  title_fr: string;
-  title_en: string;
-  title_he: string;
+  title_fr?: string;
+  title_en?: string;
+  title_he?: string;
   type: string;
   price: number;
   surface: number;
@@ -35,7 +35,6 @@ const TYPE_COLORS: Record<string, string> = {
 };
 const DEFAULT_COLOR = '220 30% 12%'; // bleu-marine profond
 
-const FALLBACK_IMAGE = 'https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=800&q=80';
 
 function PropertyCard({
   property,
@@ -49,17 +48,12 @@ function PropertyCard({
   const t = useTranslations('properties');
   const locale = useLocale();
 
-  const title =
-    locale === 'fr' ? property.title_fr
-    : locale === 'en' ? property.title_en
-    : property.title_he;
-
   const intlLocale =
     locale === 'fr' ? 'fr-FR' : locale === 'he' ? 'he-IL' : 'en-US';
 
   const isAvailable = property.status === 'available';
   const themeColor = TYPE_COLORS[property.type?.toLowerCase()] ?? DEFAULT_COLOR;
-  const imageUrl = property.photos?.[0] ?? FALLBACK_IMAGE;
+  const imageUrl = property.photos?.[0];
 
   return (
     <div
@@ -74,11 +68,13 @@ function PropertyCard({
         style={{ boxShadow: `0 0 40px -18px hsl(${themeColor} / 0.5)` }}
       >
         {/* Background image with zoom on hover */}
-        <div
-          className="absolute inset-0 bg-cover bg-center
-                     transition-transform duration-500 ease-in-out group-hover:scale-110"
-          style={{ backgroundImage: `url(${imageUrl})` }}
-        />
+        {imageUrl && (
+          <div
+            className="absolute inset-0 bg-cover bg-center
+                       transition-transform duration-500 ease-in-out group-hover:scale-110"
+            style={{ backgroundImage: `url(${imageUrl})` }}
+          />
+        )}
 
         {/* Gradient overlay */}
         <div
@@ -114,16 +110,10 @@ function PropertyCard({
             {property.city}
           </p>
 
-          <h3 className="font-serif text-xl font-light leading-snug mb-2.5">
-            {title}
-          </h3>
-
           <div className="flex items-center gap-2.5 text-[10px] text-white/55 mb-4 font-mono">
-            <span>{property.surface} m²</span>
-            <span className="opacity-30">·</span>
-            <span>{property.rooms} {t('rooms')}</span>
-            <span className="opacity-30">·</span>
-            <span>{property.bedrooms} {t('bedrooms')}</span>
+            {property.surface > 0 && <span>{property.surface} m²</span>}
+            {property.surface > 0 && property.rooms > 0 && <span className="opacity-30">·</span>}
+            {property.rooms > 0 && <span>{property.rooms} {t('rooms')}</span>}
           </div>
 
           {/* Price + arrow */}
@@ -137,7 +127,7 @@ function PropertyCard({
             }}
           >
             <span className="font-serif text-lg font-light">
-              {property.price.toLocaleString(intlLocale)}&nbsp;₪
+              {property.price > 0 ? `${property.price.toLocaleString(intlLocale)} ₪` : t('priceOnRequest')}
             </span>
             <ArrowRight className="h-4 w-4 text-[#c39553] transition-transform duration-300 group-hover:translate-x-1 shrink-0" />
           </div>

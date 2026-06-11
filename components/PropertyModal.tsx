@@ -6,7 +6,6 @@ import { X, MapPin, Maximize2, Share2 } from 'lucide-react';
 import { Property } from './PropertyCard';
 import { MediaCarousel, type CarouselMediaItem } from './ui/carousel-1';
 
-const PLACEHOLDER = 'https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=800&q=80';
 
 export default function PropertyModal({
   property,
@@ -19,12 +18,8 @@ export default function PropertyModal({
   const t = useTranslations('properties');
   const [copied, setCopied] = useState(false);
 
-  const title =
-    locale === 'fr' ? property.title_fr
-    : locale === 'en' ? property.title_en
-    : property.title_he;
-
   const intlLocale = locale === 'fr' ? 'fr-FR' : locale === 'he' ? 'he-IL' : 'en-US';
+  const propertyLabel = [property.type, property.city].filter(Boolean).join(' · ');
   const isAvailable = property.status === 'available';
 
   const shareUrl = typeof window !== 'undefined'
@@ -34,7 +29,7 @@ export default function PropertyModal({
   const handleShare = async () => {
     if (navigator.share) {
       try {
-        await navigator.share({ title: `${title} — Studio Vision`, url: shareUrl });
+        await navigator.share({ title: `${propertyLabel} — Studio Vision`, url: shareUrl });
       } catch { /* cancelled */ }
     } else {
       try {
@@ -46,10 +41,10 @@ export default function PropertyModal({
   };
 
   const mediaItems: CarouselMediaItem[] = [
-    ...(property.video_url ? [{ type: 'video' as const, url: property.video_url, alt: title }] : []),
+    ...(property.video_url ? [{ type: 'video' as const, url: property.video_url, alt: propertyLabel }] : []),
     ...(property.photos && property.photos.length > 0
-      ? property.photos.map((url: string, i: number) => ({ type: 'photo' as const, url, alt: `${title} — photo ${i + 1}` }))
-      : [{ type: 'photo' as const, url: PLACEHOLDER, alt: title }]),
+      ? property.photos.map((url: string, i: number) => ({ type: 'photo' as const, url, alt: `${propertyLabel} — photo ${i + 1}` }))
+      : []),
   ];
 
   useEffect(() => {
@@ -80,7 +75,12 @@ export default function PropertyModal({
 
         {/* ── LEFT: Carousel ── */}
         <div className="relative h-[52%] shrink-0 md:h-full md:flex-1 flex flex-col">
-          <MediaCarousel items={mediaItems} className="flex-1" />
+          {mediaItems.length > 0
+            ? <MediaCarousel items={mediaItems} className="flex-1" />
+            : <div className="flex-1 flex items-center justify-center" style={{ background: '#0a0f1a' }}>
+                <p className="text-[10px] tracking-[3px] uppercase text-white/20">Aucun média</p>
+              </div>
+          }
 
           {/* Close button — sits over the carousel top-right */}
           <button
@@ -132,58 +132,47 @@ export default function PropertyModal({
               )}
             </p>
 
-            {/* Title */}
-            <h2
-              className="text-xl md:text-2xl lg:text-3xl font-light text-white leading-snug mb-3 md:mb-6"
-              style={{ fontFamily: 'var(--font-serif, "Cormorant Garamond", serif)' }}
-            >
-              {title}
-            </h2>
-
             {/* Price */}
-            <p
-              className="text-3xl font-light text-[#c39553]"
-              style={{ fontFamily: 'var(--font-serif, "Cormorant Garamond", serif)' }}
-            >
-              {property.price.toLocaleString(intlLocale)}&nbsp;₪
-            </p>
+            {property.price > 0 && (
+              <p
+                className="text-3xl font-light text-[#c39553]"
+                style={{ fontFamily: 'var(--font-serif, "Cormorant Garamond", serif)' }}
+              >
+                {property.price.toLocaleString(intlLocale)}&nbsp;₪
+              </p>
+            )}
           </div>
 
           {/* Divider */}
           <div className="mx-7 h-px" style={{ background: 'rgba(195,149,83,0.12)' }} />
 
           {/* Specs */}
-          <div className="px-5 py-4 md:px-7 md:py-6 grid grid-cols-3">
-            <div className="text-center">
-              <p
-                className="text-2xl font-light text-white mb-1"
-                style={{ fontFamily: 'var(--font-serif, "Cormorant Garamond", serif)' }}
+          <div className="px-5 py-4 md:px-7 md:py-6 grid grid-cols-2">
+            {property.surface > 0 && (
+              <div className="text-center">
+                <p
+                  className="text-2xl font-light text-white mb-1"
+                  style={{ fontFamily: 'var(--font-serif, "Cormorant Garamond", serif)' }}
+                >
+                  {property.surface}
+                </p>
+                <p className="text-[9px] tracking-[2px] text-white/50 uppercase">{t('surface')}</p>
+              </div>
+            )}
+            {property.rooms > 0 && (
+              <div
+                className="text-center"
+                style={property.surface > 0 ? { borderLeft: '1px solid rgba(195,149,83,0.1)' } : undefined}
               >
-                {property.surface}
-              </p>
-              <p className="text-[9px] tracking-[2px] text-white/50 uppercase">{t('surface')}</p>
-            </div>
-            <div
-              className="text-center"
-              style={{ borderLeft: '1px solid rgba(195,149,83,0.1)', borderRight: '1px solid rgba(195,149,83,0.1)' }}
-            >
-              <p
-                className="text-2xl font-light text-white mb-1"
-                style={{ fontFamily: 'var(--font-serif, "Cormorant Garamond", serif)' }}
-              >
-                {property.rooms}
-              </p>
-              <p className="text-[9px] tracking-[2px] text-white/50 uppercase">{t('rooms')}</p>
-            </div>
-            <div className="text-center">
-              <p
-                className="text-2xl font-light text-white mb-1"
-                style={{ fontFamily: 'var(--font-serif, "Cormorant Garamond", serif)' }}
-              >
-                {property.bedrooms}
-              </p>
-              <p className="text-[9px] tracking-[2px] text-white/50 uppercase">{t('bedrooms')}</p>
-            </div>
+                <p
+                  className="text-2xl font-light text-white mb-1"
+                  style={{ fontFamily: 'var(--font-serif, "Cormorant Garamond", serif)' }}
+                >
+                  {property.rooms}
+                </p>
+                <p className="text-[9px] tracking-[2px] text-white/50 uppercase">{t('rooms')}</p>
+              </div>
+            )}
           </div>
 
           {/* Divider */}

@@ -61,7 +61,7 @@ const emptyForm = {
   video_url: '',
 };
 
-const FORM_SECTIONS = ['Titres', 'Informations', 'Localisation', 'Descriptions', 'Médias'];
+const FORM_SECTIONS = ['Informations', 'Localisation', 'Descriptions', 'Médias'];
 
 export default function AdminDashboard() {
   const [properties, setProperties] = useState<Property[]>([]);
@@ -78,6 +78,8 @@ export default function AdminDashboard() {
   const [showSuggestions, setShowSuggestions] = useState(false);
   const [openSection, setOpenSection] = useState<number | null>(0);
   const [showConfirmModal, setShowConfirmModal] = useState(false);
+  const [folderWarn, setFolderWarn] = useState<string | null>(null);
+  const [mediaError, setMediaError] = useState(false);
   const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   useEffect(() => {
@@ -193,6 +195,45 @@ export default function AdminDashboard() {
     setExistingPhotos([]);
     setPhotos([]);
     setVideo(null);
+    setFolderWarn(null);
+    setMediaError(false);
+  };
+
+  const handleFolderUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = Array.from(e.target.files || []);
+    const imageFiles = files.filter((f) => f.type.startsWith('image/'));
+    const videoFiles = files.filter((f) => f.type.startsWith('video/'));
+
+    if (imageFiles.length > 0) {
+      setPhotos((prev) => [...prev, ...imageFiles]);
+      setMediaError(false);
+    }
+    if (videoFiles.length > 1) {
+      setFolderWarn(
+        `${videoFiles.length} vidéos trouvées dans le dossier. Seule la première a été ajoutée (${videoFiles[0].name}). Un bien ne peut contenir qu'une seule vidéo.`
+      );
+    } else {
+      setFolderWarn(null);
+    }
+    if (videoFiles.length > 0) {
+      setVideo(videoFiles[0]);
+      setMediaError(false);
+    }
+  };
+
+  const handlePublish = () => {
+    const hasMedia =
+      existingPhotos.length > 0 ||
+      photos.length > 0 ||
+      !!video ||
+      !!form.video_url;
+    if (!hasMedia) {
+      setMediaError(true);
+      setOpenSection(FORM_SECTIONS.length - 1);
+      return;
+    }
+    setMediaError(false);
+    setShowConfirmModal(true);
   };
 
   const removeExistingPhoto = (url: string) => {
@@ -249,6 +290,8 @@ export default function AdminDashboard() {
       setVideo(null);
       setEditingId(null);
       setExistingPhotos([]);
+      setFolderWarn(null);
+      setMediaError(false);
       setLoading(false);
       setSubmitDone(true);
       fetchProperties();
@@ -389,7 +432,7 @@ export default function AdminDashboard() {
                 <div className="relative w-full h-44">
                   <Image
                     src={p.photos[0]}
-                    alt={p.title_fr}
+                    alt={`${p.type} ${p.city}`}
                     fill
                     className="object-cover"
                     sizes="(max-width: 768px) 100vw, 33vw"
@@ -426,7 +469,9 @@ export default function AdminDashboard() {
                     <p className="text-[9px] tracking-[2px] text-[#8b6914] uppercase mb-1">
                       {p.type} · {p.city}
                     </p>
-                    <h3 className="font-serif text-lg font-light text-[#1a1410]">{p.title_fr}</h3>
+                    <h3 className="font-serif text-lg font-light text-[#1a1410]">
+                      {[p.rooms > 0 && `${p.rooms} pièces`, p.surface > 0 && `${p.surface} m²`].filter(Boolean).join(' · ') || '—'}
+                    </h3>
                   </div>
                   <span
                     className={`text-[8px] tracking-[2px] uppercase px-3 py-1 rounded-full ${
@@ -557,30 +602,8 @@ export default function AdminDashboard() {
               ))}
             </div>
 
-            {/* Section 0: Titres */}
+            {/* Section 0: Informations */}
             {openSection === 0 && (
-              <div className="mb-2">
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                  {['fr', 'en', 'he'].map((lang) => (
-                    <div key={lang} className="flex flex-col gap-2">
-                      <label className="text-[9px] tracking-[2px] text-[#6b5d4a] uppercase">
-                        Titre ({lang.toUpperCase()})
-                      </label>
-                      <input
-                        name={`title_${lang}`}
-                        value={form[`title_${lang}` as keyof typeof form] as string}
-                        onChange={handleChange}
-                        required
-                        className="bg-white/50 border border-white/60 rounded-xl px-4 py-3 text-sm text-[#1a1410] outline-none focus:border-[#8b6914]"
-                      />
-                    </div>
-                  ))}
-                </div>
-              </div>
-            )}
-
-            {/* Section 1: Informations */}
-            {openSection === 1 && (
               <div className="mb-2">
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                   <div className="flex flex-col gap-2">
@@ -603,7 +626,6 @@ export default function AdminDashboard() {
                       type="number"
                       value={form.price}
                       onChange={handleChange}
-                      required
                       className="bg-white/50 border border-white/60 rounded-xl px-4 py-3 text-sm text-[#1a1410] outline-none focus:border-[#8b6914]"
                     />
                   </div>
@@ -628,26 +650,6 @@ export default function AdminDashboard() {
                     />
                   </div>
                   <div className="flex flex-col gap-2">
-                    <label className="text-[9px] tracking-[2px] text-[#6b5d4a] uppercase">Chambres</label>
-                    <input
-                      name="bedrooms"
-                      type="number"
-                      value={form.bedrooms}
-                      onChange={handleChange}
-                      className="bg-white/50 border border-white/60 rounded-xl px-4 py-3 text-sm text-[#1a1410] outline-none focus:border-[#8b6914]"
-                    />
-                  </div>
-                  <div className="flex flex-col gap-2">
-                    <label className="text-[9px] tracking-[2px] text-[#6b5d4a] uppercase">Salles de bain</label>
-                    <input
-                      name="bathrooms"
-                      type="number"
-                      value={form.bathrooms}
-                      onChange={handleChange}
-                      className="bg-white/50 border border-white/60 rounded-xl px-4 py-3 text-sm text-[#1a1410] outline-none focus:border-[#8b6914]"
-                    />
-                  </div>
-                  <div className="flex flex-col gap-2">
                     <label className="text-[9px] tracking-[2px] text-[#6b5d4a] uppercase">Statut</label>
                     <select
                       name="status"
@@ -663,8 +665,8 @@ export default function AdminDashboard() {
               </div>
             )}
 
-            {/* Section 2: Localisation */}
-            {openSection === 2 && (
+            {/* Section 1: Localisation */}
+            {openSection === 1 && (
               <div className="mb-2">
                 <div className="relative flex flex-col gap-2">
                   <label className="text-[9px] tracking-[2px] text-[#6b5d4a] uppercase">Ville</label>
@@ -710,8 +712,8 @@ export default function AdminDashboard() {
               </div>
             )}
 
-            {/* Section 3: Descriptions */}
-            {openSection === 3 && (
+            {/* Section 2: Descriptions */}
+            {openSection === 2 && (
               <div className="mb-2">
                 <div className="flex flex-col gap-4">
                   {['fr', 'en', 'he'].map((lang) => (
@@ -732,8 +734,8 @@ export default function AdminDashboard() {
               </div>
             )}
 
-            {/* Section 4: Médias */}
-            {openSection === 4 && (
+            {/* Section 3: Médias */}
+            {openSection === 3 && (
               <div className="mb-2">
                 <div className="flex flex-col gap-6">
                   {/* Photos existantes en mode édition */}
@@ -765,6 +767,39 @@ export default function AdminDashboard() {
                     </div>
                   )}
 
+                  {/* Erreur média manquant */}
+                  {mediaError && (
+                    <div className="mb-4 px-4 py-3 rounded-xl bg-red-50 border border-red-200">
+                      <p className="text-[11px] text-red-600 font-medium">
+                        Au moins une photo ou une vidéo est obligatoire pour publier un bien.
+                      </p>
+                    </div>
+                  )}
+
+                  {/* Avertissement multi-vidéos */}
+                  {folderWarn && (
+                    <div className="mb-4 px-4 py-3 rounded-xl bg-amber-50 border border-amber-200">
+                      <p className="text-[11px] text-amber-700">⚠ {folderWarn}</p>
+                    </div>
+                  )}
+
+                  {/* Upload de dossier */}
+                  <div className="flex flex-col gap-2 mb-4">
+                    <label className="text-[9px] tracking-[2px] text-[#6b5d4a] uppercase">
+                      Importer un dossier (photos + vidéo)
+                    </label>
+                    <input
+                      type="file"
+                      multiple
+                      onChange={handleFolderUpload}
+                      {...({ webkitdirectory: '' } as React.InputHTMLAttributes<HTMLInputElement>)}
+                      className="bg-white/50 border border-white/60 rounded-xl px-4 py-3 text-sm text-[#1a1410] outline-none cursor-pointer"
+                    />
+                    <p className="text-[9px] text-[#9b8c7b]">
+                      Sélectionnez un dossier — les images et la première vidéo seront importées automatiquement.
+                    </p>
+                  </div>
+
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div className="flex flex-col gap-2">
                       <label className="text-[9px] tracking-[2px] text-[#6b5d4a] uppercase">
@@ -774,7 +809,10 @@ export default function AdminDashboard() {
                         type="file"
                         accept="image/*"
                         multiple
-                        onChange={(e) => setPhotos((prev) => [...prev, ...Array.from(e.target.files || [])])}
+                        onChange={(e) => {
+                          setPhotos((prev) => [...prev, ...Array.from(e.target.files || [])]);
+                          setMediaError(false);
+                        }}
                         className="bg-white/50 border border-white/60 rounded-xl px-4 py-3 text-sm text-[#1a1410] outline-none cursor-pointer"
                       />
                       {photos.length > 0 && !loading && (
@@ -817,7 +855,10 @@ export default function AdminDashboard() {
                       <input
                         type="file"
                         accept="video/*"
-                        onChange={(e) => setVideo(e.target.files?.[0] || null)}
+                        onChange={(e) => {
+                          setVideo(e.target.files?.[0] || null);
+                          setMediaError(false);
+                        }}
                         className="bg-white/50 border border-white/60 rounded-xl px-4 py-3 text-sm text-[#1a1410] outline-none cursor-pointer"
                       />
                       {video && <p className="text-[10px] text-[#8b6914]">{video.name}</p>}
@@ -841,7 +882,7 @@ export default function AdminDashboard() {
               {openSection === FORM_SECTIONS.length - 1 ? (
                 <button
                   type="button"
-                  onClick={() => setShowConfirmModal(true)}
+                  onClick={handlePublish}
                   disabled={loading || submitDone}
                   className={[
                     'text-[11px] tracking-[3px] uppercase px-10 py-4 rounded-full transition-all duration-200 cursor-pointer flex items-center gap-2',
@@ -873,7 +914,7 @@ export default function AdminDashboard() {
                   {editingId && (
                     <button
                       type="button"
-                      onClick={() => setShowConfirmModal(true)}
+                      onClick={handlePublish}
                       disabled={loading || submitDone}
                       className={[
                         'text-[11px] tracking-[3px] uppercase px-8 py-4 rounded-full transition-all duration-200 cursor-pointer flex items-center gap-2',
