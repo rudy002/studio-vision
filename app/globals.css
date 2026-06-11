@@ -80,12 +80,12 @@ body {
   100% { transform: scale(2.8); opacity: 0; }
 }
 
-/* ── Page transition curtain ── */
-@keyframes curtain-in  { from { transform: translateX(-100%); } to { transform: translateX(0%); } }
-@keyframes curtain-out { from { transform: translateX(0%); }    to { transform: translateX(100%); } }
+/* ── Page transition loader ── */
+@keyframes loader-in  { from { opacity: 0; } to { opacity: 1; } }
+@keyframes loader-out { from { opacity: 1; } to { opacity: 0; } }
 
 @media (prefers-reduced-motion: reduce) {
-  .page-curtain { display: none !important; }
+  .page-loader { display: none !important; }
 }
 
 /* ── Spinner atoms ── */
