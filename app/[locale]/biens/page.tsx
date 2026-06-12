@@ -3,8 +3,11 @@
 import { useEffect, useState, useMemo, useCallback, useRef } from 'react';
 import dynamic from 'next/dynamic';
 import { createClient } from '@supabase/supabase-js';
-import { useTranslations } from 'next-intl';
+import { useTranslations, useLocale } from 'next-intl';
+import { PACKAGES, PACKAGE_KEY } from '../../../lib/packages';
+import { cityLabel } from '../../../lib/city';
 import { useRouter, useSearchParams, usePathname } from 'next/navigation';
+import { MapPin, X } from 'lucide-react';
 import PropertyCard, { Property } from '../../../components/PropertyCard';
 import PropertyModal from '../../../components/PropertyModal';
 import { SpinBar } from '../../../components/loaders';
@@ -21,6 +24,7 @@ type PropertyType = (typeof PROPERTY_TYPES)[number];
 type StatusFilter = 'all' | 'available' | 'sold';
 type SortKey = 'newest' | 'price_asc' | 'price_desc' | 'surface_asc' | 'surface_desc';
 
+
 interface Filters {
   type: PropertyType;
   city: string;
@@ -29,7 +33,8 @@ interface Filters {
   priceMax: string;
   surfaceMin: string;
   surfaceMax: string;
-  bedrooms: number | null;
+  rooms: number | null;
+  packages: string[];
   sort: SortKey;
 }
 
@@ -41,7 +46,8 @@ const DEFAULT_FILTERS: Filters = {
   priceMax: '',
   surfaceMin: '',
   surfaceMax: '',
-  bedrooms: null,
+  rooms: null,
+  packages: [],
   sort: 'newest',
 };
 
@@ -116,6 +122,8 @@ function SkeletonCard() {
 
 export default function BiensPage() {
   const t = useTranslations('properties');
+  const tPkg = useTranslations('packages');
+  const locale = useLocale();
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
@@ -130,7 +138,8 @@ export default function BiensPage() {
     priceMax: searchParams.get('priceMax') || '',
     surfaceMin: searchParams.get('surfaceMin') || '',
     surfaceMax: searchParams.get('surfaceMax') || '',
-    bedrooms: searchParams.get('bedrooms') ? Number(searchParams.get('bedrooms')) : null,
+    rooms: searchParams.get('rooms') ? Number(searchParams.get('rooms')) : null,
+    packages: searchParams.get('packages')?.split(',').filter(Boolean) ?? [],
     sort: (searchParams.get('sort') as SortKey) || 'newest',
   }));
 
@@ -146,6 +155,7 @@ export default function BiensPage() {
   const tabTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [filtersOpen, setFiltersOpen] = useState(false);
+  const [mapOpen, setMapOpen] = useState(false);
 
   // ── Fetch Supabase ──────────────────────────────────────────
   useEffect(() => {
@@ -174,7 +184,8 @@ export default function BiensPage() {
     if (filters.priceMax)          params.set('priceMax', filters.priceMax);
     if (filters.surfaceMin)        params.set('surfaceMin', filters.surfaceMin);
     if (filters.surfaceMax)        params.set('surfaceMax', filters.surfaceMax);
-    if (filters.bedrooms !== null) params.set('bedrooms', String(filters.bedrooms));
+    if (filters.rooms !== null) params.set('rooms', String(filters.rooms));
+    if (filters.packages.length > 0) params.set('packages', filters.packages.join(','));
     if (filters.sort !== 'newest') params.set('sort', filters.sort);
     const qs = params.toString();
     router.replace(qs ? `${pathname}?${qs}` : pathname, { scroll: false });
@@ -193,9 +204,9 @@ export default function BiensPage() {
   );
 
   const cities = useMemo(() => {
-    const set = new Set(properties.map((p) => p.city).filter(Boolean));
+    const set = new Set(properties.map((p) => cityLabel(p, locale)).filter(Boolean));
     return Array.from(set).sort();
-  }, [properties]);
+  }, [properties, locale]);
 
   const setFilter = useCallback(<K extends keyof Filters>(key: K, value: Filters[K]) =>
     setFilters((prev) => ({ ...prev, [key]: value })), []);
@@ -208,12 +219,20 @@ export default function BiensPage() {
     setSurfaceMaxInput('');
   }, []);
 
-  const setTypeWithTransition = useCallback((type: PropertyType) => {
+  // null = bouton "Tous" (vide la sélection) ; sinon toggle du package
+  const togglePackageWithTransition = useCallback((pkg: string | null) => {
     if (tabTimerRef.current) clearTimeout(tabTimerRef.current);
     setTabLoading(true);
-    setFilter('type', type);
+    setFilters((prev) => ({
+      ...prev,
+      packages: pkg === null
+        ? []
+        : prev.packages.includes(pkg)
+          ? prev.packages.filter((x) => x !== pkg)
+          : [...prev.packages, pkg],
+    }));
     tabTimerRef.current = setTimeout(() => setTabLoading(false), 380);
-  }, [setFilter]);
+  }, []);
 
   const hasActiveFilters = useMemo(
     () =>
@@ -224,7 +243,8 @@ export default function BiensPage() {
       filters.priceMax !== '' ||
       filters.surfaceMin !== '' ||
       filters.surfaceMax !== '' ||
-      filters.bedrooms !== null ||
+      filters.rooms !== null ||
+      filters.packages.length > 0 ||
       filters.sort !== 'newest',
     [filters]
   );
@@ -233,13 +253,15 @@ export default function BiensPage() {
   const filtered = useMemo(() => {
     const result = properties.filter((p) => {
       if (filters.type !== 'all' && p.type.toLowerCase() !== filters.type) return false;
-      if (filters.city !== 'all' && p.city !== filters.city) return false;
+      if (filters.city !== 'all' && cityLabel(p, locale) !== filters.city) return false;
       if (filters.status !== 'all' && p.status !== filters.status) return false;
       if (filters.priceMin !== '' && p.price < Number(filters.priceMin)) return false;
       if (filters.priceMax !== '' && p.price > Number(filters.priceMax)) return false;
       if (filters.surfaceMin !== '' && p.surface < Number(filters.surfaceMin)) return false;
       if (filters.surfaceMax !== '' && p.surface > Number(filters.surfaceMax)) return false;
-      if (filters.bedrooms !== null && p.bedrooms < filters.bedrooms) return false;
+      if (filters.rooms !== null && p.rooms < filters.rooms) return false;
+      // ET : le bien doit avoir tous les packages sélectionnés
+      if (filters.packages.length > 0 && !filters.packages.every((pkg) => (p.packages || []).includes(pkg))) return false;
       return true;
     });
     if (filters.sort === 'price_asc')    result.sort((a, b) => a.price - b.price);
@@ -247,7 +269,12 @@ export default function BiensPage() {
     else if (filters.sort === 'surface_asc')  result.sort((a, b) => a.surface - b.surface);
     else if (filters.sort === 'surface_desc') result.sort((a, b) => b.surface - a.surface);
     return result;
-  }, [properties, filters]);
+  }, [properties, filters, locale]);
+
+  const geoCount = useMemo(
+    () => filtered.filter((p) => p.lat != null && p.lng != null).length,
+    [filtered]
+  );
 
   const pillClass = (active: boolean) =>
     `text-[11px] tracking-[1.5px] uppercase px-4 py-1.5 rounded-full border transition-all duration-200 cursor-pointer whitespace-nowrap ${
@@ -273,11 +300,14 @@ export default function BiensPage() {
           {t('title')}
         </h1>
 
-        {/* Filtres type pills */}
+        {/* Filtres packages pills (multi-sélection) */}
         <div className="flex flex-wrap gap-2 mb-6">
-          {PROPERTY_TYPES.map((type) => (
-            <button key={type} onClick={() => setTypeWithTransition(type)} className={pillClass(filters.type === type)}>
-              {t(`filters.${type}`)}
+          <button onClick={() => togglePackageWithTransition(null)} className={pillClass(filters.packages.length === 0)}>
+            {t('filters.packagesAll')}
+          </button>
+          {PACKAGES.map((pkg) => (
+            <button key={pkg} onClick={() => togglePackageWithTransition(pkg)} className={pillClass(filters.packages.includes(pkg))}>
+              {PACKAGE_KEY[pkg] ? tPkg(PACKAGE_KEY[pkg]) : pkg}
             </button>
           ))}
         </div>
@@ -329,13 +359,13 @@ export default function BiensPage() {
               </div>
 
               <div className="flex flex-col gap-1.5">
-                <label className="text-[10px] tracking-[2px] uppercase text-white/60">{t('filters.bedrooms')}</label>
+                <label className="text-[10px] tracking-[2px] uppercase text-white/60">{t('filters.rooms')}</label>
                 <div className="flex gap-2">
-                  <button onClick={() => setFilter('bedrooms', null)} className={pillClass(filters.bedrooms === null)}>
-                    {t('filters.bedroomsAll')}
+                  <button onClick={() => setFilter('rooms', null)} className={pillClass(filters.rooms === null)}>
+                    {t('filters.roomsAll')}
                   </button>
                   {[1, 2, 3, 4].map((n) => (
-                    <button key={n} onClick={() => setFilter('bedrooms', n)} className={pillClass(filters.bedrooms === n)}>
+                    <button key={n} onClick={() => setFilter('rooms', n)} className={pillClass(filters.rooms === n)}>
                       {n === 4 ? '4+' : String(n)}
                     </button>
                   ))}
@@ -343,7 +373,19 @@ export default function BiensPage() {
               </div>
             </div>
 
-            {/* Ligne 2 : Prix · Surface · Tri · Reset */}
+            {/* Ligne 2 : Type de bien */}
+            <div className="flex flex-col gap-1.5">
+              <label className="text-[10px] tracking-[2px] uppercase text-white/60">{t('filters.type')}</label>
+              <div className="flex flex-wrap gap-2">
+                {PROPERTY_TYPES.map((type) => (
+                  <button key={type} onClick={() => setFilter('type', type)} className={pillClass(filters.type === type)}>
+                    {t(`filters.${type}`)}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {/* Ligne 3 : Prix · Surface · Tri · Reset */}
             <div className="flex flex-wrap gap-x-6 gap-y-4 items-end">
 
               <div className="flex flex-col gap-1.5">
@@ -419,15 +461,65 @@ export default function BiensPage() {
         </div>
       </div>
 
-      {/* ── Carte ── */}
+      {/* ── Carte (bandeau teaser repliable) ── */}
       <div className="px-6 md:px-16 pb-16 pt-2">
-        <div className="rounded-3xl overflow-hidden" style={{ border: '1px solid rgba(195,149,83,0.12)' }}>
-          <MapView
-            properties={filtered}
-            onPropertyClick={(p) => setSelected(p)}
-            className="h-87.5 md:h-130"
-          />
-        </div>
+        {!mapOpen ? (
+          <button
+            onClick={() => setMapOpen(true)}
+            className="group relative w-full h-32 md:h-36 rounded-3xl overflow-hidden cursor-pointer transition-colors duration-300 hover:border-[#c39553]/40"
+            style={{ border: '1px solid rgba(195,149,83,0.15)', background: '#0c1220' }}
+          >
+            {/* Fond façon plan cadastral */}
+            <div
+              className="absolute inset-0 opacity-70"
+              style={{
+                background: `
+                  repeating-linear-gradient(90deg, rgba(195,149,83,0.06) 0 1px, transparent 1px 56px),
+                  repeating-linear-gradient(0deg, rgba(195,149,83,0.06) 0 1px, transparent 1px 56px),
+                  repeating-linear-gradient(45deg, rgba(255,255,255,0.02) 0 1px, transparent 1px 90px)`,
+              }}
+            />
+            <div
+              className="absolute inset-0"
+              style={{ background: 'radial-gradient(ellipse at center, transparent 25%, rgba(10,15,26,0.85) 100%)' }}
+            />
+            <div className="relative flex flex-col items-center justify-center gap-2 h-full">
+              <span className="relative flex items-center justify-center w-8 h-8">
+                <span className="absolute inline-flex w-full h-full rounded-full bg-[#c39553] opacity-15 animate-ping" />
+                <MapPin className="relative h-5 w-5 text-[#c39553]" strokeWidth={1.5} />
+              </span>
+              <span className="text-[11px] tracking-[3px] uppercase text-white/80 group-hover:text-[#c39553] transition-colors">
+                {t('filters.exploreMap')}
+              </span>
+              <span className="text-[9px] tracking-[2px] uppercase text-white/35">
+                {t('filters.mapCount', { count: geoCount })}
+              </span>
+            </div>
+          </button>
+        ) : (
+          <div
+            className="relative rounded-3xl overflow-hidden"
+            style={{ border: '1px solid rgba(195,149,83,0.12)', animation: 'sp-fade-in 0.35s ease forwards', opacity: 0 }}
+          >
+            <MapView
+              properties={filtered}
+              onPropertyClick={(p) => setSelected(p)}
+              className="h-87.5 md:h-130"
+            />
+            <button
+              onClick={() => setMapOpen(false)}
+              className="absolute top-4 right-4 z-1001 flex items-center gap-2 px-4 py-2 rounded-full text-[10px] tracking-[2px] uppercase text-white/80 hover:text-white cursor-pointer transition-colors"
+              style={{
+                background: 'rgba(5,8,12,0.72)',
+                border: '1px solid rgba(255,255,255,0.16)',
+                backdropFilter: 'blur(12px)',
+              }}
+            >
+              <X className="h-3 w-3" strokeWidth={2} />
+              {t('filters.hideMap')}
+            </button>
+          </div>
+        )}
       </div>
 
       {/* ── Séparateur ── */}

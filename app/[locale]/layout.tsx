@@ -3,6 +3,7 @@ import { NextIntlClientProvider } from 'next-intl';
 import { getMessages } from 'next-intl/server';
 import { notFound } from 'next/navigation';
 import Navbar from '../../components/Navbar';
+import HtmlLangSync from '../../components/HtmlLangSync';
 import { PageTransitionProvider } from '../../components/PageTransitionProvider';
 import "../globals.css";
 
@@ -39,7 +40,7 @@ export default async function LocaleLayout({
       addressCountry: 'IL',
     },
     priceRange: '₪₪',
-    image: 'https://www.studiovision.il/lior-photos/IMG_7584.JPEG',
+    image: 'https://www.studiovision.il/lior-photos/IMG_7584.jpg',
     areaServed: {
       '@type': 'Country',
       name: 'Israel',
@@ -48,6 +49,7 @@ export default async function LocaleLayout({
 
   return (
     <NextIntlClientProvider messages={messages}>
+      <HtmlLangSync />
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(localBusiness) }}

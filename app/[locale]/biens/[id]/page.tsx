@@ -3,6 +3,7 @@ import { createClient } from '@supabase/supabase-js';
 import { notFound } from 'next/navigation';
 import PropertyPageWrapper from '../../../../components/PropertyPageWrapper';
 import { BASE_URL } from '../../../../lib/seo';
+import { cityLabel } from '../../../../lib/city';
 
 const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL!,
@@ -22,10 +23,13 @@ export async function generateMetadata({ params }: { params: Params }): Promise<
 
   if (!property) return {};
 
+  // Les titres ne sont plus saisis dans l'admin — fallback type · ville
+  const city = cityLabel(property, locale);
   const title =
-    locale === 'fr' ? property.title_fr
+    (locale === 'fr' ? property.title_fr
     : locale === 'en' ? property.title_en
-    : property.title_he;
+    : property.title_he)
+    || [property.type, city].filter(Boolean).join(' · ');
 
   const description =
     locale === 'fr' ? property.description_fr
@@ -33,7 +37,7 @@ export async function generateMetadata({ params }: { params: Params }): Promise<
     : property.description_he;
 
   const image = property.photos?.[0];
-  const metaDesc = description || `${property.type} · ${property.city} · ${Number(property.price).toLocaleString()} ₪`;
+  const metaDesc = description || `${property.type} · ${city} · ${Number(property.price).toLocaleString()} ₪`;
 
   return {
     title: `${title} — Studio Vision`,
@@ -73,10 +77,12 @@ export default async function BienPage({ params }: { params: Params }) {
 
   if (!property) notFound();
 
+  const city = cityLabel(property, locale);
   const title =
-    locale === 'fr' ? property.title_fr
+    (locale === 'fr' ? property.title_fr
     : locale === 'en' ? property.title_en
-    : property.title_he;
+    : property.title_he)
+    || [property.type, city].filter(Boolean).join(' · ');
 
   const jsonLd = {
     '@context': 'https://schema.org',
@@ -99,10 +105,10 @@ export default async function BienPage({ params }: { params: Params }) {
         unitCode: 'MTK',
       },
     }),
-    ...(property.city && {
+    ...(city && {
       address: {
         '@type': 'PostalAddress',
-        addressLocality: property.city,
+        addressLocality: city,
         addressCountry: 'IL',
       },
     }),

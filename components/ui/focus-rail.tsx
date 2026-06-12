@@ -8,7 +8,7 @@ import { cn } from "@/lib/utils";
 
 export type FocusRailItem = {
   id: string | number;
-  title: string;
+  title?: string;
   description?: string;
   imageSrc: string;
   href?: string;
@@ -182,7 +182,7 @@ export function FocusRail({
               >
                 <img
                   src={item.imageSrc}
-                  alt={item.title}
+                  alt={item.title ?? item.meta ?? ''}
                   className="h-full w-full rounded-2xl object-cover pointer-events-none"
                 />
                 <div className="absolute inset-0 rounded-2xl pointer-events-none"
@@ -213,10 +213,12 @@ export function FocusRail({
                     {activeItem.meta}
                   </span>
                 )}
-                <h2 className="text-xl md:text-3xl font-light tracking-tight text-white"
-                  style={{ fontFamily: 'var(--font-serif, "Cormorant Garamond", serif)' }}>
-                  {activeItem.title}
-                </h2>
+                {activeItem.title && (
+                  <h2 className="text-xl md:text-3xl font-light tracking-tight text-white"
+                    style={{ fontFamily: 'var(--font-serif, "Cormorant Garamond", serif)' }}>
+                    {activeItem.title}
+                  </h2>
+                )}
                 {activeItem.description && (
                   <p className="hidden md:block max-w-md text-sm" style={{ color: 'rgba(239,231,214,0.55)' }}>
                     {activeItem.description}

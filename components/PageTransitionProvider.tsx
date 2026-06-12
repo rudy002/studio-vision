@@ -63,12 +63,10 @@ export function PageTransitionProvider({ children }: { children: ReactNode }) {
     }
   }, [phase, pathname, router]);
 
-  // Inline style per phase — using key={phase} remounts the div so
-  // the CSS animation always restarts cleanly from its `from` keyframe.
   const overlayStyle: CSSProperties =
-    phase === 'entering'   ? { animation: 'curtain-in  0.22s ease-in  forwards' } :
-    phase === 'navigating' ? { transform: 'translateX(0%)' } :
-    phase === 'leaving'    ? { animation: 'curtain-out 0.22s ease-out forwards' } :
+    phase === 'entering'   ? { animation: 'loader-in  0.15s ease-out forwards' } :
+    phase === 'navigating' ? { opacity: 1 } :
+    phase === 'leaving'    ? { animation: 'loader-out 0.3s ease-in  forwards' } :
     {};
 
   return (
@@ -78,11 +76,22 @@ export function PageTransitionProvider({ children }: { children: ReactNode }) {
       {phase !== 'idle' && (
         <div
           key={phase}
-          className="page-curtain fixed inset-0 z-200 bg-[#0a0f1a] will-change-transform"
-          style={overlayStyle}
+          className="page-loader fixed inset-0 z-200 flex items-center justify-center"
+          style={{ background: 'rgba(10,15,26,0.85)', backdropFilter: 'blur(6px)', ...overlayStyle }}
           onAnimationEnd={phase !== 'navigating' ? handleAnimEnd : undefined}
           aria-hidden="true"
-        />
+        >
+          <div
+            style={{
+              width: 36,
+              height: 36,
+              borderRadius: '50%',
+              border: '1.5px solid rgba(195,149,83,0.2)',
+              borderTopColor: '#b08d57',
+              animation: 'spin-ring 0.75s linear infinite',
+            }}
+          />
+        </div>
       )}
     </TransitionCtx.Provider>
   );

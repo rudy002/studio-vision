@@ -58,6 +58,16 @@ body {
 [lang="he"] .font-serif {
   font-family: var(--font-hebrew), 'Noto Sans Hebrew', serif;
 }
+/* Compensation optique : sans majuscules ni letter-spacing, l'hébreu
+   paraît plus petit à taille de police égale — on remonte d'1px les
+   petits libellés (filtres, badges, labels). */
+[lang="he"] [class*="text-[7px]"]  { font-size: 8px !important; }
+[lang="he"] [class*="text-[8px]"]  { font-size: 9px !important; }
+[lang="he"] [class*="text-[9px]"]  { font-size: 10px !important; }
+[lang="he"] [class*="text-[10px]"] { font-size: 11px !important; }
+[lang="he"] [class*="text-[11px]"] { font-size: 12px !important; }
+[lang="he"] [class*="text-[12px]"] { font-size: 13px !important; }
+[lang="he"] [class*="text-[13px]"] { font-size: 14px !important; }
 
 /* ── Splash screen keyframes ── */
 @keyframes sp-letter {
@@ -80,12 +90,12 @@ body {
   100% { transform: scale(2.8); opacity: 0; }
 }
 
-/* ── Page transition curtain ── */
-@keyframes curtain-in  { from { transform: translateX(-100%); } to { transform: translateX(0%); } }
-@keyframes curtain-out { from { transform: translateX(0%); }    to { transform: translateX(100%); } }
+/* ── Page transition loader ── */
+@keyframes loader-in  { from { opacity: 0; } to { opacity: 1; } }
+@keyframes loader-out { from { opacity: 1; } to { opacity: 0; } }
 
 @media (prefers-reduced-motion: reduce) {
-  .page-curtain { display: none !important; }
+  .page-loader { display: none !important; }
 }
 
 /* ── Spinner atoms ── */

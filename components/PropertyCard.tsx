@@ -5,24 +5,28 @@ import { memo } from 'react';
 import { useTranslations, useLocale } from 'next-intl';
 import { ArrowRight, MapPin } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { PACKAGE_KEY } from '@/lib/packages';
+import { cityLabel } from '@/lib/city';
 
 export type Property = {
   id: string;
-  title_fr: string;
-  title_en: string;
-  title_he: string;
+  title_fr?: string;
+  title_en?: string;
+  title_he?: string;
   type: string;
   price: number;
   surface: number;
   rooms: number;
-  bedrooms: number;
+  bedrooms?: number;
   city: string;
+  city_en?: string;
   status: string;
   photos: string[];
   video_url: string;
   description_fr?: string;
   description_en?: string;
   description_he?: string;
+  packages?: string[];
   lat?: number;
   lng?: number;
 };
@@ -35,7 +39,6 @@ const TYPE_COLORS: Record<string, string> = {
 };
 const DEFAULT_COLOR = '220 30% 12%'; // bleu-marine profond
 
-const FALLBACK_IMAGE = 'https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=800&q=80';
 
 function PropertyCard({
   property,
@@ -47,19 +50,15 @@ function PropertyCard({
   className?: string;
 }) {
   const t = useTranslations('properties');
+  const tPkg = useTranslations('packages');
   const locale = useLocale();
-
-  const title =
-    locale === 'fr' ? property.title_fr
-    : locale === 'en' ? property.title_en
-    : property.title_he;
 
   const intlLocale =
     locale === 'fr' ? 'fr-FR' : locale === 'he' ? 'he-IL' : 'en-US';
 
   const isAvailable = property.status === 'available';
   const themeColor = TYPE_COLORS[property.type?.toLowerCase()] ?? DEFAULT_COLOR;
-  const imageUrl = property.photos?.[0] ?? FALLBACK_IMAGE;
+  const imageUrl = property.photos?.[0];
 
   return (
     <div
@@ -74,11 +73,13 @@ function PropertyCard({
         style={{ boxShadow: `0 0 40px -18px hsl(${themeColor} / 0.5)` }}
       >
         {/* Background image with zoom on hover */}
-        <div
-          className="absolute inset-0 bg-cover bg-center
-                     transition-transform duration-500 ease-in-out group-hover:scale-110"
-          style={{ backgroundImage: `url(${imageUrl})` }}
-        />
+        {imageUrl && (
+          <div
+            className="absolute inset-0 bg-cover bg-center
+                       transition-transform duration-500 ease-in-out group-hover:scale-110"
+            style={{ backgroundImage: `url(${imageUrl})` }}
+          />
+        )}
 
         {/* Gradient overlay */}
         <div
@@ -111,19 +112,27 @@ function PropertyCard({
         <div className="relative flex flex-col justify-end h-full p-5 text-white">
           <p className="text-[9px] tracking-[3px] text-[#c39553]/75 uppercase mb-1.5 flex items-center gap-1">
             <MapPin className="h-2.5 w-2.5 shrink-0" />
-            {property.city}
+            {cityLabel(property, locale)}
           </p>
 
-          <h3 className="font-serif text-xl font-light leading-snug mb-2.5">
-            {title}
-          </h3>
+          {property.packages && property.packages.length > 0 && (
+            <div className="flex flex-wrap gap-1 mb-2.5">
+              {property.packages.map((pkg) => (
+                <span
+                  key={pkg}
+                  className="text-[7px] tracking-[1.5px] uppercase px-2 py-0.5 rounded-full border border-[#c39553]/25 text-[#c39553]/65"
+                  style={{ background: 'rgba(195,149,83,0.07)' }}
+                >
+                  {PACKAGE_KEY[pkg] ? tPkg(PACKAGE_KEY[pkg]) : pkg}
+                </span>
+              ))}
+            </div>
+          )}
 
           <div className="flex items-center gap-2.5 text-[10px] text-white/55 mb-4 font-mono">
-            <span>{property.surface} m²</span>
-            <span className="opacity-30">·</span>
-            <span>{property.rooms} {t('rooms')}</span>
-            <span className="opacity-30">·</span>
-            <span>{property.bedrooms} {t('bedrooms')}</span>
+            {property.surface > 0 && <span>{property.surface} m²</span>}
+            {property.surface > 0 && property.rooms > 0 && <span className="opacity-30">·</span>}
+            {property.rooms > 0 && <span>{property.rooms} {t('rooms')}</span>}
           </div>
 
           {/* Price + arrow */}
@@ -137,7 +146,7 @@ function PropertyCard({
             }}
           >
             <span className="font-serif text-lg font-light">
-              {property.price.toLocaleString(intlLocale)}&nbsp;₪
+              {property.price > 0 ? `${property.price.toLocaleString(intlLocale)} ₪` : t('priceOnRequest')}
             </span>
             <ArrowRight className="h-4 w-4 text-[#c39553] transition-transform duration-300 group-hover:translate-x-1 shrink-0" />
           </div>

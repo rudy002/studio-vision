@@ -74,6 +74,7 @@ export default function SplashScreen() {
 
         {/* Wordmark */}
         <div
+          dir="ltr"
           aria-label="Studio.Vision"
           className="flex whitespace-nowrap"
           style={{

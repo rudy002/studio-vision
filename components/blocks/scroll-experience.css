@@ -373,7 +373,10 @@
 }
 
 /* ============================================================
-   ACT 3 — HORIZONTAL ROOMS
+   ACT 3 — ROOMS CROSSFADE
+   Les 4 pièces sont empilées plein écran ; le scroll vertical
+   fait apparaître chacune en fondu sur la précédente (--o),
+   avec un léger zoom qui se stabilise (1.06 → 1).
    ============================================================ */
 .sv-act-3 {
   height: 280vh;
@@ -386,23 +389,26 @@
   overflow: hidden;
 }
 .sv-act-3 .sv-rail {
-  height: 100%;
-  display: flex;
-  width: 400%;
-  transform: translateX(calc(var(--p, 0) * -75%));
-  will-change: transform;
-}
-[dir="rtl"] .sv-act-3 .sv-rail {
-  transform: translateX(calc(var(--p, 0) * 75%));
-}
-.sv-act-3 .sv-room {
-  width: 25%; height: 100%;
   position: relative;
+  height: 100%;
+  width: 100%;
+}
+/* Temps d'écran égal pour les 4 pièces : 16% chacune + 3 fondus de 12%.
+   Fondu d'opacité pur (pas de transform → fluide sur mobile). Chaque
+   pièce apparaît sur la précédente, qui est retirée une fois recouverte
+   pour limiter le nombre de couches peintes à 2 maximum. */
+.sv-act-3 .sv-room {
+  position: absolute; inset: 0;
   overflow: hidden;
-  flex-shrink: 0;
   background-size: cover;
   background-position: center;
+  --o: 1;
+  opacity: var(--o);
 }
+.sv-act-3 .sv-room.sv-r1 { --o: clamp(0, calc(1 - (var(--p, 0) - 0.30) / 0.06), 1); }
+.sv-act-3 .sv-room.sv-r2 { --o: min(clamp(0, calc((var(--p, 0) - 0.16) / 0.12), 1), clamp(0, calc(1 - (var(--p, 0) - 0.58) / 0.06), 1)); }
+.sv-act-3 .sv-room.sv-r3 { --o: min(clamp(0, calc((var(--p, 0) - 0.44) / 0.12), 1), clamp(0, calc(1 - (var(--p, 0) - 0.86) / 0.06), 1)); }
+.sv-act-3 .sv-room.sv-r4 { --o: clamp(0, calc((var(--p, 0) - 0.72) / 0.12), 1); }
 .sv-act-3 .sv-room::after {
   content: ""; position: absolute; inset: 0;
   background: linear-gradient(180deg, rgba(10,15,26,0.2) 0%, rgba(10,15,26,0.55) 100%);
@@ -939,9 +945,13 @@
   .sv-act-2 .sv-hud .sv-corner.sv-bc { grid-column: 1 / -1; justify-self: center; white-space: nowrap; }
   .sv-act-2 .sv-caption { bottom: 72px; }
 
-  /* Acte 3 — visite horizontale */
+  /* Acte 3 — visite des pièces */
   .sv-act-3 .sv-room .sv-info { left: 20px; bottom: 56px; }
   [dir="rtl"] .sv-act-3 .sv-room .sv-info { left: auto; right: 20px; }
+  /* Photo cuisine (IMG_7587) : l'îlot en marbre est sur le tiers gauche,
+     on décale le point focal pour le garder dans le cadre portrait.
+     À revérifier si les photos de cette section changent. */
+  .sv-act-3 .sv-room.sv-r2 { background-position: 32% center; }
   .sv-act-3 .sv-room .sv-info p { display: none; }
   .sv-act-3 .sv-strip { padding: 20px 20px 0; }
   .sv-act-3 .sv-progress { left: 20px; right: 20px; bottom: 20px; }
