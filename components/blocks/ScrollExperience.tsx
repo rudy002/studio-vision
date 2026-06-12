@@ -316,7 +316,7 @@ export default function ScrollExperience({
         </div>
       </section>
 
-      {/* ACT 3 — HORIZONTAL ROOMS */}
+      {/* ACT 3 — ROOMS CROSSFADE */}
       <section className="sv-act-3" data-act="3">
         <div className="sv-stage">
           <div className="sv-strip">
