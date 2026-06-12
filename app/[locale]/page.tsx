@@ -124,6 +124,7 @@ export default async function Home({
           hadmayaBeforeSub:    tse('hadmayaBeforeSub'),
           hadmayaAfter:        tse('hadmayaAfter'),
           hadmayaAfterSub:     tse('hadmayaAfterSub'),
+          hadmayaWord:         tse('hadmayaWord'),
           matterportTag:       tse('matterportTag'),
           matterportTitle:     tse('matterportTitle'),
           matterportTitleAccent: tse('matterportTitleAccent'),

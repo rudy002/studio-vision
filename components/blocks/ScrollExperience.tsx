@@ -25,6 +25,7 @@ type Texts = {
   hadmayaBeforeSub?: string;
   hadmayaAfter?: string;
   hadmayaAfterSub?: string;
+  hadmayaWord?: string;
   matterportTag?: string;
   matterportTitle?: string;
   matterportTitleAccent?: string;
@@ -87,11 +88,11 @@ const DEFAULTS = {
 const DEFAULT_TEXTS: Required<Texts> = {
   brand: 'Studio Vision',
   brandSub: 'Cinématographie immobilière',
-  chapters: ['01 — Studio Vision', '02 — Vue drone', '03 — Visite', '04 — Hadmaya', '05 — Matterport', '06 — Showreel', '07 — Biens en vedette'],
+  chapters: ['01 — Studio Vision', '02 — Vue drone', '03 — Visite', '04 — Home staging virtuel', '05 — Matterport', '06 — Showreel', '07 — Biens en vedette'],
   introEyebrow: 'Studio Vision · Israël',
   introTitleLine1: "L'art de révéler",
   introTitleAccent: 'chaque espace',
-  introSubtitle: 'Photo · Vidéo drone · Matterport · Hadmaya',
+  introSubtitle: 'Photo · Vidéo drone · Matterport · Home staging virtuel',
   scrollHint: 'Faites défiler',
   droneTag: 'Drone · Vidéo aérienne',
   droneTitle: 'Plans cinématiques en',
@@ -104,13 +105,14 @@ const DEFAULT_TEXTS: Required<Texts> = {
     { num: '03 / 04 · Chambre',       title: 'Volume &',        accent: 'intimité',    desc: 'Compositions feutrées, draps tendus, contre-jour maîtrisé pour révéler le calme du lieu.' },
     { num: '04 / 04 · Salle de bain', title: 'Architecture du', accent: 'détail',      desc: 'Réflexions, miroirs, robinetterie — un soin maniaque pour transformer une pièce technique en bijou.' },
   ],
-  hadmayaTag: 'Hadmaya · Image de synthèse',
+  hadmayaTag: 'Home staging virtuel · Image de synthèse',
   hadmayaTitle: "L'acheteur",
   hadmayaTitleAccent: 'se projette.',
   hadmayaBefore: 'Avant',
   hadmayaBeforeSub: 'Pièce vide',
-  hadmayaAfter: 'Après · Hadmaya',
+  hadmayaAfter: 'Après · Home staging virtuel',
   hadmayaAfterSub: 'Simulation meublée',
+  hadmayaWord: 'Home staging virtuel',
   matterportTag: 'Matterport · Visite 360°',
   matterportTitle: 'Une visite',
   matterportTitleAccent: 'immersive, 24h/24.',
@@ -123,7 +125,7 @@ const DEFAULT_TEXTS: Required<Texts> = {
   reelEyebrow: 'Showreel · Auto-play',
   reelTitleLine1: 'Voir un bien',
   reelTitleAccent: 'autrement.',
-  reelTagline: 'Photo · Drone · Matterport · Hadmaya',
+  reelTagline: 'Photo · Drone · Matterport · Home staging virtuel',
   ctaPrimary: 'Découvrir nos tarifs →',
   ctaSecondary: 'Nous contacter',
 };
@@ -379,7 +381,7 @@ export default function ScrollExperience({
                   >
                     <div className="sv-wt-photo" style={{ backgroundImage: `url(${src})` }} />
                     <div className="sv-wt-vignette" />
-                    <span className="sv-wt-rlabel"><i>{num}</i>Hadmaya</span>
+                    <span className="sv-wt-rlabel"><i>{num}</i>{t.hadmayaWord}</span>
                     {isDestination && <div className="sv-wt-reticle" />}
                   </div>
                 );

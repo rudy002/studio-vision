@@ -6,6 +6,7 @@ import { signOut } from 'next-auth/react';
 import { SpinRing, SpinIris } from './loaders';
 import { createClient } from '@supabase/supabase-js';
 import { compressImage } from '../lib/compress-image';
+import { PACKAGES, packageLabel } from '../lib/packages';
 
 const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL!,
@@ -41,15 +42,6 @@ type Property = {
   video_url: string;
   packages: string[];
 };
-
-const PACKAGES = [
-  'Photos',
-  'Vidéo basique',
-  'Vidéo avancé',
-  'Admaya',
-  'Construction',
-  'Visite virtuelle',
-] as const;
 
 const emptyForm = {
   title_fr: '',
@@ -703,7 +695,7 @@ export default function AdminDashboard() {
                               : 'bg-white/40 text-[#6b5d4a] border-white/60 hover:bg-white/60'
                           }`}
                         >
-                          {pkg}
+                          {packageLabel(pkg)}
                         </button>
                       );
                     })}
