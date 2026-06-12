@@ -22,10 +22,12 @@ export async function generateMetadata({ params }: { params: Params }): Promise<
 
   if (!property) return {};
 
+  // Les titres ne sont plus saisis dans l'admin — fallback type · ville
   const title =
-    locale === 'fr' ? property.title_fr
+    (locale === 'fr' ? property.title_fr
     : locale === 'en' ? property.title_en
-    : property.title_he;
+    : property.title_he)
+    || [property.type, property.city].filter(Boolean).join(' · ');
 
   const description =
     locale === 'fr' ? property.description_fr
@@ -74,9 +76,10 @@ export default async function BienPage({ params }: { params: Params }) {
   if (!property) notFound();
 
   const title =
-    locale === 'fr' ? property.title_fr
+    (locale === 'fr' ? property.title_fr
     : locale === 'en' ? property.title_en
-    : property.title_he;
+    : property.title_he)
+    || [property.type, property.city].filter(Boolean).join(' · ');
 
   const jsonLd = {
     '@context': 'https://schema.org',

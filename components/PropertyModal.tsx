@@ -145,7 +145,7 @@ export default function PropertyModal({
           {mediaItems.length > 0
             ? <MediaCarousel items={mediaItems} className="flex-1" />
             : <div className="flex-1 flex items-center justify-center" style={{ background: '#0a0f1a' }}>
-                <p className="text-[10px] tracking-[3px] uppercase text-white/20">Aucun média</p>
+                <p className="text-[10px] tracking-[3px] uppercase text-white/20">{t('noMedia')}</p>
               </div>
           }
 
@@ -234,7 +234,7 @@ export default function PropertyModal({
             <>
               <div className="mx-7 h-px" style={{ background: 'rgba(195,149,83,0.12)' }} />
               <div className="px-5 py-4 md:px-7 md:py-5">
-                <p className="text-[9px] tracking-[3px] text-[#c39553]/60 uppercase mb-3">Packages</p>
+                <p className="text-[9px] tracking-[3px] text-[#c39553]/60 uppercase mb-3">{t('packagesLabel')}</p>
                 <div className="flex flex-wrap gap-2">
                   {property.packages.map((pkg) => (
                     <span key={pkg} className="text-[9px] tracking-[1.5px] uppercase px-3 py-1.5 rounded-full border border-[#c39553]/25 text-[#c39553]/70" style={{ background: 'rgba(195,149,83,0.06)' }}>
@@ -251,7 +251,7 @@ export default function PropertyModal({
             <div className="px-5 pt-3 pb-0 md:px-7 md:pt-5">
               <p className="text-[9px] tracking-[3px] text-white/50 uppercase flex items-center gap-2">
                 <Maximize2 className="h-3 w-3 text-[#c39553]/40" />
-                {mediaItems.length} média{mediaItems.length > 1 ? 's' : ''} disponible{mediaItems.length > 1 ? 's' : ''}
+                {t('mediaAvailable', { count: mediaItems.length })}
               </p>
             </div>
           )}
@@ -335,7 +335,7 @@ export default function PropertyModal({
                     : <Link className="w-5 h-5 text-[#b08d57]" strokeWidth={1.5} />
                   }
                 </div>
-                <span className="text-[9px] text-white/45 text-center leading-tight">{linkCopied ? 'Copié !' : 'Copier'}</span>
+                <span className="text-[9px] text-white/45 text-center leading-tight">{linkCopied ? t('shareCopied') : t('shareCopy')}</span>
               </button>
             </div>
 
@@ -348,7 +348,7 @@ export default function PropertyModal({
                 style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.08)', color: 'rgba(255,255,255,0.35)' }}
               >
                 <Share2 className="h-3.5 w-3.5 shrink-0" strokeWidth={1.5} />
-                Autres applications...
+                {t('shareOther')}
               </button>
             )}
           </div>

@@ -8,16 +8,20 @@ const WA_MESSAGES: Record<string, string> = {
   he: 'שלום, אני מעוניין/ת בשירותי הצילום והוידאו שלכם לנדל"ן. האם תוכלו ליצור איתי קשר?',
 };
 
-export default function WhatsAppButton() {
-  const [url, setUrl] = useState('https://wa.me/972537084374');
-  const [visible, setVisible] = useState(true);
+const WA_BASE = 'https://wa.me/972537084374';
 
-  useEffect(() => {
+export default function WhatsAppButton() {
+  const [visible, setVisible] = useState(true);
+  const hideTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  // URL construite au clic : toujours la langue courante, même après
+  // une navigation client entre locales
+  const handleClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
+    e.preventDefault();
     const locale = document.documentElement.lang || 'fr';
     const message = WA_MESSAGES[locale] ?? WA_MESSAGES.fr;
-    setUrl(`https://wa.me/972537084374?text=${encodeURIComponent(message)}`);
-  }, []);
-  const hideTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+    window.open(`${WA_BASE}?text=${encodeURIComponent(message)}`, '_blank', 'noopener,noreferrer');
+  };
 
   useEffect(() => {
     const onScroll = () => {
@@ -71,7 +75,8 @@ export default function WhatsAppButton() {
       `}</style>
 
       <a
-        href={url}
+        href={WA_BASE}
+        onClick={handleClick}
         target="_blank"
         rel="noopener noreferrer"
         aria-label="WhatsApp"

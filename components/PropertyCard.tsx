@@ -16,7 +16,7 @@ export type Property = {
   price: number;
   surface: number;
   rooms: number;
-  bedrooms: number;
+  bedrooms?: number;
   city: string;
   status: string;
   photos: string[];
