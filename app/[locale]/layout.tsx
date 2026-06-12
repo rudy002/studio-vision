@@ -40,7 +40,7 @@ export default async function LocaleLayout({
       addressCountry: 'IL',
     },
     priceRange: '₪₪',
-    image: 'https://www.studiovision.il/lior-photos/IMG_7584.JPEG',
+    image: 'https://www.studiovision.il/lior-photos/IMG_7584.jpg',
     areaServed: {
       '@type': 'Country',
       name: 'Israel',

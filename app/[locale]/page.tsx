@@ -2,7 +2,9 @@ import type { Metadata } from 'next';
 import { getTranslations } from 'next-intl/server';
 import { createClient } from '@supabase/supabase-js';
 import ScrollExperience from '../../components/blocks/ScrollExperience';
-import { buildAlternates } from '../../lib/seo';
+import { BASE_URL, buildAlternates } from '../../lib/seo';
+
+const OG_IMAGE = { url: `${BASE_URL}/og-image.jpg`, width: 1200, height: 630, alt: 'Studio Vision — Cinématographie immobilière' };
 
 const seo = {
   fr: {
@@ -35,11 +37,13 @@ export async function generateMetadata({
       title: meta.title,
       description: meta.description,
       type: 'website',
+      images: [OG_IMAGE],
     },
     twitter: {
       card: 'summary_large_image',
       title: meta.title,
       description: meta.description,
+      images: [OG_IMAGE.url],
     },
   };
 }
@@ -79,30 +83,30 @@ export default async function Home({
         ctaSecondaryHref={`/${locale}/contact`}
         images={{
           // ACT 2 — Drone (couches sky → façade → intérieur)
-          sky:       '/lior-photos/IMG_7579.JPEG', // salle à manger panoramique vue mer
-          facade:    '/lior-photos/IMG_7586.JPEG', // grand living parquet chevrons
-          interior:  '/lior-photos/IMG_7574.PNG',  // salon chaleureux vue skyline
+          sky:       '/lior-photos/IMG_7579.jpg', // salle à manger panoramique vue mer
+          facade:    '/lior-photos/IMG_7586.jpg', // grand living parquet chevrons
+          interior:  '/lior-photos/IMG_7574.jpg',  // salon chaleureux vue skyline
           // ACT 3 — Visite des pièces
-          salon:     '/lior-photos/IMG_7584.JPEG', // salon artistique vue mer
-          cuisine:   '/lior-photos/IMG_7587.JPEG', // cuisine marbre parquet
-          chambre:   '/lior-photos/IMG_7577.JPEG', // séjour lumineux vue mer
-          sdb:       '/lior-photos/IMG_7581.JPEG', // bibliothèque design vue mer
+          salon:     '/lior-photos/IMG_7584.jpg', // salon artistique vue mer
+          cuisine:   '/lior-photos/IMG_7587.jpg', // cuisine marbre parquet
+          chambre:   '/lior-photos/IMG_7577.jpg', // séjour lumineux vue mer
+          sdb:       '/lior-photos/IMG_7581.jpg', // bibliothèque design vue mer
           // ACT 4 — Hadmaya avant / après
-          empty:     '/before-after/before2.JPEG',
-          furnished: '/before-after/after2.PNG',
+          empty:     '/before-after/before2.jpg',
+          furnished: '/before-after/after2.jpg',
           // ACT 5 — Visite immersive (after* sauf after2)
           visitRooms: [
-            '/before-after/after1.PNG',
-            '/before-after/after3.PNG',
-            '/before-after/after4.PNG',
-            '/before-after/after5.PNG',
-            '/before-after/after6.PNG',
-            '/before-after/after7.PNG',
-            '/before-after/after8.PNG',
-            '/before-after/after9.PNG',
+            '/before-after/after1.jpg',
+            '/before-after/after3.jpg',
+            '/before-after/after4.jpg',
+            '/before-after/after5.jpg',
+            '/before-after/after6.jpg',
+            '/before-after/after7.jpg',
+            '/before-after/after8.jpg',
+            '/before-after/after9.jpg',
           ],
           // ACT 6 — Poster vidéo showreel
-          poster:    '/lior-photos/IMG_7583.JPEG', // cuisine dramatique vue mer
+          poster:    '/lior-photos/IMG_7583.jpg', // cuisine dramatique vue mer
         }}
         texts={{
           chapters:            tse.raw('chapters') as string[],
