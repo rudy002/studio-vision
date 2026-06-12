@@ -3,6 +3,7 @@ import { getTranslations } from 'next-intl/server';
 import { createClient } from '@supabase/supabase-js';
 import ScrollExperience from '../../components/blocks/ScrollExperience';
 import { BASE_URL, buildAlternates } from '../../lib/seo';
+import { cityLabel } from '../../lib/city';
 
 const OG_IMAGE = { url: `${BASE_URL}/og-image.jpg`, width: 1200, height: 630, alt: 'Studio Vision — Cinématographie immobilière' };
 
@@ -171,7 +172,7 @@ export default async function Home({
               id:          p.id,
               imageSrc:    p.photos[0],
               href:        `/${locale}/biens/${p.id}`,
-              meta:        [p.city, p.type].filter(Boolean).join(' · '),
+              meta:        [cityLabel(p, locale), p.type].filter(Boolean).join(' · '),
               description: [p.surface && `${p.surface} m²`, p.rooms && `${p.rooms} pièces`, p.price && `${Number(p.price).toLocaleString('fr-FR')} ₪`].filter(Boolean).join('  ·  '),
             }))}
             ctaLabel={th('seeProperty')}

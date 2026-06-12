@@ -6,6 +6,7 @@ import { useTranslations, useLocale } from 'next-intl';
 import { ArrowRight, MapPin } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { PACKAGE_KEY } from '@/lib/packages';
+import { cityLabel } from '@/lib/city';
 
 export type Property = {
   id: string;
@@ -18,6 +19,7 @@ export type Property = {
   rooms: number;
   bedrooms?: number;
   city: string;
+  city_en?: string;
   status: string;
   photos: string[];
   video_url: string;
@@ -110,7 +112,7 @@ function PropertyCard({
         <div className="relative flex flex-col justify-end h-full p-5 text-white">
           <p className="text-[9px] tracking-[3px] text-[#c39553]/75 uppercase mb-1.5 flex items-center gap-1">
             <MapPin className="h-2.5 w-2.5 shrink-0" />
-            {property.city}
+            {cityLabel(property, locale)}
           </p>
 
           {property.packages && property.packages.length > 0 && (

@@ -5,7 +5,9 @@ import { MapContainer, TileLayer, Marker, Popup, GeoJSON } from 'react-leaflet';
 import L from 'leaflet';
 
 import 'leaflet/dist/leaflet.css';
+import { useLocale } from 'next-intl';
 import { Property } from './PropertyCard';
+import { cityLabel } from '../lib/city';
 
 delete (L.Icon.Default.prototype as L.Icon.Default & { _getIconUrl?: unknown })._getIconUrl;
 L.Icon.Default.mergeOptions({
@@ -46,6 +48,7 @@ interface MapViewProps {
 }
 
 export default function MapView({ properties, onPropertyClick, className = 'h-130' }: MapViewProps) {
+  const locale = useLocale();
   const [maskFeature, setMaskFeature] = useState<GeoJSONFeature | null>(null);
 
   useEffect(() => {
@@ -114,7 +117,7 @@ export default function MapView({ properties, onPropertyClick, className = 'h-13
             <Popup>
               <div style={{ fontFamily: 'Georgia, serif', minWidth: '160px', padding: '4px 2px' }}>
                 <p style={{ fontSize: '10px', letterSpacing: '2px', textTransform: 'uppercase', color: '#8a8078', margin: '0 0 6px' }}>
-                  {property.city}
+                  {cityLabel(property, locale)}
                 </p>
                 {(property.rooms > 0 || property.surface > 0) && (
                   <p style={{ fontSize: '15px', fontWeight: 300, color: '#1c1917', margin: '0 0 4px', lineHeight: 1.3 }}>

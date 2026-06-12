@@ -3,8 +3,9 @@
 import { useEffect, useState, useMemo, useCallback, useRef } from 'react';
 import dynamic from 'next/dynamic';
 import { createClient } from '@supabase/supabase-js';
-import { useTranslations } from 'next-intl';
+import { useTranslations, useLocale } from 'next-intl';
 import { PACKAGES, PACKAGE_KEY } from '../../../lib/packages';
+import { cityLabel } from '../../../lib/city';
 import { useRouter, useSearchParams, usePathname } from 'next/navigation';
 import { MapPin, X } from 'lucide-react';
 import PropertyCard, { Property } from '../../../components/PropertyCard';
@@ -122,6 +123,7 @@ function SkeletonCard() {
 export default function BiensPage() {
   const t = useTranslations('properties');
   const tPkg = useTranslations('packages');
+  const locale = useLocale();
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
@@ -202,9 +204,9 @@ export default function BiensPage() {
   );
 
   const cities = useMemo(() => {
-    const set = new Set(properties.map((p) => p.city).filter(Boolean));
+    const set = new Set(properties.map((p) => cityLabel(p, locale)).filter(Boolean));
     return Array.from(set).sort();
-  }, [properties]);
+  }, [properties, locale]);
 
   const setFilter = useCallback(<K extends keyof Filters>(key: K, value: Filters[K]) =>
     setFilters((prev) => ({ ...prev, [key]: value })), []);
@@ -251,7 +253,7 @@ export default function BiensPage() {
   const filtered = useMemo(() => {
     const result = properties.filter((p) => {
       if (filters.type !== 'all' && p.type.toLowerCase() !== filters.type) return false;
-      if (filters.city !== 'all' && p.city !== filters.city) return false;
+      if (filters.city !== 'all' && cityLabel(p, locale) !== filters.city) return false;
       if (filters.status !== 'all' && p.status !== filters.status) return false;
       if (filters.priceMin !== '' && p.price < Number(filters.priceMin)) return false;
       if (filters.priceMax !== '' && p.price > Number(filters.priceMax)) return false;
@@ -267,7 +269,7 @@ export default function BiensPage() {
     else if (filters.sort === 'surface_asc')  result.sort((a, b) => a.surface - b.surface);
     else if (filters.sort === 'surface_desc') result.sort((a, b) => b.surface - a.surface);
     return result;
-  }, [properties, filters]);
+  }, [properties, filters, locale]);
 
   const geoCount = useMemo(
     () => filtered.filter((p) => p.lat != null && p.lng != null).length,

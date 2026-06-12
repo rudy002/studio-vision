@@ -14,7 +14,8 @@ const supabase = createClient(
 );
 
 type CityOption = {
-  label: string;
+  label: string;     // nom hébreu (défaut OSM)
+  label_en: string;  // nom anglais
   lat: number;
   lng: number;
 };
@@ -31,6 +32,7 @@ type Property = {
   bedrooms: number;
   bathrooms: number;
   city: string;
+  city_en: string;
   address: string;
   lat: number;
   lng: number;
@@ -54,6 +56,7 @@ const emptyForm = {
   bedrooms: 0,
   bathrooms: 0,
   city: '',
+  city_en: '',
   address: '',
   lat: 31.7683,
   lng: 35.2137,
@@ -84,6 +87,7 @@ export default function AdminDashboard() {
   const [showConfirmModal, setShowConfirmModal] = useState(false);
   const [folderWarn, setFolderWarn] = useState<string | null>(null);
   const [mediaError, setMediaError] = useState(false);
+  const [cityError, setCityError] = useState(false);
   const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   useEffect(() => {
@@ -120,7 +124,8 @@ export default function AdminDashboard() {
 
   const handleCityInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     const query = e.target.value;
-    setForm({ ...form, city: query });
+    // saisie manuelle → on invalide le nom anglais (sera re-rempli à la sélection)
+    setForm({ ...form, city: query, city_en: '' });
     if (debounceRef.current) clearTimeout(debounceRef.current);
     if (query.length < 2) {
       setCitySuggestions([]);
@@ -141,9 +146,10 @@ export default function AdminDashboard() {
   };
 
   const handleCitySuggestionClick = (city: CityOption) => {
-    setForm({ ...form, city: city.label, lat: city.lat, lng: city.lng });
+    setForm({ ...form, city: city.label, city_en: city.label_en || city.label, lat: city.lat, lng: city.lng });
     setCitySuggestions([]);
     setShowSuggestions(false);
+    setCityError(false);
   };
 
   const uploadFile = async (rawFile: File, folder: string) => {
@@ -187,6 +193,7 @@ export default function AdminDashboard() {
       bedrooms: p.bedrooms,
       bathrooms: p.bathrooms,
       city: p.city,
+      city_en: p.city_en || '',
       address: p.address,
       lat: p.lat,
       lng: p.lng,
@@ -212,6 +219,7 @@ export default function AdminDashboard() {
     setVideo(null);
     setFolderWarn(null);
     setMediaError(false);
+    setCityError(false);
   };
 
   const handleFolderUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -242,6 +250,14 @@ export default function AdminDashboard() {
       photos.length > 0 ||
       !!video ||
       !!form.video_url;
+    // Ville valide = sélectionnée dans les suggestions (city_en + coordonnées
+    // renseignées). Une saisie manuelle laisse city_en vide et des coordonnées fausses.
+    if (!form.city || !form.city_en) {
+      setCityError(true);
+      setOpenSection(1); // Localisation
+      return;
+    }
+    setCityError(false);
     if (!hasMedia) {
       setMediaError(true);
       setOpenSection(FORM_SECTIONS.length - 1);
@@ -717,8 +733,15 @@ export default function AdminDashboard() {
                     onFocus={() => citySuggestions.length > 0 && setShowSuggestions(true)}
                     required
                     placeholder="Rechercher une ville en Israël..."
-                    className="bg-white/50 border border-white/60 rounded-xl px-4 py-3 text-sm text-[#1a1410] outline-none focus:border-[#8b6914]"
+                    className={`bg-white/50 border rounded-xl px-4 py-3 text-sm text-[#1a1410] outline-none focus:border-[#8b6914] ${
+                      cityError ? 'border-red-400' : 'border-white/60'
+                    }`}
                   />
+                  {cityError && (
+                    <p className="text-[11px] text-red-500">
+                      Sélectionnez une ville dans la liste de suggestions — c&apos;est elle qui fournit la position sur la carte et le nom traduit.
+                    </p>
+                  )}
                   {showSuggestions && citySuggestions.length > 0 && (
                     <ul
                       style={{
@@ -738,6 +761,9 @@ export default function AdminDashboard() {
                           className="text-sm text-[#1a1410] hover:bg-[#8b6914]/10 hover:text-[#8b6914]"
                         >
                           {city.label}
+                          {city.label_en && city.label_en !== city.label && (
+                            <span className="text-[#6b5d4a]"> · {city.label_en}</span>
+                          )}
                         </li>
                       ))}
                     </ul>

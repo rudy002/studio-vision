@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import { useLocale, useTranslations } from 'next-intl';
 import { PACKAGE_KEY } from '@/lib/packages';
+import { cityLabel } from '@/lib/city';
 import { X, MapPin, Maximize2, Share2, Link, Check } from 'lucide-react';
 import { Property } from './PropertyCard';
 import { MediaCarousel, type CarouselMediaItem } from './ui/carousel-1';
@@ -48,7 +49,8 @@ export default function PropertyModal({
   const [linkCopied, setLinkCopied] = useState(false);
 
   const intlLocale = locale === 'fr' ? 'fr-FR' : locale === 'he' ? 'he-IL' : 'en-US';
-  const propertyLabel = [property.type, property.city].filter(Boolean).join(' · ');
+  const localizedCity = cityLabel(property, locale);
+  const propertyLabel = [property.type, localizedCity].filter(Boolean).join(' · ');
   const isAvailable = property.status === 'available';
 
   const shareUrl = typeof window !== 'undefined'
@@ -185,7 +187,7 @@ export default function PropertyModal({
 
             <p className="flex items-center gap-1.5 text-[10px] tracking-[2.5px] text-white/55 uppercase mb-3">
               <MapPin className="h-2.5 w-2.5 shrink-0 text-[#c39553]/50" />
-              {property.city}
+              {localizedCity}
               {property.type && (
                 <><span className="opacity-30">·</span><span>{property.type}</span></>
               )}
