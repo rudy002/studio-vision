@@ -271,18 +271,18 @@ export default function PropertyModal({
 
           <div className="flex-1" />
         </div>
-      </div>
 
-      {/* ── Share panel ── */}
-      {showSharePanel && (
-        <>
-          {/* Backdrop (closes panel) */}
-          <div className="fixed inset-0 z-1050" onClick={() => setShowSharePanel(false)} />
-
-          {/* Bottom sheet */}
+        {/* ── Share panel — centré sur le modal, voile limité au modal ── */}
+        {showSharePanel && (
           <div
-            className="fixed bottom-0 inset-x-0 z-1051 rounded-t-3xl px-6 pt-5 pb-10"
-            style={{ background: '#0d1421', borderTop: '1px solid rgba(195,149,83,0.2)', borderLeft: '1px solid rgba(195,149,83,0.1)', borderRight: '1px solid rgba(195,149,83,0.1)', maxWidth: '520px', margin: '0 auto' }}
+            className="absolute inset-0 z-50 flex items-center justify-center p-4"
+            style={{ background: 'rgba(5,8,12,0.7)', backdropFilter: 'blur(4px)', animation: 'sp-fade-in 0.2s ease forwards', opacity: 0 }}
+            onClick={() => setShowSharePanel(false)}
+          >
+          <div
+            className="w-full max-w-95 rounded-2xl px-6 pt-5 pb-6 shadow-2xl"
+            style={{ background: '#0d1421', border: '1px solid rgba(195,149,83,0.2)' }}
+            onClick={(e) => e.stopPropagation()}
           >
             {/* Header */}
             <div className="flex items-center justify-between mb-4">
@@ -352,8 +352,9 @@ export default function PropertyModal({
               </button>
             )}
           </div>
-        </>
-      )}
+          </div>
+        )}
+      </div>
     </>
   );
 }
