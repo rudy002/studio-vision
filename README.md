@@ -1,36 +1,84 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Studio Vision
+
+**Multilingual real estate photography platform** — built for a real client to showcase property photography, manage media, and capture leads, with a fully internationalized interface and an interactive coverage map.
+
+🔗 **Live:** [studio-vision-pied.vercel.app](https://studio-vision-pied.vercel.app/en)
+
+<!-- Add a screenshot or short GIF here for instant impact:
+![Studio Vision preview](./public/preview.png)
+-->
+
+---
+
+## Features
+
+- 🌍 **Multilingual (i18n)** — full interface translation via `next-intl`, locale-aware routing.
+- 🗺️ **Interactive coverage map** — Leaflet + react-leaflet with merged Israeli region borders (Turf.js union) to display service areas.
+- 🖼️ **Media management** — image upload and delivery through **Cloudflare R2** (S3-compatible) using the AWS SDK with pre-signed URLs.
+- 🔐 **Authentication** — protected admin area via NextAuth.
+- 📊 **Admin dashboard** — manage portfolio content and incoming requests.
+- ✉️ **Automated contact emails** — transactional emails handled with Resend.
+- ✨ **Polished UI** — Tailwind CSS 4 and Framer Motion animations.
+
+## Tech Stack
+
+| Layer | Technologies |
+|-------|-------------|
+| Framework | Next.js 15 (App Router), React 19 |
+| Language | TypeScript |
+| Styling | Tailwind CSS 4, Framer Motion, lucide-react |
+| Auth | NextAuth |
+| Database | Supabase |
+| Storage | Cloudflare R2 via AWS SDK (S3 client + presigner) |
+| Maps | Leaflet, react-leaflet, Turf.js |
+| i18n | next-intl |
+| Email | Resend |
+| Deployment | Vercel |
 
 ## Getting Started
 
-First, run the development server:
-
 ```bash
+# install dependencies
+npm install
+
+# run the dev server
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000) in your browser.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### Environment variables
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Create a `.env.local` file with the following keys:
 
-## Learn More
+```bash
+# Supabase
+NEXT_PUBLIC_SUPABASE_URL=
+NEXT_PUBLIC_SUPABASE_ANON_KEY=
 
-To learn more about Next.js, take a look at the following resources:
+# NextAuth
+NEXTAUTH_SECRET=
+NEXTAUTH_URL=
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+# Cloudflare R2 (S3-compatible)
+R2_ACCOUNT_ID=
+R2_ACCESS_KEY_ID=
+R2_SECRET_ACCESS_KEY=
+R2_BUCKET_NAME=
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+# Resend
+RESEND_API_KEY=
+```
 
-## Deploy on Vercel
+### Useful scripts
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+```bash
+npm run dev            # start dev server (port 3000)
+npm run build          # production build
+npm run start          # run production build
+npm run fetch-borders  # fetch & generate Israel GeoJSON region borders
+```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## License
+
+This project was built for a real client. Code is shared for portfolio and reference purposes.
