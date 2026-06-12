@@ -5,6 +5,7 @@ import Image from 'next/image';
 import { signOut } from 'next-auth/react';
 import { SpinRing, SpinIris } from './loaders';
 import { createClient } from '@supabase/supabase-js';
+import { compressImage } from '../lib/compress-image';
 
 const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL!,
@@ -153,7 +154,8 @@ export default function AdminDashboard() {
     setShowSuggestions(false);
   };
 
-  const uploadFile = async (file: File, folder: string) => {
+  const uploadFile = async (rawFile: File, folder: string) => {
+    const file = folder === 'photos' ? await compressImage(rawFile) : rawFile;
     const presignRes = await fetch('/api/upload/presign', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
