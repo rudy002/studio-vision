@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import './scroll-experience.css';
 
 type Texts = {
@@ -143,6 +143,15 @@ export default function ScrollExperience({
 
   const rootRef = useRef<HTMLDivElement | null>(null);
   const videoRef = useRef<HTMLVideoElement | null>(null);
+  const [reelMuted, setReelMuted] = useState(true);
+
+  const toggleReelSound = () => {
+    const v = videoRef.current;
+    if (!v) return;
+    v.muted = !v.muted;
+    setReelMuted(v.muted);
+    if (!v.muted) v.play().catch(() => {});
+  };
 
   useEffect(() => {
     const root = rootRef.current;
@@ -187,6 +196,11 @@ export default function ScrollExperience({
         }
         if (s.dataset.act === '5') {
           s.style.setProperty('--p5', String(clamp((p - 0.05) / 0.85, 0, 1)));
+        }
+        if (s.dataset.act === '6') {
+          // La carte vidéo centrée atteint le plein écran à 60 % du scroll,
+          // puis reste fixe le temps de lire titre + CTA par-dessus.
+          s.style.setProperty('--p6', String(clamp(p / 0.6, 0, 1)));
         }
 
         const visibleTop = Math.max(0, rect.top);
@@ -416,16 +430,46 @@ export default function ScrollExperience({
       {/* ACT 6 — SHOWREEL */}
       <section className="sv-act-6" data-act="6">
         <div className="sv-stage">
-          <video ref={videoRef} muted playsInline loop preload="metadata" poster={imgs.poster}>
-            <source src={videoSrc} type="video/mp4" />
-          </video>
-          <div className="sv-overlay" />
+          <div className="sv-reel-backdrop" style={{ backgroundImage: `url(${imgs.poster})` }} />
+          <div className="sv-reel-media">
+            <video ref={videoRef} muted playsInline loop preload="metadata" poster={imgs.poster}>
+              {videoSrc.endsWith('.mp4') && (
+                <source src={videoSrc.replace(/\.mp4$/, '.webm')} type="video/webm" />
+              )}
+              <source src={videoSrc} type="video/mp4" />
+            </video>
+            <div className="sv-overlay" />
+          </div>
           <div className="sv-reel-frame" />
           <div className="sv-reel-info"><span className="sv-rec" />REC</div>
           <div className="sv-reel-meta"><strong>{t.brand}</strong>{t.brandSub}</div>
+          <button
+            type="button"
+            className="sv-reel-sound"
+            onClick={toggleReelSound}
+            aria-label={reelMuted ? 'Activer le son' : 'Couper le son'}
+            aria-pressed={!reelMuted}
+          >
+            {reelMuted ? (
+              <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                <path d="M11 5 6 9H2v6h4l5 4z" />
+                <line x1="22" y1="9" x2="16" y2="15" />
+                <line x1="16" y1="9" x2="22" y2="15" />
+              </svg>
+            ) : (
+              <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                <path d="M11 5 6 9H2v6h4l5 4z" />
+                <path d="M15.5 8.5a5 5 0 0 1 0 7" />
+                <path d="M18.5 5.5a9 9 0 0 1 0 13" />
+              </svg>
+            )}
+          </button>
           <div className="sv-center-block">
             <span className="sv-eyebrow">{t.reelEyebrow}</span>
-            <h2>{t.reelTitleLine1}<br /><em>{t.reelTitleAccent}</em></h2>
+            <h2>
+              <span className="sv-reel-w1">{t.reelTitleLine1}</span>
+              <span className="sv-reel-w2"><em>{t.reelTitleAccent}</em></span>
+            </h2>
             <div className="sv-tagline">{t.reelTagline}</div>
           </div>
           <div className="sv-cta-row">

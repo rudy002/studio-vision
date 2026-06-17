@@ -88,6 +88,7 @@ export default async function Home({
       <SplashScreen />
 
       <ScrollExperience
+        videoSrc="/video-act6.mp4"
         ctaPrimaryHref={`/${locale}/tarifs`}
         ctaSecondaryHref={`/${locale}/contact`}
         images={{
