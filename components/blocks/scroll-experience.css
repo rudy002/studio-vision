@@ -269,7 +269,7 @@
 .sv-act-2 .sv-sky {
   background-image:
     linear-gradient(180deg, rgba(10,15,26,0.0) 0%, rgba(10,15,26,0.55) 100%),
-    url("https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=2200&q=80&auto=format&fit=crop");
+    var(--sky-url, url("https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=2200&q=80&auto=format&fit=crop"));
   transform: translateY(calc(var(--p2a, 0) * -55%))
              scale(calc(1.1 + var(--p2a, 0) * 0.2));
   opacity: calc(1 - var(--p2b, 0));
@@ -938,6 +938,11 @@
   .sv-act-1 .sv-subtitle { letter-spacing: 0.22em; text-align: center; padding: 0 16px; }
 
   /* Acte 2 — drone HUD */
+  .sv-act-2 .sv-sky {
+    background-image:
+      linear-gradient(180deg, rgba(10,15,26,0.0) 0%, rgba(10,15,26,0.55) 100%),
+      var(--sky-url-mobile, var(--sky-url));
+  }
   .sv-act-2 .sv-hud { inset: 18px; font-size: 9px; }
   .sv-act-2 .sv-hud .sv-crosshair { width: 140px; height: 140px; }
   .sv-act-2 .sv-hud .sv-corner.sv-bl,

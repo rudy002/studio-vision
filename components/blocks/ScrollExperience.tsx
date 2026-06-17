@@ -46,6 +46,7 @@ type Props = {
   texts?: Texts;
   images?: {
     sky?: string;
+    skyMobile?: string;
     facade?: string;
     interior?: string;
     salon?: string;
@@ -299,7 +300,7 @@ export default function ScrollExperience({
       {/* ACT 2 — DRONE */}
       <section className="sv-act-2" data-act="2">
         <div className="sv-stage">
-          <div className="sv-sky"      style={{ backgroundImage: `linear-gradient(180deg, rgba(10,15,26,0) 0%, rgba(10,15,26,0.55) 100%), url(${imgs.sky})` }} />
+          <div className="sv-sky"      style={{ '--sky-url': `url(${imgs.sky})`, '--sky-url-mobile': `url(${imgs.skyMobile || imgs.sky})` } as React.CSSProperties} />
           <div className="sv-facade"   style={{ backgroundImage: `linear-gradient(180deg, rgba(10,15,26,0.45) 0%, rgba(10,15,26,0.15) 35%, rgba(10,15,26,0.55) 100%), url(${imgs.facade})` }} />
           <div className="sv-interior" style={{ backgroundImage: `linear-gradient(180deg, rgba(10,15,26,0.30) 0%, rgba(10,15,26,0.45) 100%), url(${imgs.interior})` }} />
           <div className="sv-vignette" />
