@@ -5,20 +5,28 @@ import ScrollExperience from '../../components/blocks/ScrollExperience';
 import { BASE_URL, buildAlternates } from '../../lib/seo';
 import { cityLabel } from '../../lib/city';
 
-const OG_IMAGE = { url: `${BASE_URL}/og-image.jpg`, width: 1200, height: 630, alt: 'Studio Vision — Cinématographie immobilière' };
+const OG_IMAGE = {
+  url: `${BASE_URL}/og-image.jpg`,
+  width: 1200,
+  height: 630,
+  alt: 'Studio Vision — Cinématographie immobilière',
+};
 
 const seo = {
   fr: {
     title: 'Studio Vision | Photographie & Vidéo Immobilière en Israël',
-    description: 'Photo professionnelle, vidéo drone 4K, visite virtuelle Matterport et simulation d\'ameublement pour valoriser votre bien immobilier en Israël.',
+    description:
+      "Photo professionnelle, vidéo drone 4K, visite virtuelle Matterport et simulation d'ameublement pour valoriser votre bien immobilier en Israël.",
   },
   en: {
     title: 'Studio Vision | Real Estate Photography & Video in Israel',
-    description: 'Professional photography, 4K drone video, Matterport virtual tours and furniture simulation to showcase your property in Israel.',
+    description:
+      'Professional photography, 4K drone video, Matterport virtual tours and furniture simulation to showcase your property in Israel.',
   },
   he: {
     title: 'סטודיו ויז\'ן | צילום ווידאו נדל"ן בישראל',
-    description: 'צילום מקצועי, וידאו רחפן 4K, סיור וירטואלי Matterport וסימולציית ריהוט לשיווק נכסי נדל"ן בישראל.',
+    description:
+      'צילום מקצועי, וידאו רחפן 4K, סיור וירטואלי Matterport וסימולציית ריהוט לשיווק נכסי נדל"ן בישראל.',
   },
 } as const;
 
@@ -63,7 +71,7 @@ export default async function Home({
 
   const supabase = createClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
   );
 
   const { data: properties } = await supabase
@@ -80,20 +88,23 @@ export default async function Home({
       <SplashScreen />
 
       <ScrollExperience
+        videoSrc="/video-act6.mp4"
+        videoSrcMobile="/video-vertical.mp4"
         ctaPrimaryHref={`/${locale}/tarifs`}
         ctaSecondaryHref={`/${locale}/contact`}
         images={{
           // ACT 2 — Drone (couches sky → façade → intérieur)
-          sky:       '/lior-photos/IMG_7579.jpg', // salle à manger panoramique vue mer
-          facade:    '/lior-photos/IMG_7586.jpg', // grand living parquet chevrons
-          interior:  '/lior-photos/IMG_7574.jpg',  // salon chaleureux vue skyline
+          sky: '/lior-photos/IMG_7579.jpg', // salle à manger panoramique vue mer
+          skyMobile: '/vertical-photos/IMG_7587.jpg', // version verticale pour mobile
+          facade: '/lior-photos/IMG_7586.jpg', // grand living parquet chevrons
+          interior: '/lior-photos/IMG_7574.jpg', // salon chaleureux vue skyline
           // ACT 3 — Visite des pièces
-          salon:     '/lior-photos/IMG_7584.jpg', // salon artistique vue mer
-          cuisine:   '/lior-photos/IMG_7587.jpg', // cuisine marbre parquet
-          chambre:   '/lior-photos/IMG_7577.jpg', // séjour lumineux vue mer
-          sdb:       '/lior-photos/IMG_7581.jpg', // bibliothèque design vue mer
+          salon: '/act3/IMG_7584.jpg', // salon artistique vue mer
+          cuisine: '/act3/IMG_7580.jpg', // cuisine marbre parquet
+          chambre: '/act3/act3%20-%20chambre.png', // chambre
+          sdb: '/act3/act3-salledebain.jpeg', // salle de bain
           // ACT 4 — Hadmaya avant / après
-          empty:     '/before-after/before2.jpg',
+          empty: '/before-after/before2.jpg',
           furnished: '/before-after/after2.jpg',
           // ACT 5 — Visite immersive (after* sauf after2)
           visitRooms: [
@@ -107,48 +118,60 @@ export default async function Home({
             '/before-after/after9.jpg',
           ],
           // ACT 6 — Poster vidéo showreel
-          poster:    '/lior-photos/IMG_7583.jpg', // cuisine dramatique vue mer
+          poster: '/lior-photos/IMG_7583.jpg', // cuisine dramatique vue mer
         }}
         texts={{
-          chapters:            tse.raw('chapters') as string[],
-          introEyebrow:        tse('introEyebrow'),
-          introTitleLine1:     tse('introTitleLine1'),
-          introTitleAccent:    tse('introTitleAccent'),
-          introSubtitle:       tse('introSubtitle'),
-          scrollHint:          tse('scrollHint'),
-          droneTag:            tse('droneTag'),
-          droneTitle:          tse('droneTitle'),
-          droneTitleAccent:    tse('droneTitleAccent'),
-          visiteLead:          tse('visiteLead'),
-          visiteCount:         tse('visiteCount'),
-          rooms:               tse.raw('rooms') as { num: string; title: string; accent: string; desc: string }[],
-          hadmayaTag:          tse('hadmayaTag'),
-          hadmayaTitle:        tse('hadmayaTitle'),
-          hadmayaTitleAccent:  tse('hadmayaTitleAccent'),
-          hadmayaBefore:       tse('hadmayaBefore'),
-          hadmayaBeforeSub:    tse('hadmayaBeforeSub'),
-          hadmayaAfter:        tse('hadmayaAfter'),
-          hadmayaAfterSub:     tse('hadmayaAfterSub'),
-          hadmayaWord:         tse('hadmayaWord'),
-          matterportTag:       tse('matterportTag'),
-          matterportTitle:     tse('matterportTitle'),
+          seoTitle: tse('seoTitle'),
+          chapters: tse.raw('chapters') as string[],
+          introEyebrow: tse('introEyebrow'),
+          introTitleLine1: tse('introTitleLine1'),
+          introTitleAccent: tse('introTitleAccent'),
+          introSubtitle: tse('introSubtitle'),
+          scrollHint: tse('scrollHint'),
+          droneTag: tse('droneTag'),
+          droneTitle: tse('droneTitle'),
+          droneTitleAccent: tse('droneTitleAccent'),
+          visiteLead: tse('visiteLead'),
+          visiteCount: tse('visiteCount'),
+          rooms: tse.raw('rooms') as {
+            num: string;
+            title: string;
+            accent: string;
+            desc: string;
+          }[],
+          hadmayaTag: tse('hadmayaTag'),
+          hadmayaTitle: tse('hadmayaTitle'),
+          hadmayaTitleAccent: tse('hadmayaTitleAccent'),
+          hadmayaBefore: tse('hadmayaBefore'),
+          hadmayaBeforeSub: tse('hadmayaBeforeSub'),
+          hadmayaAfter: tse('hadmayaAfter'),
+          hadmayaAfterSub: tse('hadmayaAfterSub'),
+          hadmayaWord: tse('hadmayaWord'),
+          matterportTag: tse('matterportTag'),
+          matterportTitle: tse('matterportTitle'),
           matterportTitleAccent: tse('matterportTitleAccent'),
-          matterportDesc:      tse('matterportDesc'),
-          matterportStats:     tse.raw('matterportStats') as { value: string; label: string }[],
-          reelEyebrow:         tse('reelEyebrow'),
-          reelTitleLine1:      tse('reelTitleLine1'),
-          reelTitleAccent:     tse('reelTitleAccent'),
-          reelTagline:         tse('reelTagline'),
-          ctaPrimary:          tse('ctaPrimary'),
-          ctaSecondary:        tse('ctaSecondary'),
-          brand:               tse('brand'),
-          brandSub:            tse('brandSub'),
+          matterportDesc: tse('matterportDesc'),
+          matterportStats: tse.raw('matterportStats') as {
+            value: string;
+            label: string;
+          }[],
+          reelEyebrow: tse('reelEyebrow'),
+          reelTitleLine1: tse('reelTitleLine1'),
+          reelTitleAccent: tse('reelTitleAccent'),
+          reelTagline: tse('reelTagline'),
+          ctaPrimary: tse('ctaPrimary'),
+          ctaSecondary: tse('ctaSecondary'),
+          brand: tse('brand'),
+          brandSub: tse('brandSub'),
         }}
       />
 
       {/* Biens en vedette */}
       {propertiesWithMedia.length > 0 && (
-        <section data-sv-chapter="7" className="px-6 md:px-16 py-16 md:pt-10 md:pb-24 bg-[#0a0f1a] min-h-screen">
+        <section
+          data-sv-chapter="7"
+          className="px-6 md:px-16 py-16 md:pt-10 md:pb-24 bg-[#0a0f1a] min-h-screen"
+        >
           <style>{`@media (max-width: 767px) { .fp-header { margin-top: 80px; } }`}</style>
           <div className="fp-header flex flex-col gap-4 md:flex-row md:justify-between md:items-end mb-10 md:mb-12">
             <div>
@@ -168,19 +191,28 @@ export default async function Home({
           </div>
 
           <FocusRail
-            items={propertiesWithMedia.map((p): FocusRailItem => ({
-              id:          p.id,
-              imageSrc:    p.photos[0],
-              href:        `/${locale}/biens/${p.id}`,
-              meta:        [cityLabel(p, locale), p.type].filter(Boolean).join(' · '),
-              description: [p.surface && `${p.surface} m²`, p.rooms && `${p.rooms} pièces`, p.price && `${Number(p.price).toLocaleString('fr-FR')} ₪`].filter(Boolean).join('  ·  '),
-            }))}
+            items={propertiesWithMedia.map(
+              (p): FocusRailItem => ({
+                id: p.id,
+                imageSrc: p.photos[0],
+                href: `/${locale}/biens/${p.id}`,
+                meta: [cityLabel(p, locale), p.type]
+                  .filter(Boolean)
+                  .join(' · '),
+                description: [
+                  p.surface && `${p.surface} m²`,
+                  p.rooms && `${p.rooms} pièces`,
+                  p.price && `${Number(p.price).toLocaleString('fr-FR')} ₪`,
+                ]
+                  .filter(Boolean)
+                  .join('  ·  '),
+              }),
+            )}
             ctaLabel={th('seeProperty')}
             loop
           />
         </section>
       )}
-
     </main>
   );
 }

@@ -1,7 +1,7 @@
 import { MetadataRoute } from 'next';
 import { createClient } from '@supabase/supabase-js';
 
-const BASE_URL = 'https://www.studiovision.il';
+const BASE_URL = 'https://www.studiovision.co.il';
 const locales = ['fr', 'en', 'he'];
 
 const staticRoutes = ['', '/tarifs', '/contact', '/biens'];

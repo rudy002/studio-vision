@@ -66,17 +66,6 @@ export default function ContactClient() {
       ),
     },
     {
-      label: t('info.emailLabel'),
-      value: t('info.email'),
-      ltr: true,
-      icon: (
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#b08d57" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-          <rect x="2" y="4" width="20" height="16" rx="2"/>
-          <polyline points="2,4 12,13 22,4"/>
-        </svg>
-      ),
-    },
-    {
       label: t('info.phoneLabel'),
       value: t('info.phone'),
       ltr: true,

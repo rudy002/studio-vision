@@ -1,4 +1,4 @@
-export const BASE_URL = 'https://www.studiovision.il';
+export const BASE_URL = 'https://www.studiovision.co.il';
 
 export function buildAlternates(path: string) {
   return {
