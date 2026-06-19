@@ -34,7 +34,6 @@ export default async function LocaleLayout({
     description: 'Cinématographie immobilière — Photographie, Vidéo drone 4K, Visite virtuelle Matterport et simulation d\'ameublement en Israël.',
     url: 'https://www.studiovision.co.il',
     telephone: '+972537084374',
-    email: 'contact@studiovision.co.il',
     address: {
       '@type': 'PostalAddress',
       addressCountry: 'IL',

@@ -193,10 +193,8 @@
     "description": "Want to maximize your chances of selling and add real value to your property? Professional photos, drone videos, and 360° virtual tours — we showcase every space to captivate buyers from the very first look.",
     "info": {
       "location": "Israel",
-      "email": "contact@studiovision.co.il",
       "phone": "+972 53-708-4374",
       "locationLabel": "Location",
-      "emailLabel": "Email",
       "phoneLabel": "Phone"
     },
     "form": {
