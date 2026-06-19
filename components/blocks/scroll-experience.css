@@ -956,7 +956,7 @@
   color: var(--white-60);
 }
 
-.sv-act-6 .sv-cta-row {
+.sv-act-2 .sv-cta-row {
   position: absolute; left: 50%; bottom: 80px;
   transform: translateX(-50%);
   z-index: 4;
@@ -1060,7 +1060,7 @@
   .sv-act-6 .sv-reel-info { left: 20px; top: auto; bottom: 20px; transform: none; }
   .sv-act-6 .sv-reel-meta { right: 20px; top: 76px; }
   .sv-act-6 .sv-reel-sound { left: 20px; right: auto; top: 72px; bottom: auto; }
-  .sv-act-6 .sv-cta-row {
+  .sv-act-2 .sv-cta-row {
     flex-direction: column;
     align-items: stretch;
     width: calc(100% - 40px);

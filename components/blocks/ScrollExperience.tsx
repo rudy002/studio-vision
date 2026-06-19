@@ -89,7 +89,7 @@ const DEFAULTS = {
 const DEFAULT_TEXTS: Required<Texts> = {
   brand: 'Studio Vision',
   brandSub: 'Cinématographie immobilière',
-  chapters: ['01 — Studio Vision', '02 — Vue drone', '03 — Visite', '04 — Home staging virtuel', '05 — Matterport', '06 — Showreel', '07 — Biens en vedette'],
+  chapters: ['01 — Studio Vision', '02 — Showreel', '03 — Visite', '04 — Home staging virtuel', '05 — Matterport', '06 — Vue drone', '07 — Biens en vedette'],
   introEyebrow: 'Studio Vision · Israël',
   introTitleLine1: "L'art de révéler",
   introTitleAccent: 'chaque espace',
@@ -311,24 +311,50 @@ export default function ScrollExperience({
         </div>
       </section>
 
-      {/* ACT 2 — DRONE */}
-      <section className="sv-act-2" data-act="2">
+      {/* ACT 2 — SHOWREEL */}
+      <section className="sv-act-6" data-act="6">
         <div className="sv-stage">
-          <div className="sv-sky"      style={{ '--sky-url': `url(${imgs.sky})`, '--sky-url-mobile': `url(${imgs.skyMobile || imgs.sky})` } as React.CSSProperties} />
-          <div className="sv-facade"   style={{ backgroundImage: `linear-gradient(180deg, rgba(10,15,26,0.45) 0%, rgba(10,15,26,0.15) 35%, rgba(10,15,26,0.55) 100%), url(${imgs.facade})` }} />
-          <div className="sv-interior" style={{ backgroundImage: `linear-gradient(180deg, rgba(10,15,26,0.30) 0%, rgba(10,15,26,0.45) 100%), url(${imgs.interior})` }} />
-          <div className="sv-vignette" />
-          <div className="sv-hud">
-            <div className="sv-crosshair">
-              <span className="sv-tl" /><span className="sv-tr" /><span className="sv-bl" /><span className="sv-br" />
-            </div>
-            <div className="sv-corner sv-bl"><span>32°5′N · 34°7′E</span></div>
-            <div className="sv-corner sv-bc"><span>● REC · 23.976 fps · 4K</span></div>
-            <div className="sv-corner sv-br"><span>F/4 · 1/100 · ISO 200</span></div>
+          <div className="sv-reel-backdrop" style={{ backgroundImage: `url(${imgs.poster})` }} />
+          <div className="sv-reel-media">
+            <video ref={videoRef} muted playsInline loop preload="metadata" poster={imgs.poster}>
+              {videoSrc.endsWith('.mp4') && (
+                <source src={videoSrc.replace(/\.mp4$/, '.webm')} type="video/webm" />
+              )}
+              <source src={videoSrc} type="video/mp4" />
+            </video>
+            <div className="sv-overlay" />
           </div>
-          <div className="sv-caption">
-            <span className="sv-service-tag">{t.droneTag}</span>
-            <h2 className="sv-h">{t.droneTitle} <em>{t.droneTitleAccent}</em></h2>
+          <div className="sv-reel-frame" />
+          <div className="sv-reel-info"><span className="sv-rec" />REC</div>
+          <div className="sv-reel-meta"><strong>{t.brand}</strong>{t.brandSub}</div>
+          <button
+            type="button"
+            className="sv-reel-sound"
+            onClick={toggleReelSound}
+            aria-label={reelMuted ? 'Activer le son' : 'Couper le son'}
+            aria-pressed={!reelMuted}
+          >
+            {reelMuted ? (
+              <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                <path d="M11 5 6 9H2v6h4l5 4z" />
+                <line x1="22" y1="9" x2="16" y2="15" />
+                <line x1="16" y1="9" x2="22" y2="15" />
+              </svg>
+            ) : (
+              <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                <path d="M11 5 6 9H2v6h4l5 4z" />
+                <path d="M15.5 8.5a5 5 0 0 1 0 7" />
+                <path d="M18.5 5.5a9 9 0 0 1 0 13" />
+              </svg>
+            )}
+          </button>
+          <div className="sv-center-block">
+            <span className="sv-eyebrow">{t.reelEyebrow}</span>
+            <h2>
+              <span className="sv-reel-w1">{t.reelTitleLine1}</span>
+              <span className="sv-reel-w2"><em>{t.reelTitleAccent}</em></span>
+            </h2>
+            <div className="sv-tagline">{t.reelTagline}</div>
           </div>
         </div>
       </section>
@@ -427,50 +453,24 @@ export default function ScrollExperience({
         </div>
       </section>
 
-      {/* ACT 6 — SHOWREEL */}
-      <section className="sv-act-6" data-act="6">
+      {/* ACT 6 — DRONE */}
+      <section className="sv-act-2" data-act="2">
         <div className="sv-stage">
-          <div className="sv-reel-backdrop" style={{ backgroundImage: `url(${imgs.poster})` }} />
-          <div className="sv-reel-media">
-            <video ref={videoRef} muted playsInline loop preload="metadata" poster={imgs.poster}>
-              {videoSrc.endsWith('.mp4') && (
-                <source src={videoSrc.replace(/\.mp4$/, '.webm')} type="video/webm" />
-              )}
-              <source src={videoSrc} type="video/mp4" />
-            </video>
-            <div className="sv-overlay" />
+          <div className="sv-sky"      style={{ '--sky-url': `url(${imgs.sky})`, '--sky-url-mobile': `url(${imgs.skyMobile || imgs.sky})` } as React.CSSProperties} />
+          <div className="sv-facade"   style={{ backgroundImage: `linear-gradient(180deg, rgba(10,15,26,0.45) 0%, rgba(10,15,26,0.15) 35%, rgba(10,15,26,0.55) 100%), url(${imgs.facade})` }} />
+          <div className="sv-interior" style={{ backgroundImage: `linear-gradient(180deg, rgba(10,15,26,0.30) 0%, rgba(10,15,26,0.45) 100%), url(${imgs.interior})` }} />
+          <div className="sv-vignette" />
+          <div className="sv-hud">
+            <div className="sv-crosshair">
+              <span className="sv-tl" /><span className="sv-tr" /><span className="sv-bl" /><span className="sv-br" />
+            </div>
+            <div className="sv-corner sv-bl"><span>32°5′N · 34°7′E</span></div>
+            <div className="sv-corner sv-bc"><span>● REC · 23.976 fps · 4K</span></div>
+            <div className="sv-corner sv-br"><span>F/4 · 1/100 · ISO 200</span></div>
           </div>
-          <div className="sv-reel-frame" />
-          <div className="sv-reel-info"><span className="sv-rec" />REC</div>
-          <div className="sv-reel-meta"><strong>{t.brand}</strong>{t.brandSub}</div>
-          <button
-            type="button"
-            className="sv-reel-sound"
-            onClick={toggleReelSound}
-            aria-label={reelMuted ? 'Activer le son' : 'Couper le son'}
-            aria-pressed={!reelMuted}
-          >
-            {reelMuted ? (
-              <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-                <path d="M11 5 6 9H2v6h4l5 4z" />
-                <line x1="22" y1="9" x2="16" y2="15" />
-                <line x1="16" y1="9" x2="22" y2="15" />
-              </svg>
-            ) : (
-              <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-                <path d="M11 5 6 9H2v6h4l5 4z" />
-                <path d="M15.5 8.5a5 5 0 0 1 0 7" />
-                <path d="M18.5 5.5a9 9 0 0 1 0 13" />
-              </svg>
-            )}
-          </button>
-          <div className="sv-center-block">
-            <span className="sv-eyebrow">{t.reelEyebrow}</span>
-            <h2>
-              <span className="sv-reel-w1">{t.reelTitleLine1}</span>
-              <span className="sv-reel-w2"><em>{t.reelTitleAccent}</em></span>
-            </h2>
-            <div className="sv-tagline">{t.reelTagline}</div>
+          <div className="sv-caption">
+            <span className="sv-service-tag">{t.droneTag}</span>
+            <h2 className="sv-h">{t.droneTitle} <em>{t.droneTitleAccent}</em></h2>
           </div>
           <div className="sv-cta-row">
             <a href={ctaPrimaryHref} className="sv-btn-primary">{t.ctaPrimary}</a>

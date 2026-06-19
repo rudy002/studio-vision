@@ -173,7 +173,7 @@
     "reelTagline": "Photo · Drone · Matterport · Virtual staging",
     "ctaPrimary": "Explore our pricing →",
     "ctaSecondary": "Contact us",
-    "chapters": ["01 — Studio Vision", "02 — Drone", "03 — Visit", "04 — Staging", "05 — Matterport", "06 — Showreel", "07 — Properties"],
+    "chapters": ["01 — Studio Vision", "02 — Showreel", "03 — Visit", "04 — Staging", "05 — Matterport", "06 — Drone", "07 — Properties"],
     "rooms": [
       { "num": "01 / 04 · Living Room", "title": "Cross",          "accent": "light",     "desc": "Wide shots at 16mm, balanced exposure front & interior — golden hour preferred." },
       { "num": "02 / 04 · Kitchen",     "title": "Detail",         "accent": "materials", "desc": "Close-ups on finishes, marble, wood, brass — the grain of the image makes the difference." },

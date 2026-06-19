@@ -173,7 +173,7 @@
     "reelTagline": "Photo · Drone · Matterport · Home staging virtuel",
     "ctaPrimary": "Découvrir nos tarifs →",
     "ctaSecondary": "Nous contacter",
-    "chapters": ["01 — Studio Vision", "02 — Vue drone", "03 — Visite", "04 — Home staging virtuel", "05 — Matterport", "06 — Showreel", "07 — Biens en vedette"],
+    "chapters": ["01 — Studio Vision", "02 — Showreel", "03 — Visite", "04 — Home staging virtuel", "05 — Matterport", "06 — Vue drone", "07 — Biens en vedette"],
     "rooms": [
       { "num": "01 / 04 · Salon",         "title": "Lumière",         "accent": "traversante", "desc": "Cadrages larges au 16 mm, exposition équilibrée façade & intérieur — heure dorée privilégiée." },
       { "num": "02 / 04 · Cuisine",       "title": "Détails",         "accent": "matières",    "desc": "Plans serrés sur les finitions, marbre, bois, laiton — le grain de l'image fait la différence." },
