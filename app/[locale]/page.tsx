@@ -121,6 +121,7 @@ export default async function Home({
           poster: '/lior-photos/IMG_7583.jpg', // cuisine dramatique vue mer
         }}
         texts={{
+          seoTitle: tse('seoTitle'),
           chapters: tse.raw('chapters') as string[],
           introEyebrow: tse('introEyebrow'),
           introTitleLine1: tse('introTitleLine1'),

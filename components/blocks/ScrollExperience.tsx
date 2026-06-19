@@ -6,6 +6,7 @@ import './scroll-experience.css';
 type Texts = {
   brand?: string;
   brandSub?: string;
+  seoTitle?: string;
   chapters?: string[];
   introEyebrow?: string;
   introTitleLine1?: string;
@@ -90,6 +91,7 @@ const DEFAULTS = {
 const DEFAULT_TEXTS: Required<Texts> = {
   brand: 'Studio Vision',
   brandSub: 'Cinématographie immobilière',
+  seoTitle: 'Studio Vision — Photographie et vidéo immobilière haut de gamme en Israël',
   chapters: ['01 — Studio Vision', '02 — Showreel', '03 — Visite', '04 — Home staging virtuel', '05 — Matterport', '06 — Vue drone', '07 — Biens en vedette'],
   introEyebrow: 'Studio Vision · Israël',
   introTitleLine1: "L'art de révéler",
@@ -303,6 +305,9 @@ export default function ScrollExperience({
 
   return (
     <div className="sv-root" ref={rootRef}>
+      {/* Titre H1 pour le SEO (visuellement masqué, lu par Google et les lecteurs d'écran) */}
+      <h1 className="sv-visually-hidden">{t.seoTitle}</h1>
+
       {/* Chapter indicator */}
       <aside className="sv-chapters" aria-label="Chapitres">
         {t.chapters.map((label, i) => (

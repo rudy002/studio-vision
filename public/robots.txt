@@ -4,4 +4,4 @@ Allow: /
 Disallow: /admin
 Disallow: /api/
 
-Sitemap: https://www.studiovision.il/sitemap.xml
+Sitemap: https://www.studiovision.co.il/sitemap.xml
