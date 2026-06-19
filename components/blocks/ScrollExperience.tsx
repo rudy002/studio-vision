@@ -41,6 +41,7 @@ type Texts = {
 
 type Props = {
   videoSrc?: string;
+  videoSrcMobile?: string;
   ctaPrimaryHref?: string;
   ctaSecondaryHref?: string;
   texts?: Texts;
@@ -133,6 +134,7 @@ const DEFAULT_TEXTS: Required<Texts> = {
 
 export default function ScrollExperience({
   videoSrc = DEFAULTS.videoSrc,
+  videoSrcMobile,
   ctaPrimaryHref = '/tarifs',
   ctaSecondaryHref = '/contact',
   texts: textsOverride,
@@ -144,6 +146,25 @@ export default function ScrollExperience({
   const rootRef = useRef<HTMLDivElement | null>(null);
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const [reelMuted, setReelMuted] = useState(true);
+  const [isMobile, setIsMobile] = useState(false);
+
+  // Source vidéo verticale dédiée au mobile (breakpoint aligné sur le CSS).
+  const useMobileVideo = isMobile && !!videoSrcMobile;
+  const activeVideoSrc = useMobileVideo ? videoSrcMobile! : videoSrc;
+  const showWebm = !useMobileVideo && activeVideoSrc.endsWith('.mp4');
+
+  useEffect(() => {
+    const mq = window.matchMedia('(max-width: 900px)');
+    const apply = () => setIsMobile(mq.matches);
+    apply();
+    mq.addEventListener('change', apply);
+    return () => mq.removeEventListener('change', apply);
+  }, []);
+
+  // Recharger la balise <video> quand la source change (desktop ↔ mobile).
+  useEffect(() => {
+    videoRef.current?.load();
+  }, [activeVideoSrc]);
 
   const toggleReelSound = () => {
     const v = videoRef.current;
@@ -317,10 +338,10 @@ export default function ScrollExperience({
           <div className="sv-reel-backdrop" style={{ backgroundImage: `url(${imgs.poster})` }} />
           <div className="sv-reel-media">
             <video ref={videoRef} muted playsInline loop preload="metadata" poster={imgs.poster}>
-              {videoSrc.endsWith('.mp4') && (
-                <source src={videoSrc.replace(/\.mp4$/, '.webm')} type="video/webm" />
+              {showWebm && (
+                <source src={activeVideoSrc.replace(/\.mp4$/, '.webm')} type="video/webm" />
               )}
-              <source src={videoSrc} type="video/mp4" />
+              <source src={activeVideoSrc} type="video/mp4" />
             </video>
             <div className="sv-overlay" />
           </div>
