@@ -130,7 +130,7 @@ const DEFAULT_TEXTS: Required<Texts> = {
   reelTitleLine1: 'Voir un bien',
   reelTitleAccent: 'autrement.',
   reelTagline: 'Photo · Drone · Matterport · Home staging virtuel',
-  ctaPrimary: 'Découvrir nos tarifs →',
+  ctaPrimary: 'Découvrir nos packages →',
   ctaSecondary: 'Nous contacter',
 };
 

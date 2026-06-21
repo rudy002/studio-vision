@@ -1018,7 +1018,8 @@
   .sv-act-2 .sv-hud .sv-corner.sv-bl,
   .sv-act-2 .sv-hud .sv-corner.sv-br { display: none; }
   .sv-act-2 .sv-hud .sv-corner.sv-bc { grid-column: 1 / -1; justify-self: center; white-space: nowrap; }
-  .sv-act-2 .sv-caption { bottom: 72px; }
+  /* La légende doit dégager les deux boutons CTA empilés (≈ 104px depuis bottom 48px) */
+  .sv-act-2 .sv-caption { bottom: 200px; }
 
   /* Acte 3 — visite des pièces */
   .sv-act-3 .sv-room .sv-info { left: 20px; bottom: 56px; }
