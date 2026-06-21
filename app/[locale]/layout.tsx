@@ -10,6 +10,9 @@ import "../globals.css";
 export const metadata: Metadata = {
   title: "Studio Vision",
   description: "Cinématographie immobilière haut de gamme",
+  verification: {
+    google: "55y59Cdal64HhzYCHY5i-iJa4ROX_jkbCL8B6f9Kj2g",
+  },
 };
 
 const locales = ['fr', 'en', 'he'];
