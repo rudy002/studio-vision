@@ -101,7 +101,7 @@ export default async function Home({
           // ACT 3 — Visite des pièces
           salon: '/act3/IMG_7584.jpg', // salon artistique vue mer
           cuisine: '/act3/IMG_7580.jpg', // cuisine marbre parquet
-          chambre: '/act3/act3%20-%20chambre.png', // chambre
+          chambre: '/act3/act3%20-%20chambre.webp', // chambre
           sdb: '/act3/act3-salledebain.jpeg', // salle de bain
           // ACT 4 — Hadmaya avant / après
           empty: '/before-after/before2.jpg',
