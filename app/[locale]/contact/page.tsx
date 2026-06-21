@@ -26,7 +26,7 @@ export async function generateMetadata({ params }: { params: Params }): Promise<
   return {
     title: meta.title,
     description: meta.description,
-    alternates: buildAlternates('/contact'),
+    alternates: buildAlternates('/contact', locale),
     openGraph: {
       title: meta.title,
       description: meta.description,

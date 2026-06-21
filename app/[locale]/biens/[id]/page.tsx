@@ -43,7 +43,7 @@ export async function generateMetadata({ params }: { params: Params }): Promise<
     title: `${title} — Studio Vision`,
     description: metaDesc,
     alternates: {
-      canonical: `${BASE_URL}/fr/biens/${id}`,
+      canonical: `${BASE_URL}/${locale}/biens/${id}`,
       languages: {
         fr: `${BASE_URL}/fr/biens/${id}`,
         en: `${BASE_URL}/en/biens/${id}`,
