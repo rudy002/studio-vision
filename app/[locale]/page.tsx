@@ -114,7 +114,6 @@ export default async function Home({
             '/before-after/after5.jpg',
             '/before-after/after6.jpg',
             '/before-after/after7.jpg',
-            '/before-after/after8.jpg',
             '/before-after/after9.jpg',
           ],
           // ACT 6 — Poster vidéo showreel
