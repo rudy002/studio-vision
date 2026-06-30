@@ -2,7 +2,7 @@
   "nav": {
     "home": "Home",
     "properties": "Properties",
-    "tarifs": "Pricing",
+    "packages": "Packages",
     "contact": "Contact"
   },
   "hero": {
@@ -84,10 +84,10 @@
     "statSatisfactionNumber": "100%",
     "statSatisfactionLabel": "Satisfied clients"
   },
-  "tarifs": {
-    "nav": "Pricing",
+  "packagesPage": {
+    "nav": "Packages",
     "eyebrow": "Our services",
-    "title": "Pricing & Services",
+    "title": "Packages & Services",
     "subtitle": "Tailor-made services to showcase every property at its best.",
     "photoTitle": "Photography (Stills)",
     "videoBasicTitle": "Basic Video",
@@ -100,6 +100,7 @@
     "matterportDesc": "photos + drone included",
     "hadmayaTitle": "Virtual Staging",
     "droneTitle": "Drone / Land / Building",
+    "droneComplement": "Add-on",
     "projectVideoTitle": "Project Videos",
     "projectVideoDesc": "Pinui Binui / TAMA",
     "appartement": "Apartment",
@@ -140,7 +141,7 @@
     "cta": "Contact us",
     "homeEyebrow": "Our services",
     "homeTitle": "Services tailored to your ambitions",
-    "homeCta": "See all pricing →"
+    "homeCta": "See all packages →"
   },
   "scrollExperience": {
     "brand": "Studio Vision",

@@ -90,7 +90,7 @@ export default async function Home({
       <ScrollExperience
         videoSrc="/video-act6.mp4"
         videoSrcMobile="/video-vertical.mp4"
-        ctaPrimaryHref={`/${locale}/tarifs`}
+        ctaPrimaryHref={`/${locale}/packages`}
         ctaSecondaryHref={`/${locale}/contact`}
         images={{
           // ACT 2 — Drone (couches sky → façade → intérieur)

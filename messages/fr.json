@@ -2,7 +2,7 @@
   "nav": {
     "home": "Accueil",
     "properties": "Biens",
-    "tarifs": "Tarifs",
+    "packages": "Packages",
     "contact": "Contact"
   },
   "hero": {
@@ -84,10 +84,10 @@
     "statSatisfactionNumber": "100%",
     "statSatisfactionLabel": "Clients satisfaits"
   },
-  "tarifs": {
-    "nav": "Tarifs",
+  "packagesPage": {
+    "nav": "Packages",
     "eyebrow": "Nos prestations",
-    "title": "Tarifs & Services",
+    "title": "Packages & Services",
     "subtitle": "Des prestations sur mesure pour valoriser chaque bien immobilier.",
     "photoTitle": "Photos (Stills)",
     "videoBasicTitle": "Vidéo basique",
@@ -100,6 +100,7 @@
     "matterportDesc": "photos + drone inclus",
     "hadmayaTitle": "Images de synthèse (Home staging virtuel)",
     "droneTitle": "Drone / Terrain / Immeuble",
+    "droneComplement": "Complément",
     "projectVideoTitle": "Vidéo pour projets",
     "projectVideoDesc": "Pinui Binui / TAMA",
     "appartement": "Appartement",
@@ -140,7 +141,7 @@
     "cta": "Nous contacter",
     "homeEyebrow": "Nos services",
     "homeTitle": "Des prestations à la hauteur de vos ambitions",
-    "homeCta": "Voir tous nos tarifs →"
+    "homeCta": "Voir tous nos packages →"
   },
   "scrollExperience": {
     "brand": "Studio Vision",

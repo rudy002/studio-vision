@@ -12,6 +12,20 @@ const nextConfig = {
       { protocol: 'https' as const, hostname: 'pub-d7644b642eac47ff870ffc1898696475.r2.dev' },
     ],
   },
+  async redirects() {
+    return [
+      {
+        source: '/:locale(fr|en|he)/tarifs',
+        destination: '/:locale/packages',
+        permanent: true,
+      },
+      {
+        source: '/tarifs',
+        destination: '/packages',
+        permanent: true,
+      },
+    ];
+  },
 };
 
 export default withNextIntl(nextConfig);

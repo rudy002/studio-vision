@@ -8,15 +8,15 @@ type Params = Promise<{ locale: string }>;
 
 const seo = {
   fr: {
-    title: 'Tarifs & Prestations | Studio Vision',
+    title: 'Packages & Prestations | Studio Vision',
     description: 'Packs photo, vidéo cinématique et visite virtuelle 360° pour valoriser votre bien immobilier en Israël. Devis sur mesure.',
   },
   en: {
-    title: 'Pricing & Services | Studio Vision',
+    title: 'Packages & Services | Studio Vision',
     description: 'Photo, cinematic video and 360° virtual tour packages for real estate in Israel. Custom quotes available.',
   },
   he: {
-    title: 'מחירים ושירותים | סטודיו ויז\'ן',
+    title: 'חבילות ושירותים | סטודיו ויז\'ן',
     description: 'חבילות צילום, וידאו קולנועי וסיור וירטואלי 360° לנדל"ן בישראל. הצעות מחיר מותאמות אישית.',
   },
 } as const;
@@ -28,7 +28,7 @@ export async function generateMetadata({ params }: { params: Params }): Promise<
   return {
     title: meta.title,
     description: meta.description,
-    alternates: buildAlternates('/tarifs', locale),
+    alternates: buildAlternates('/packages', locale),
     openGraph: {
       title: meta.title,
       description: meta.description,
@@ -44,13 +44,13 @@ export async function generateMetadata({ params }: { params: Params }): Promise<
 
 type Feature = { label: string; subtitle?: string };
 
-export default async function TarifsPage({
+export default async function PackagesPage({
   params,
 }: {
   params: Params;
 }) {
   const { locale } = await params;
-  const t = await getTranslations('tarifs');
+  const t = await getTranslations('packagesPage');
 
   const serviceList = {
     '@context': 'https://schema.org',
@@ -271,7 +271,7 @@ export default async function TarifsPage({
               <span className="text-3xl">🚁</span>
               <div>
                 <p className="font-serif text-xl font-light text-white/80">{t('droneTitle')}</p>
-                <p className="text-[10px] tracking-[3px] text-[#b08d57] uppercase mt-1">Complément</p>
+                <p className="text-[10px] tracking-[3px] text-[#b08d57] uppercase mt-1">{t('droneComplement')}</p>
               </div>
             </div>
 

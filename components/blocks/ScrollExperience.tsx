@@ -137,7 +137,7 @@ const DEFAULT_TEXTS: Required<Texts> = {
 export default function ScrollExperience({
   videoSrc = DEFAULTS.videoSrc,
   videoSrcMobile,
-  ctaPrimaryHref = '/tarifs',
+  ctaPrimaryHref = '/packages',
   ctaSecondaryHref = '/contact',
   texts: textsOverride,
   images: imagesOverride,
