@@ -4,7 +4,7 @@ import { createClient } from '@supabase/supabase-js';
 const BASE_URL = 'https://www.studiovision.co.il';
 const locales = ['fr', 'en', 'he'];
 
-const staticRoutes = ['', '/tarifs', '/contact', '/biens'];
+const staticRoutes = ['', '/packages', '/contact', '/biens'];
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const supabase = createClient(

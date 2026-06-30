@@ -137,7 +137,7 @@ const DEFAULT_TEXTS: Required<Texts> = {
 export default function ScrollExperience({
   videoSrc = DEFAULTS.videoSrc,
   videoSrcMobile,
-  ctaPrimaryHref = '/tarifs',
+  ctaPrimaryHref = '/packages',
   ctaSecondaryHref = '/contact',
   texts: textsOverride,
   images: imagesOverride,
@@ -149,6 +149,8 @@ export default function ScrollExperience({
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const [reelMuted, setReelMuted] = useState(true);
   const [isMobile, setIsMobile] = useState(false);
+  const [nearEnd, setNearEnd] = useState(false);
+  const [idle, setIdle] = useState(false);
 
   // Source vidéo verticale dédiée au mobile (breakpoint aligné sur le CSS).
   const useMobileVideo = isMobile && !!videoSrcMobile;
@@ -167,6 +169,31 @@ export default function ScrollExperience({
   useEffect(() => {
     videoRef.current?.load();
   }, [activeVideoSrc]);
+
+  // L'indice de scroll flottant reste visible sur toute la page narrative pour
+  // inciter à continuer, et ne s'efface qu'en arrivant tout en bas (dernière
+  // section / CTA final), là où il n'y a plus rien à faire défiler.
+  // Il ne se met à pulser qu'après ~2s d'inactivité (l'utilisateur a arrêté de
+  // scroller) ; pendant le défilement il reste statique et discret.
+  useEffect(() => {
+    let idleTimer: ReturnType<typeof setTimeout>;
+    const onScroll = () => {
+      const doc = document.documentElement;
+      const remaining = doc.scrollHeight - (window.scrollY + window.innerHeight);
+      setNearEnd(remaining < window.innerHeight * 0.8);
+      setIdle(false);
+      clearTimeout(idleTimer);
+      idleTimer = setTimeout(() => setIdle(true), 2000);
+    };
+    onScroll();
+    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', onScroll);
+    return () => {
+      clearTimeout(idleTimer);
+      window.removeEventListener('scroll', onScroll);
+      window.removeEventListener('resize', onScroll);
+    };
+  }, []);
 
   const toggleReelSound = () => {
     const v = videoRef.current;
@@ -308,6 +335,16 @@ export default function ScrollExperience({
       {/* Titre H1 pour le SEO (visuellement masqué, lu par Google et les lecteurs d'écran) */}
       <h1 className="sv-visually-hidden">{t.seoTitle}</h1>
 
+      {/* Indice de scroll flottant — disparaît au premier défilement */}
+      <div className={`sv-scroll-floating${nearEnd ? ' is-hidden' : ''}${idle ? ' is-idle' : ''}`} aria-hidden="true">
+        <span className="sv-scroll-label">{t.scrollHint}</span>
+        <span className="sv-scroll-chevron">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M6 9l6 6 6-6" />
+          </svg>
+        </span>
+      </div>
+
       {/* Chapter indicator */}
       <aside className="sv-chapters" aria-label="Chapitres">
         {t.chapters.map((label, i) => (
@@ -333,7 +370,6 @@ export default function ScrollExperience({
             </div>
             <div className="sv-subtitle">{t.introSubtitle}</div>
           </div>
-          <div className="sv-scroll-cue"><div className="sv-line" />{t.scrollHint}</div>
         </div>
       </section>
 

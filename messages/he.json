@@ -2,7 +2,7 @@
   "nav": {
     "home": "בית",
     "properties": "נכסים",
-    "tarifs": "מחירים",
+    "packages": "חבילות",
     "contact": "צור קשר"
   },
   "hero": {
@@ -84,10 +84,10 @@
     "statSatisfactionNumber": "100%",
     "statSatisfactionLabel": "לקוחות מרוצים"
   },
-  "tarifs": {
-    "nav": "מחירים",
+  "packagesPage": {
+    "nav": "חבילות",
     "eyebrow": "השירותים שלנו",
-    "title": "מחירון ושירותים",
+    "title": "חבילות ושירותים",
     "subtitle": "שירותים מותאמים אישית להצגת כל נכס במיטבו.",
     "photoTitle": "צילום (Stills)",
     "videoBasicTitle": "וידאו בסיסי",
@@ -100,6 +100,7 @@
     "matterportDesc": "כולל תמונות ורחפן",
     "hadmayaTitle": "הדמיות (הדמייה)",
     "droneTitle": "רחפן / קרקע / בניין",
+    "droneComplement": "תוספת",
     "projectVideoTitle": "וידאו לפרויקטים",
     "projectVideoDesc": "פינוי בינוי / תמ\"א",
     "appartement": "דירה",
@@ -140,7 +141,7 @@
     "cta": "צרו קשר",
     "homeEyebrow": "השירותים שלנו",
     "homeTitle": "שירותים ברמה שתואמת את השאיפות שלכם",
-    "homeCta": "לכל המחירים →"
+    "homeCta": "לכל החבילות →"
   },
   "scrollExperience": {
     "brand": "Studio Vision",

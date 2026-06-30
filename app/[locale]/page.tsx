@@ -90,7 +90,7 @@ export default async function Home({
       <ScrollExperience
         videoSrc="/video-act6.mp4"
         videoSrcMobile="/video-vertical.mp4"
-        ctaPrimaryHref={`/${locale}/tarifs`}
+        ctaPrimaryHref={`/${locale}/packages`}
         ctaSecondaryHref={`/${locale}/contact`}
         images={{
           // ACT 2 — Drone (couches sky → façade → intérieur)
@@ -114,7 +114,6 @@ export default async function Home({
             '/before-after/after5.jpg',
             '/before-after/after6.jpg',
             '/before-after/after7.jpg',
-            '/before-after/after8.jpg',
             '/before-after/after9.jpg',
           ],
           // ACT 6 — Poster vidéo showreel

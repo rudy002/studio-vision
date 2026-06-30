@@ -85,8 +85,8 @@ export default function Navbar() {
         <TransitionLink href={`/${locale}/biens`} className={`text-[13px] tracking-widest uppercase transition-colors ${linkClass}`}>
           {t('properties')}
         </TransitionLink>
-        <TransitionLink href={`/${locale}/tarifs`} className={`text-[13px] tracking-widest uppercase transition-colors ${linkClass}`}>
-          {t('tarifs')}
+        <TransitionLink href={`/${locale}/packages`} className={`text-[13px] tracking-widest uppercase transition-colors ${linkClass}`}>
+          {t('packages')}
         </TransitionLink>
         <TransitionLink href={`/${locale}/contact`} className={`text-[13px] tracking-widest uppercase transition-colors ${linkClass}`}>
           {t('contact')}
@@ -140,11 +140,11 @@ export default function Navbar() {
             {t('properties')}
           </TransitionLink>
           <TransitionLink
-            href={`/${locale}/tarifs`}
+            href={`/${locale}/packages`}
             onNavigate={() => setMenuOpen(false)}
             className="px-6 py-4 text-[13px] tracking-widest text-white/80 uppercase hover:text-[#b08d57] transition-colors border-b border-white/10"
           >
-            {t('tarifs')}
+            {t('packages')}
           </TransitionLink>
           <TransitionLink
             href={`/${locale}/contact`}
