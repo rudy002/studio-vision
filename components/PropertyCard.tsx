@@ -76,19 +76,21 @@ function PropertyCard({
 
   const next = () => setIndex((i) => (i + 1) % slides.length);
 
+  const handleEnter = () => setHovered(true);
+  const handleLeave = () => {
+    setHovered(false);
+    setIndex(0);
+    const v = videoRef.current;
+    if (v) {
+      v.pause();
+      // revenir sur la frame d'aperçu
+      try { v.currentTime = 0.1; } catch { /* noop */ }
+    }
+  };
+
   // Défilement / lecture au survol
   useEffect(() => {
-    if (!hovered) {
-      setIndex(0);
-      const v = videoRef.current;
-      if (v) {
-        v.pause();
-        // revenir sur la frame d'aperçu
-        try { v.currentTime = 0.1; } catch { /* noop */ }
-      }
-      return;
-    }
-    if (slides.length === 0) return;
+    if (!hovered || slides.length === 0) return;
 
     const current = slides[index];
     if (current?.type === 'video') {
@@ -108,8 +110,8 @@ function PropertyCard({
   return (
     <div
       onClick={onClick}
-      onMouseEnter={() => setHovered(true)}
-      onMouseLeave={() => setHovered(false)}
+      onMouseEnter={handleEnter}
+      onMouseLeave={handleLeave}
       style={{ '--theme-color': themeColor } as React.CSSProperties}
       className={cn('group w-full h-full cursor-pointer', className)}
     >
