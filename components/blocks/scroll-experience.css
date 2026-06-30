@@ -1078,7 +1078,8 @@
     top: 0; left: 0; right: 0;
     max-width: 100%;
     padding: 76px 24px 28px;
-    background: linear-gradient(rgba(12,19,32,0.82) 50%, transparent);
+    background: linear-gradient(rgba(12,19,32,0.6) 0%, rgba(12,19,32,0.25) 45%, transparent 80%);
+    text-shadow: 0 1px 8px rgba(0,0,0,0.55);
     z-index: 3;
   }
   .sv-act-5 .sv-stats {
@@ -1087,7 +1088,8 @@
     padding: 44px 24px 28px;
     justify-content: space-around;
     gap: 0;
-    background: linear-gradient(transparent, rgba(12,19,32,0.82) 45%);
+    background: linear-gradient(transparent 20%, rgba(12,19,32,0.25) 55%, rgba(12,19,32,0.6) 100%);
+    text-shadow: 0 1px 8px rgba(0,0,0,0.55);
     z-index: 3;
   }
 
