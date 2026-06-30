@@ -271,6 +271,10 @@ export default function AdminDashboard() {
     setExistingPhotos((prev) => prev.filter((u) => u !== url));
   };
 
+  const removeExistingVideo = () => {
+    setForm((prev) => ({ ...prev, video_url: '' }));
+  };
+
   const removeNewPhoto = (index: number) => {
     setPhotos((prev) => prev.filter((_, i) => i !== index));
   };
@@ -828,6 +832,34 @@ export default function AdminDashboard() {
                             </button>
                           </div>
                         ))}
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Vidéo existante en mode édition */}
+                  {editingId && form.video_url && (
+                    <div className="flex flex-col gap-2">
+                      <label className="text-[9px] tracking-[2px] text-[#6b5d4a] uppercase">
+                        Vidéo actuelle
+                      </label>
+                      <div className="relative w-36 h-20 rounded-xl overflow-hidden group bg-black">
+                        <video
+                          src={form.video_url}
+                          muted
+                          playsInline
+                          preload="metadata"
+                          className="w-full h-full object-cover"
+                        />
+                        <span className="absolute bottom-1 left-1 text-[8px] tracking-[1px] uppercase px-1.5 py-0.5 rounded bg-black/55 text-white/85 pointer-events-none">
+                          Vidéo
+                        </span>
+                        <button
+                          type="button"
+                          onClick={removeExistingVideo}
+                          className="absolute inset-0 bg-red-500/70 text-white text-xs opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center cursor-pointer"
+                        >
+                          ×
+                        </button>
                       </div>
                     </div>
                   )}
