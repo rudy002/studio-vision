@@ -80,7 +80,12 @@ function PropertyCard({
   useEffect(() => {
     if (!hovered) {
       setIndex(0);
-      videoRef.current?.pause();
+      const v = videoRef.current;
+      if (v) {
+        v.pause();
+        // revenir sur la frame d'aperçu
+        try { v.currentTime = 0.1; } catch { /* noop */ }
+      }
       return;
     }
     if (slides.length === 0) return;
@@ -127,7 +132,8 @@ function PropertyCard({
               <video
                 key={i}
                 ref={videoRef}
-                src={slide.src}
+                // fragment #t : force le navigateur à peindre une frame d'aperçu au repos
+                src={slide.src.includes('#') ? slide.src : `${slide.src}#t=0.1`}
                 muted
                 loop={slides.length === 1}
                 playsInline
