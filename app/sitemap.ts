@@ -6,6 +6,9 @@ const locales = ['fr', 'en', 'he'];
 
 const staticRoutes = ['', '/packages', '/contact', '/biens'];
 
+/** Régénère le sitemap au plus une fois par heure pour inclure les nouveaux biens sans redéploiement. */
+export const revalidate = 3600;
+
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const supabase = createClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
@@ -14,7 +17,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
   const { data: properties } = await supabase
     .from('properties')
-    .select('id, updated_at')
+    .select('id, created_at')
     .eq('status', 'available');
 
   const staticEntries: MetadataRoute.Sitemap = staticRoutes.flatMap((route) =>
@@ -29,7 +32,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const propertyEntries: MetadataRoute.Sitemap = (properties ?? []).flatMap((p) =>
     locales.map((locale) => ({
       url: `${BASE_URL}/${locale}/biens/${p.id}`,
-      lastModified: p.updated_at ? new Date(p.updated_at) : new Date(),
+      lastModified: p.created_at ? new Date(p.created_at) : new Date(),
       changeFrequency: 'weekly',
       priority: 0.9,
     }))
