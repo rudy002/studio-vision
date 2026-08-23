@@ -139,7 +139,7 @@ export default function BiensPage() {
     surfaceMin: searchParams.get('surfaceMin') || '',
     surfaceMax: searchParams.get('surfaceMax') || '',
     rooms: searchParams.get('rooms') ? Number(searchParams.get('rooms')) : null,
-    packages: searchParams.get('packages')?.split(',').filter(Boolean) ?? [],
+    packages: searchParams.get('packages')?.split(',').filter(Boolean).slice(0, 1) ?? [],
     sort: (searchParams.get('sort') as SortKey) || 'newest',
   }));
 
@@ -219,17 +219,13 @@ export default function BiensPage() {
     setSurfaceMaxInput('');
   }, []);
 
-  // null = bouton "Tous" (vide la sélection) ; sinon toggle du package
-  const togglePackageWithTransition = useCallback((pkg: string | null) => {
+  // Sélection unique : null = bouton "Tous" ; re-cliquer le package actif revient à "Tous"
+  const selectPackageWithTransition = useCallback((pkg: string | null) => {
     if (tabTimerRef.current) clearTimeout(tabTimerRef.current);
     setTabLoading(true);
     setFilters((prev) => ({
       ...prev,
-      packages: pkg === null
-        ? []
-        : prev.packages.includes(pkg)
-          ? prev.packages.filter((x) => x !== pkg)
-          : [...prev.packages, pkg],
+      packages: pkg === null || prev.packages.includes(pkg) ? [] : [pkg],
     }));
     tabTimerRef.current = setTimeout(() => setTabLoading(false), 380);
   }, []);
@@ -300,13 +296,24 @@ export default function BiensPage() {
           {t('title')}
         </h1>
 
-        {/* Filtres packages pills (multi-sélection) */}
-        <div className="flex flex-wrap gap-2 mb-6">
-          <button onClick={() => togglePackageWithTransition(null)} className={pillClass(filters.packages.length === 0)}>
+        {/* Filtres packages pills (sélection unique) */}
+        <div className="flex flex-wrap gap-2 mb-6" role="radiogroup">
+          <button
+            role="radio"
+            aria-checked={filters.packages.length === 0}
+            onClick={() => selectPackageWithTransition(null)}
+            className={pillClass(filters.packages.length === 0)}
+          >
             {t('filters.packagesAll')}
           </button>
           {PACKAGES.map((pkg) => (
-            <button key={pkg} onClick={() => togglePackageWithTransition(pkg)} className={pillClass(filters.packages.includes(pkg))}>
+            <button
+              key={pkg}
+              role="radio"
+              aria-checked={filters.packages[0] === pkg}
+              onClick={() => selectPackageWithTransition(pkg)}
+              className={pillClass(filters.packages[0] === pkg)}
+            >
               {PACKAGE_KEY[pkg] ? tPkg(PACKAGE_KEY[pkg]) : pkg}
             </button>
           ))}
