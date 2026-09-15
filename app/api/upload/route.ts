@@ -1,5 +1,6 @@
 import { S3Client, PutObjectCommand } from '@aws-sdk/client-s3';
 import { NextRequest, NextResponse } from 'next/server';
+import { requireAdmin } from '../../../lib/auth';
 
 const r2 = new S3Client({
   region: 'auto',
@@ -11,6 +12,9 @@ const r2 = new S3Client({
 });
 
 export async function POST(request: NextRequest) {
+  const unauthorized = await requireAdmin();
+  if (unauthorized) return unauthorized;
+
   try {
     const formData = await request.formData();
     const file = formData.get('file') as File;
