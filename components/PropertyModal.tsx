@@ -278,7 +278,7 @@ export default function PropertyModal({
         {showSharePanel && (
           <div
             className="absolute inset-0 z-50 flex items-center justify-center p-4"
-            style={{ background: 'rgba(5,8,12,0.7)', backdropFilter: 'blur(4px)', animation: 'sp-fade-in 0.2s ease forwards', opacity: 0 }}
+            style={{ background: 'color-mix(in srgb, var(--surface-2) 70%, transparent)', animation: 'sp-fade-in 0.2s ease forwards', opacity: 0 }}
             onClick={() => setShowSharePanel(false)}
           >
           <div

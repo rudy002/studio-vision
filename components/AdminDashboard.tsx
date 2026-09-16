@@ -383,12 +383,12 @@ export default function AdminDashboard() {
       {/* Header */}
       <div className="flex justify-between items-center mb-8">
         <div>
-          <p className="text-[9px] tracking-[3px] text-[#8b6914] uppercase mb-1">Administration</p>
+          <p className="text-[9px] tracking-[3px] text-gold-on-light uppercase mb-1">Administration</p>
           <h1 className="font-serif text-3xl font-light text-[#1a1410]">Studio Vision</h1>
         </div>
         <button
           onClick={() => signOut()}
-          className="text-[10px] tracking-[2px] text-[#6b5d4a] uppercase border-b border-[#6b5d4a]/30 pb-1 hover:text-[#8b6914] transition-colors cursor-pointer bg-transparent"
+          className="text-[10px] tracking-[2px] text-[#6b5d4a] uppercase border-b border-[#6b5d4a]/30 pb-1 hover:text-gold-on-light transition-colors cursor-pointer bg-transparent"
         >
           Déconnexion
         </button>
@@ -406,12 +406,11 @@ export default function AdminDashboard() {
             key={stat.label}
             className="rounded-2xl p-5"
             style={{
-              background: 'rgba(255,255,255,0.25)',
-              backdropFilter: 'blur(16px)',
-              border: '0.5px solid rgba(255,255,255,0.5)',
+              background: '#fff',
+              border: '1px solid color-mix(in srgb, var(--ink) 10%, transparent)',
             }}
           >
-            <p className="text-[9px] tracking-[2px] text-[#8b6914] uppercase mb-2">{stat.label}</p>
+            <p className="text-[9px] tracking-[2px] text-gold-on-light uppercase mb-2">{stat.label}</p>
             <p className="font-serif text-2xl font-light text-[#1a1410]">{stat.value}</p>
             {stat.unit && (
               <p className="text-[9px] tracking-[1px] text-[#6b5d4a] uppercase mt-1">{stat.unit}</p>
@@ -457,9 +456,8 @@ export default function AdminDashboard() {
               key={p.id}
               className="rounded-2xl overflow-hidden"
               style={{
-                background: 'rgba(255,255,255,0.25)',
-                backdropFilter: 'blur(16px)',
-                border: '0.5px solid rgba(255,255,255,0.5)',
+                background: '#fff',
+                border: '1px solid color-mix(in srgb, var(--ink) 10%, transparent)',
               }}
             >
               {/* Media preview */}
@@ -475,7 +473,7 @@ export default function AdminDashboard() {
                   {p.photos.length > 1 && (
                     <span
                       className="absolute bottom-2 right-2 text-[9px] tracking-[1px] uppercase text-white px-2 py-1 rounded-full"
-                      style={{ background: 'rgba(0,0,0,0.45)', backdropFilter: 'blur(4px)' }}
+                      style={{ background: 'rgba(0,0,0,0.55)' }}
                     >
                       +{p.photos.length - 1} photos
                     </span>
@@ -491,7 +489,7 @@ export default function AdminDashboard() {
                   />
                   <span
                     className="absolute bottom-2 right-2 text-[9px] tracking-[1px] uppercase text-white px-2 py-1 rounded-full"
-                    style={{ background: 'rgba(0,0,0,0.45)', backdropFilter: 'blur(4px)' }}
+                    style={{ background: 'rgba(0,0,0,0.55)' }}
                   >
                     vidéo
                   </span>
@@ -501,7 +499,7 @@ export default function AdminDashboard() {
               <div className="p-6">
                 <div className="flex justify-between items-start mb-4">
                   <div>
-                    <p className="text-[9px] tracking-[2px] text-[#8b6914] uppercase mb-1">
+                    <p className="text-[9px] tracking-[2px] text-gold-on-light uppercase mb-1">
                       {p.type} · {p.city}
                     </p>
                     <h3 className="font-serif text-lg font-light text-[#1a1410]">
@@ -526,13 +524,13 @@ export default function AdminDashboard() {
                 <div className="flex gap-2">
                   <button
                     onClick={() => startEdit(p)}
-                    className="flex-1 text-[9px] tracking-[1px] uppercase py-2 rounded-full bg-[#8b6914]/10 text-[#8b6914] hover:bg-[#8b6914] hover:text-white transition-colors cursor-pointer"
+                    className="flex-1 text-[9px] tracking-[1px] uppercase py-2 rounded-full bg-gold-on-light/10 text-gold-on-light hover:bg-gold-on-light hover:text-white transition-colors cursor-pointer"
                   >
                     Éditer
                   </button>
                   <button
                     onClick={() => toggleStatus(p.id, p.status)}
-                    className="flex-1 text-[9px] tracking-[1px] uppercase py-2 rounded-full bg-white/50 text-[#1a1410] hover:bg-[#8b6914] hover:text-white transition-colors cursor-pointer"
+                    className="flex-1 text-[9px] tracking-[1px] uppercase py-2 rounded-full bg-white/50 text-[#1a1410] hover:bg-gold-on-light hover:text-white transition-colors cursor-pointer"
                   >
                     {p.status === 'available' ? 'Marquer vendu' : 'Marquer disponible'}
                   </button>
@@ -553,18 +551,17 @@ export default function AdminDashboard() {
       {showConfirmModal && (
         <div
           className="fixed inset-0 z-50 flex items-center justify-center p-4"
-          style={{ background: 'rgba(26,20,16,0.55)', backdropFilter: 'blur(6px)' }}
+          style={{ background: 'color-mix(in srgb, var(--ink) 55%, transparent)' }}
         >
           <div
             className="rounded-3xl p-10 max-w-sm w-full text-center"
             style={{
-              background: 'rgba(255,255,255,0.92)',
-              backdropFilter: 'blur(20px)',
-              border: '0.5px solid rgba(255,255,255,0.7)',
+              background: '#fff',
+              border: '1px solid color-mix(in srgb, var(--ink) 10%, transparent)',
               boxShadow: '0 24px 64px rgba(0,0,0,0.18)',
             }}
           >
-            <p className="text-[9px] tracking-[3px] text-[#8b6914] uppercase mb-3">Confirmation</p>
+            <p className="text-[9px] tracking-[3px] text-gold-on-light uppercase mb-3">Confirmation</p>
             <h3 className="font-serif text-xl font-light text-[#1a1410] mb-3">
               {editingId ? 'Enregistrer les modifications ?' : 'Publier ce bien ?'}
             </h3>
@@ -584,7 +581,7 @@ export default function AdminDashboard() {
               <button
                 type="button"
                 onClick={performSubmit}
-                className="text-[10px] tracking-[2px] uppercase px-8 py-3 rounded-full bg-[#1a1410] text-white hover:bg-[#8b6914] transition-colors cursor-pointer"
+                className="text-[10px] tracking-[2px] uppercase px-8 py-3 rounded-full bg-[#1a1410] text-white hover:bg-gold-on-light transition-colors cursor-pointer"
               >
                 {editingId ? 'Enregistrer' : 'Publier'}
               </button>
@@ -599,9 +596,8 @@ export default function AdminDashboard() {
           <div
             className="rounded-3xl p-10 max-w-4xl w-full"
             style={{
-              background: 'rgba(255,255,255,0.25)',
-              backdropFilter: 'blur(16px)',
-              border: '0.5px solid rgba(255,255,255,0.5)',
+              background: '#fff',
+              border: '1px solid color-mix(in srgb, var(--ink) 10%, transparent)',
             }}
           >
             <div className="flex justify-between items-center mb-8">
@@ -612,7 +608,7 @@ export default function AdminDashboard() {
                 <button
                   type="button"
                   onClick={() => { cancelEdit(); setActiveTab('list'); }}
-                  className="text-[9px] tracking-[2px] text-[#6b5d4a] uppercase border-b border-[#6b5d4a]/30 pb-1 hover:text-[#8b6914] transition-colors cursor-pointer bg-transparent"
+                  className="text-[9px] tracking-[2px] text-[#6b5d4a] uppercase border-b border-[#6b5d4a]/30 pb-1 hover:text-gold-on-light transition-colors cursor-pointer bg-transparent"
                 >
                   Annuler
                 </button>
@@ -647,7 +643,7 @@ export default function AdminDashboard() {
                       name="type"
                       value={form.type}
                       onChange={handleChange}
-                      className="bg-white/50 border border-white/60 rounded-xl px-4 py-3 text-sm text-[#1a1410] outline-none focus:border-[#8b6914]"
+                      className="bg-white/50 border border-white/60 rounded-xl px-4 py-3 text-sm text-[#1a1410] outline-none focus:border-gold-on-light"
                     >
                       {['Villa', 'Appartement', 'Maison', 'Penthouse', 'Duplex'].map((t) => (
                         <option key={t} value={t}>{t}</option>
@@ -661,7 +657,7 @@ export default function AdminDashboard() {
                       type="number"
                       value={form.price}
                       onChange={handleChange}
-                      className="bg-white/50 border border-white/60 rounded-xl px-4 py-3 text-sm text-[#1a1410] outline-none focus:border-[#8b6914]"
+                      className="bg-white/50 border border-white/60 rounded-xl px-4 py-3 text-sm text-[#1a1410] outline-none focus:border-gold-on-light"
                     />
                   </div>
                   <div className="flex flex-col gap-2">
@@ -671,7 +667,7 @@ export default function AdminDashboard() {
                       type="number"
                       value={form.surface}
                       onChange={handleChange}
-                      className="bg-white/50 border border-white/60 rounded-xl px-4 py-3 text-sm text-[#1a1410] outline-none focus:border-[#8b6914]"
+                      className="bg-white/50 border border-white/60 rounded-xl px-4 py-3 text-sm text-[#1a1410] outline-none focus:border-gold-on-light"
                     />
                   </div>
                   <div className="flex flex-col gap-2">
@@ -681,7 +677,7 @@ export default function AdminDashboard() {
                       type="number"
                       value={form.rooms}
                       onChange={handleChange}
-                      className="bg-white/50 border border-white/60 rounded-xl px-4 py-3 text-sm text-[#1a1410] outline-none focus:border-[#8b6914]"
+                      className="bg-white/50 border border-white/60 rounded-xl px-4 py-3 text-sm text-[#1a1410] outline-none focus:border-gold-on-light"
                     />
                   </div>
                   <div className="flex flex-col gap-2">
@@ -690,7 +686,7 @@ export default function AdminDashboard() {
                       name="status"
                       value={form.status}
                       onChange={handleChange}
-                      className="bg-white/50 border border-white/60 rounded-xl px-4 py-3 text-sm text-[#1a1410] outline-none focus:border-[#8b6914]"
+                      className="bg-white/50 border border-white/60 rounded-xl px-4 py-3 text-sm text-[#1a1410] outline-none focus:border-gold-on-light"
                     >
                       <option value="available">Disponible</option>
                       <option value="sold">Vendu</option>
@@ -737,7 +733,7 @@ export default function AdminDashboard() {
                     onFocus={() => citySuggestions.length > 0 && setShowSuggestions(true)}
                     required
                     placeholder="Rechercher une ville en Israël..."
-                    className={`bg-white/50 border rounded-xl px-4 py-3 text-sm text-[#1a1410] outline-none focus:border-[#8b6914] ${
+                    className={`bg-white/50 border rounded-xl px-4 py-3 text-sm text-[#1a1410] outline-none focus:border-gold-on-light ${
                       cityError ? 'border-red-400' : 'border-white/60'
                     }`}
                   />
@@ -749,8 +745,7 @@ export default function AdminDashboard() {
                   {showSuggestions && citySuggestions.length > 0 && (
                     <ul
                       style={{
-                        background: 'rgba(255,255,255,0.9)',
-                        backdropFilter: 'blur(16px)',
+                        background: '#fff',
                         borderRadius: '12px',
                         border: '0.5px solid rgba(255,255,255,0.7)',
                         boxShadow: '0 8px 32px rgba(0,0,0,0.12)',
@@ -762,7 +757,7 @@ export default function AdminDashboard() {
                           key={city.label}
                           onMouseDown={() => handleCitySuggestionClick(city)}
                           style={{ padding: '10px 16px', cursor: 'pointer', transition: 'background 0.15s' }}
-                          className="text-sm text-[#1a1410] hover:bg-[#8b6914]/10 hover:text-[#8b6914]"
+                          className="text-sm text-[#1a1410] hover:bg-gold-on-light/10 hover:text-gold-on-light"
                         >
                           {city.label}
                           {city.label_en && city.label_en !== city.label && (
@@ -773,7 +768,7 @@ export default function AdminDashboard() {
                     </ul>
                   )}
                   {form.lat !== emptyForm.lat && form.lng !== emptyForm.lng && (
-                    <p className="text-[10px] text-[#8b6914]">
+                    <p className="text-[10px] text-gold-on-light">
                       {form.lat.toFixed(4)}, {form.lng.toFixed(4)}
                     </p>
                   )}
@@ -795,7 +790,7 @@ export default function AdminDashboard() {
                         value={form[`description_${lang}` as keyof typeof form] as string}
                         onChange={handleChange}
                         rows={4}
-                        className="bg-white/50 border border-white/60 rounded-xl px-4 py-3 text-sm text-[#1a1410] outline-none focus:border-[#8b6914] resize-none"
+                        className="bg-white/50 border border-white/60 rounded-xl px-4 py-3 text-sm text-[#1a1410] outline-none focus:border-gold-on-light resize-none"
                       />
                     </div>
                   ))}
@@ -913,12 +908,12 @@ export default function AdminDashboard() {
                         className="bg-white/50 border border-white/60 rounded-xl px-4 py-3 text-sm text-[#1a1410] outline-none cursor-pointer"
                       />
                       {photos.length > 0 && !loading && (
-                        <p className="text-[10px] text-[#8b6914]">{photos.length} photo(s) sélectionnée(s)</p>
+                        <p className="text-[10px] text-gold-on-light">{photos.length} photo(s) sélectionnée(s)</p>
                       )}
                       {loading && photos.length > 0 && (
                         <span className="flex items-center gap-2">
                           <SpinIris size="sm" />
-                          <span className="text-[10px] text-[#8b6914]">Upload en cours…</span>
+                          <span className="text-[10px] text-gold-on-light">Upload en cours…</span>
                         </span>
                       )}
                       {photoPreviews.length > 0 && (
@@ -958,7 +953,7 @@ export default function AdminDashboard() {
                         }}
                         className="bg-white/50 border border-white/60 rounded-xl px-4 py-3 text-sm text-[#1a1410] outline-none cursor-pointer"
                       />
-                      {video && <p className="text-[10px] text-[#8b6914]">{video.name}</p>}
+                      {video && <p className="text-[10px] text-gold-on-light">{video.name}</p>}
                     </div>
                   </div>
                 </div>
@@ -984,8 +979,8 @@ export default function AdminDashboard() {
                   className={[
                     'text-[11px] tracking-[3px] uppercase px-10 py-4 rounded-full transition-all duration-200 cursor-pointer flex items-center gap-2',
                     loading || submitDone
-                      ? 'bg-transparent border border-[color-mix(in srgb, var(--gold) 55%, transparent)] text-gold'
-                      : 'bg-[#1a1410] text-white hover:bg-[#8b6914] disabled:opacity-50',
+                      ? 'bg-transparent border border-gold-on-light/55 text-gold'
+                      : 'bg-[#1a1410] text-white hover:bg-gold-on-light disabled:opacity-50',
                   ].join(' ')}
                 >
                   {loading ? (
@@ -996,7 +991,7 @@ export default function AdminDashboard() {
                   ) : submitDone ? (
                     <>
                       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                        <path d="M5 12l5 5L20 7" stroke="var(--gold)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                        <path d="M5 12l5 5L20 7" stroke="var(--gold-on-light)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
                       </svg>
                       Confirmé
                     </>
@@ -1016,13 +1011,13 @@ export default function AdminDashboard() {
                       className={[
                         'text-[11px] tracking-[3px] uppercase px-8 py-4 rounded-full transition-all duration-200 cursor-pointer flex items-center gap-2',
                         loading || submitDone
-                          ? 'border border-[color-mix(in srgb, var(--gold) 55%, transparent)] text-gold'
+                          ? 'border border-gold-on-light/55 text-gold'
                           : 'border border-[#1a1410] text-[#1a1410] hover:bg-[#1a1410] hover:text-white disabled:opacity-50',
                       ].join(' ')}
                     >
                       {loading ? <SpinRing size="sm" light /> : submitDone ? (
                         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                          <path d="M5 12l5 5L20 7" stroke="var(--gold)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                          <path d="M5 12l5 5L20 7" stroke="var(--gold-on-light)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
                         </svg>
                       ) : null}
                       {loading ? 'En cours…' : submitDone ? 'Confirmé' : 'Terminer'}
@@ -1031,7 +1026,7 @@ export default function AdminDashboard() {
                 <button
                   type="button"
                   onClick={() => setOpenSection((s) => Math.min(FORM_SECTIONS.length - 1, (s ?? 0) + 1))}
-                  className="bg-[#1a1410] text-white text-[11px] tracking-[3px] uppercase px-10 py-4 rounded-full hover:bg-[#8b6914] transition-colors cursor-pointer"
+                  className="bg-[#1a1410] text-white text-[11px] tracking-[3px] uppercase px-10 py-4 rounded-full hover:bg-gold-on-light transition-colors cursor-pointer"
                 >
                   Suivant →
                 </button>

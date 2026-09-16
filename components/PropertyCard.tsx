@@ -186,15 +186,15 @@ function PropertyCard({
         {/* Top badges */}
         <div className="absolute top-4 left-4 right-4 flex justify-between items-start pointer-events-none">
           <span
-            className={`text-xs tracking-[2px] uppercase px-3 py-1 rounded-full backdrop-blur-sm border ${
+            className={`text-xs tracking-[2px] uppercase px-3 py-1 rounded-full border ${
               isAvailable
-                ? 'text-gold bg-gold/10 border-gold/30'
-                : 'text-white/50 bg-black/25 border-white/10'
+                ? 'text-gold bg-bg/85 border-gold/30'
+                : 'text-white/50 bg-bg/85 border-white/10'
             }`}
           >
             {isAvailable ? t('available') : t('sold')}
           </span>
-          <span className="text-xs tracking-[2px] uppercase px-3 py-1 rounded-full bg-white/10 backdrop-blur-sm border border-white/15 text-white/75">
+          <span className="text-xs tracking-[2px] uppercase px-3 py-1 rounded-full bg-bg/85 border border-white/15 text-white/75">
             {property.type}
           </span>
         </div>

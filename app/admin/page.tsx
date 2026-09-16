@@ -51,17 +51,15 @@ export default function AdminPage() {
       <div
         className="w-full max-w-sm rounded-3xl p-10"
         style={{
-          background: 'rgba(255,255,255,0.25)',
-          backdropFilter: 'blur(16px)',
-          WebkitBackdropFilter: 'blur(16px)',
-          border: '0.5px solid rgba(255,255,255,0.5)',
+          background: '#fff',
+          border: '1px solid color-mix(in srgb, var(--ink) 10%, transparent)',
         }}
       >
         <div className="text-center mb-10">
           <p className="font-serif text-2xl font-light text-[#1a1410] tracking-widest uppercase">
             Studio Vision
           </p>
-          <p className="text-[9px] tracking-[3px] text-[#8b6914] uppercase mt-2">
+          <p className="text-[9px] tracking-[3px] text-gold-on-light uppercase mt-2">
             Administration
           </p>
         </div>
@@ -75,7 +73,7 @@ export default function AdminPage() {
               type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="bg-white/50 border border-white/60 rounded-xl px-4 py-3 text-sm text-[#1a1410] outline-none focus:border-[#8b6914] transition-colors"
+              className="bg-white/50 border border-white/60 rounded-xl px-4 py-3 text-sm text-[#1a1410] outline-none focus:border-gold-on-light transition-colors"
               placeholder="••••••••"
               required
             />
@@ -89,10 +87,10 @@ export default function AdminPage() {
             className={[
               'mt-2 text-[11px] tracking-[3px] uppercase py-4 rounded-full transition-all duration-200 cursor-pointer flex items-center justify-center gap-2',
               loading
-                ? 'bg-transparent border border-[color-mix(in srgb, var(--gold) 55%, transparent)] text-gold'
+                ? 'bg-transparent border border-gold-on-light/55 text-gold'
                 : done
-                ? 'bg-transparent border border-[color-mix(in srgb, var(--gold) 55%, transparent)] text-gold'
-                : 'bg-[#1a1410] text-white hover:bg-[#8b6914] disabled:opacity-50',
+                ? 'bg-transparent border border-gold-on-light/55 text-gold'
+                : 'bg-[#1a1410] text-white hover:bg-gold-on-light disabled:opacity-50',
             ].join(' ')}
           >
             {loading ? (
@@ -103,7 +101,7 @@ export default function AdminPage() {
             ) : done ? (
               <>
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                  <path d="M5 12l5 5L20 7" stroke="var(--gold)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                  <path d="M5 12l5 5L20 7" stroke="var(--gold-on-light)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
                 </svg>
                 Confirmé
               </>

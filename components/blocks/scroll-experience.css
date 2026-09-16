@@ -5,9 +5,6 @@
    ============================================================ */
 
 .sv-root {
-  --navy: #0e1612;
-  --navy-2: #142019;
-  --gold-soft: #d9b277;
   --cream: #efe7d6;
   --ink: #1c1917;
   --white-10: rgba(255, 255, 255, 0.10);
@@ -20,7 +17,7 @@
   --sans:  var(--font-jakarta, "Plus Jakarta Sans", ui-sans-serif, system-ui, sans-serif);
   --mono:  var(--font-jetbrains, "JetBrains Mono", ui-monospace, monospace);
 
-  background: var(--navy);
+  background: var(--bg);
   color: var(--cream);
   font-family: var(--sans);
   font-weight: 300;
@@ -175,7 +172,7 @@
   background:
     radial-gradient(ellipse at 50% 60%, color-mix(in srgb, var(--gold) 18%, transparent) 0%, transparent 55%),
     radial-gradient(ellipse at 50% 110%, color-mix(in srgb, var(--gold) 10%, transparent) 0%, transparent 60%),
-    linear-gradient(180deg, #060912 0%, var(--navy) 50%, #0e1524 100%);
+    linear-gradient(180deg, var(--surface-2) 0%, var(--bg) 50%, var(--surface-1) 100%);
 }
 .sv-act-1 .sv-grain {
   position: absolute; inset: 0;
@@ -280,14 +277,14 @@
 .sv-act-2 {
   height: 220vh;
   position: relative;
-  background: var(--navy);
+  background: var(--bg);
 }
 .sv-act-2 .sv-stage {
   position: sticky; top: 0;
   height: 100vh;
   width: 100%;
   overflow: hidden;
-  background: var(--navy);
+  background: var(--bg);
 }
 .sv-act-2 .sv-sky,
 .sv-act-2 .sv-facade,
@@ -342,7 +339,7 @@
 }
 .sv-act-2 .sv-hud .sv-corner {
   display: flex; align-items: center; gap: 8px;
-  color: var(--gold-soft);
+  color: var(--gold-hover);
 }
 .sv-act-2 .sv-hud .sv-corner.sv-tl { grid-column: 1; grid-row: 1; }
 .sv-act-2 .sv-hud .sv-corner.sv-tr { grid-column: 3; grid-row: 1; justify-self: end; }
@@ -412,7 +409,7 @@
 .sv-act-3 {
   height: 280vh;
   position: relative;
-  background: var(--navy);
+  background: var(--bg);
 }
 .sv-act-3 .sv-stage {
   position: sticky; top: 0;
@@ -556,11 +553,11 @@
 .sv-act-4 {
   height: 220vh;
   position: relative;
-  background: var(--navy);
+  background: var(--bg);
 }
 .sv-act-4 .sv-stage {
   position: sticky; top: 0; height: 100vh; overflow: hidden;
-  background: var(--navy);
+  background: var(--bg);
 }
 .sv-act-4 .sv-img {
   position: absolute; inset: 0;
@@ -653,7 +650,7 @@
   position: relative;
   background:
     radial-gradient(circle at 30% 20%, color-mix(in srgb, var(--gold) 8%, transparent), transparent 40%),
-    linear-gradient(180deg, var(--navy) 0%, #0c1320 100%);
+    linear-gradient(180deg, var(--bg) 0%, var(--surface-1) 100%);
 }
 .sv-act-5 .sv-stage {
   position: sticky; top: 0; height: 100vh; overflow: hidden;
@@ -845,7 +842,7 @@
 .sv-act-6 {
   height: 200vh;
   position: relative;
-  background: var(--navy);
+  background: var(--bg);
 }
 .sv-act-6 .sv-stage {
   position: sticky; top: 0; height: 100vh; overflow: hidden;
@@ -1005,10 +1002,10 @@
 }
 .sv-btn-primary {
   background: var(--gold);
-  color: var(--navy);
+  color: var(--bg);
   border: 1px solid var(--gold);
 }
-.sv-btn-primary:hover { background: var(--gold-soft); transform: translateY(-2px); }
+.sv-btn-primary:hover { background: var(--gold-hover); transform: translateY(-2px); }
 .sv-btn-ghost {
   background: rgba(255,255,255,0.04);
   color: #fff;

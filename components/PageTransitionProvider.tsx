@@ -77,7 +77,7 @@ export function PageTransitionProvider({ children }: { children: ReactNode }) {
         <div
           key={phase}
           className="page-loader fixed inset-0 z-200 flex items-center justify-center"
-          style={{ background: 'rgba(10,15,26,0.85)', backdropFilter: 'blur(6px)', ...overlayStyle }}
+          style={{ background: 'color-mix(in srgb, var(--bg) 85%, transparent)', ...overlayStyle }}
           onAnimationEnd={phase !== 'navigating' ? handleAnimEnd : undefined}
           aria-hidden="true"
         >
