@@ -58,7 +58,7 @@ export default function Navbar() {
   const burgerClass = 'text-white';
 
   const langClass = (lang: string) => {
-    if (locale === lang) return 'text-[#b08d57] border-b border-[#b08d57]';
+    if (locale === lang) return 'text-gold border-b border-gold';
     return 'text-white/60 hover:text-white';
   };
 
@@ -73,7 +73,7 @@ export default function Navbar() {
         href={`/${locale}`}
         className={`font-serif text-xl tracking-widest uppercase whitespace-nowrap shrink-0 transition-colors ${logoClass}`}
       >
-        Studio<span className="text-[#b08d57]">.</span>Vision
+        Studio<span className="text-gold">.</span>Vision
         <span className="inline text-[10px] tracking-wider font-sans font-light opacity-70 ms-2 normal-case">by Lior Haddad</span>
       </TransitionLink>
 
@@ -128,28 +128,28 @@ export default function Navbar() {
           <TransitionLink
             href={`/${locale}`}
             onNavigate={() => setMenuOpen(false)}
-            className="px-6 py-4 text-[13px] tracking-widest text-white/80 uppercase hover:text-[#b08d57] transition-colors border-b border-white/10"
+            className="px-6 py-4 text-[13px] tracking-widest text-white/80 uppercase hover:text-gold transition-colors border-b border-white/10"
           >
             {t('home')}
           </TransitionLink>
           <TransitionLink
             href={`/${locale}/biens`}
             onNavigate={() => setMenuOpen(false)}
-            className="px-6 py-4 text-[13px] tracking-widest text-white/80 uppercase hover:text-[#b08d57] transition-colors border-b border-white/10"
+            className="px-6 py-4 text-[13px] tracking-widest text-white/80 uppercase hover:text-gold transition-colors border-b border-white/10"
           >
             {t('properties')}
           </TransitionLink>
           <TransitionLink
             href={`/${locale}/packages`}
             onNavigate={() => setMenuOpen(false)}
-            className="px-6 py-4 text-[13px] tracking-widest text-white/80 uppercase hover:text-[#b08d57] transition-colors border-b border-white/10"
+            className="px-6 py-4 text-[13px] tracking-widest text-white/80 uppercase hover:text-gold transition-colors border-b border-white/10"
           >
             {t('packages')}
           </TransitionLink>
           <TransitionLink
             href={`/${locale}/contact`}
             onNavigate={() => setMenuOpen(false)}
-            className="px-6 py-4 text-[13px] tracking-widest text-white/80 uppercase hover:text-[#b08d57] transition-colors border-b border-white/10"
+            className="px-6 py-4 text-[13px] tracking-widest text-white/80 uppercase hover:text-gold transition-colors border-b border-white/10"
           >
             {t('contact')}
           </TransitionLink>

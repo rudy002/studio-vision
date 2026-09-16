@@ -47,7 +47,7 @@ export default function ContactClient() {
   };
 
   const inputClass =
-    `w-full bg-white border border-[#e0d8ce] rounded-xl px-4 py-3 text-[#1c1917] placeholder:text-[#b8b0a6] outline-none focus:border-[#b08d57] transition-colors ${isHe ? 'text-base' : 'text-sm'}`;
+    `w-full bg-white border border-[#e0d8ce] rounded-xl px-4 py-3 text-[#1c1917] placeholder:text-[#b8b0a6] outline-none focus:border-gold transition-colors ${isHe ? 'text-base' : 'text-sm'}`;
 
   const labelClass = isHe
     ? 'text-[13px] text-[#8a8078] uppercase mb-1.5 block'
@@ -59,7 +59,7 @@ export default function ContactClient() {
       value: t('info.location'),
       ltr: false,
       icon: (
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#b08d57" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--gold)" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
           <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/>
           <circle cx="12" cy="9" r="2.5"/>
         </svg>
@@ -70,7 +70,7 @@ export default function ContactClient() {
       value: t('info.phone'),
       ltr: true,
       icon: (
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#b08d57" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--gold)" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
           <path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 10.8 19.79 19.79 0 01.07 2.18 2 2 0 012.05 0h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 14.92v2z"/>
         </svg>
       ),
@@ -101,7 +101,7 @@ export default function ContactClient() {
         {/* ── Colonne gauche — info ── */}
         <div className={`flex flex-col justify-center px-8 md:px-16 lg:px-20 pt-36 pb-16 ${visible ? '' : 'invisible'}`}>
 
-          <p className={`fade-up fade-up-1 text-[#b08d57] uppercase mb-6 ${isHe ? 'text-sm' : 'text-[11px] tracking-[4px]'}`}>
+          <p className={`fade-up fade-up-1 text-gold uppercase mb-6 ${isHe ? 'text-sm' : 'text-[11px] tracking-[4px]'}`}>
             {t('eyebrow')}
           </p>
 
@@ -109,7 +109,7 @@ export default function ContactClient() {
             {t('title')}
           </h1>
 
-          <div className="fade-up fade-up-3 w-12 h-px bg-[#b08d57] mb-8" />
+          <div className="fade-up fade-up-3 w-12 h-px bg-gold mb-8" />
 
           <p className={`fade-up fade-up-3 text-white/55 leading-relaxed mb-14 max-w-sm ${isHe ? 'text-base' : 'text-sm'}`}>
             {t('description')}
@@ -123,12 +123,12 @@ export default function ContactClient() {
               >
                 <div
                   className="w-10 h-10 rounded-full flex-none flex items-center justify-center"
-                  style={{ border: '1px solid rgba(176,141,87,0.3)', background: 'rgba(176,141,87,0.07)' }}
+                  style={{ border: '1px solid color-mix(in srgb, var(--gold) 30%, transparent)', background: 'color-mix(in srgb, var(--gold) 7%, transparent)' }}
                 >
                   {item.icon}
                 </div>
                 <div>
-                  <p className={`text-[#b08d57] uppercase mb-0.5 ${isHe ? 'text-[13px]' : 'text-[11px] tracking-[1.5px]'}`}>{item.label}</p>
+                  <p className={`text-gold uppercase mb-0.5 ${isHe ? 'text-[13px]' : 'text-[11px] tracking-[1.5px]'}`}>{item.label}</p>
                   <p className={`text-white/65 ${isHe ? 'text-base' : 'text-sm'}`} dir={item.ltr ? 'ltr' : undefined}>{item.value}</p>
                 </div>
               </div>
@@ -138,16 +138,16 @@ export default function ContactClient() {
         </div>
 
         {/* ── Colonne droite — formulaire ── */}
-        <div className="bg-[#f5f2ec] flex items-center px-8 md:px-12 lg:px-16 pt-36 pb-16">
+        <div className="bg-paper flex items-center px-8 md:px-12 lg:px-16 pt-36 pb-16">
           <div className={`w-full max-w-lg ${visible ? '' : 'invisible'}`}>
 
             {success ? (
               <div className="fade-up fade-up-1 text-center py-16">
                 <div
                   className="w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-7"
-                  style={{ border: '1px solid rgba(176,141,87,0.4)', background: 'rgba(176,141,87,0.08)' }}
+                  style={{ border: '1px solid color-mix(in srgb, var(--gold) 40%, transparent)', background: 'color-mix(in srgb, var(--gold) 8%, transparent)' }}
                 >
-                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#b08d57" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--gold)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                     <polyline points="20 6 9 17 4 12" />
                   </svg>
                 </div>
@@ -156,7 +156,7 @@ export default function ContactClient() {
               </div>
             ) : (
               <>
-                <p className={`fade-up fade-up-2 text-[#b08d57] uppercase mb-2 ${isHe ? 'text-sm' : 'text-[11px] tracking-[3px]'}`}>{t('form.eyebrow')}</p>
+                <p className={`fade-up fade-up-2 text-gold uppercase mb-2 ${isHe ? 'text-sm' : 'text-[11px] tracking-[3px]'}`}>{t('form.eyebrow')}</p>
                 <h2 className={`fade-up fade-up-3 font-serif font-light text-[#1c1917] mb-8 ${isHe ? 'text-4xl' : 'text-3xl'}`}>
                   {t('form.title')}
                 </h2>
@@ -198,8 +198,8 @@ export default function ContactClient() {
                           onClick={() => setForm({ ...form, role: r })}
                           className={`uppercase px-5 py-2 rounded-full border transition-all duration-200 cursor-pointer ${isHe ? 'text-sm' : 'text-[12px] tracking-[1px]'} ${
                             form.role === r
-                              ? 'bg-[#b08d57] border-[#b08d57] text-white'
-                              : 'border-[#d4cdc4] text-[#8a8078] hover:border-[#b08d57] hover:text-[#b08d57]'
+                              ? 'bg-gold border-gold text-white'
+                              : 'border-[#d4cdc4] text-[#8a8078] hover:border-gold hover:text-gold'
                           }`}
                         >
                           {t(`form.${r}`)}
@@ -224,7 +224,7 @@ export default function ContactClient() {
                   <button
                     type="submit"
                     disabled={loading}
-                    className={`mt-1 bg-[#0a0f1a] text-white uppercase py-4 rounded-full hover:bg-[#b08d57] transition-colors duration-300 cursor-pointer disabled:opacity-40 ${isHe ? 'text-base' : 'text-[12px] tracking-[3px]'}`}
+                    className={`mt-1 bg-[#0a0f1a] text-white uppercase py-4 rounded-full hover:bg-gold transition-colors duration-300 cursor-pointer disabled:opacity-40 ${isHe ? 'text-base' : 'text-[12px] tracking-[3px]'}`}
                   >
                     {loading ? '…' : t('form.submit')}
                   </button>

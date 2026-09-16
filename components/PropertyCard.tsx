@@ -165,7 +165,7 @@ function PropertyCard({
                 key={i}
                 className={cn(
                   'h-1 rounded-full transition-all duration-300',
-                  i === index ? 'w-4 bg-[#c39553]' : 'w-1 bg-white/30',
+                  i === index ? 'w-4 bg-gold' : 'w-1 bg-white/30',
                 )}
               />
             ))}
@@ -188,7 +188,7 @@ function PropertyCard({
           <span
             className={`text-xs tracking-[2px] uppercase px-3 py-1 rounded-full backdrop-blur-sm border ${
               isAvailable
-                ? 'text-[#c39553] bg-[#c39553]/10 border-[#c39553]/30'
+                ? 'text-gold bg-gold/10 border-gold/30'
                 : 'text-white/50 bg-black/25 border-white/10'
             }`}
           >
@@ -201,7 +201,7 @@ function PropertyCard({
 
         {/* Bottom content */}
         <div className="relative flex flex-col justify-end h-full p-5 text-white">
-          <p className="text-xs tracking-[3px] text-[#c39553]/75 uppercase mb-1.5 flex items-center gap-1">
+          <p className="text-xs tracking-[3px] text-gold/75 uppercase mb-1.5 flex items-center gap-1">
             <MapPin className="h-2.5 w-2.5 shrink-0" />
             {cityLabel(property, locale)}
           </p>
@@ -211,8 +211,8 @@ function PropertyCard({
               {property.packages.map((pkg) => (
                 <span
                   key={pkg}
-                  className="text-xs tracking-[1.5px] uppercase px-2 py-0.5 rounded-full border border-[#c39553]/25 text-[#c39553]/65"
-                  style={{ background: 'rgba(195,149,83,0.07)' }}
+                  className="text-xs tracking-[1.5px] uppercase px-2 py-0.5 rounded-full border border-gold/25 text-gold/65"
+                  style={{ background: 'color-mix(in srgb, var(--gold) 7%, transparent)' }}
                 >
                   {PACKAGE_KEY[pkg] ? tPkg(PACKAGE_KEY[pkg]) : pkg}
                 </span>
@@ -239,7 +239,7 @@ function PropertyCard({
             <span className="font-serif text-lg font-light">
               {property.price > 0 ? `${property.price.toLocaleString(intlLocale)} ₪` : t('priceOnRequest')}
             </span>
-            <ArrowRight className="h-4 w-4 text-[#c39553] transition-transform duration-300 group-hover:translate-x-1 shrink-0" />
+            <ArrowRight className="h-4 w-4 text-gold transition-transform duration-300 group-hover:translate-x-1 shrink-0" />
           </div>
         </div>
       </div>

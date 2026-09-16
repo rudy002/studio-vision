@@ -149,16 +149,16 @@ export default async function PackagesPage({
         dangerouslySetInnerHTML={{ __html: JSON.stringify(serviceList) }}
       />
 
-      <div className="absolute top-0 z-0 min-h-full w-full bg-[radial-gradient(ellipse_20%_80%_at_50%_-20%,rgba(176,141,87,0.22),rgba(255,255,255,0))]" />
+      <div className="absolute top-0 z-0 min-h-full w-full bg-[radial-gradient(ellipse_20%_80%_at_50%_-20%,color-mix(in srgb, var(--gold) 22%, transparent),rgba(255,255,255,0))]" />
 
       <div className="relative max-w-7xl mx-auto px-4 md:px-8 min-h-full">
 
         {/* ── Header ── */}
         <div className="relative max-w-xl mx-auto sm:text-center pt-28 pb-2">
-          <p className="text-sm tracking-[5px] text-[#b08d57] uppercase mb-4">
+          <p className="text-sm tracking-[5px] text-gold uppercase mb-4">
             {t('eyebrow')}
           </p>
-          <h1 className="font-serif text-transparent bg-clip-text bg-linear-to-r from-[#b08d57] to-[#e8c97e] text-5xl font-light sm:text-7xl py-1 sm:py-2 leading-tight">
+          <h1 className="font-serif text-gold text-5xl font-light sm:text-7xl py-1 sm:py-2 leading-tight">
             {t('title')}
           </h1>
           <div className="mt-5 text-white/40 text-lg">
@@ -174,13 +174,13 @@ export default async function PackagesPage({
               className={cn(
                 'relative flex-1 flex items-stretch flex-col rounded-xl mt-6 sm:mt-0 transform-gpu transition-shadow duration-300',
                 item.isMostPop
-                  ? '[border:1px_solid_rgba(176,141,87,0.4)] [box-shadow:0_0_0_1px_rgba(176,141,87,0.08),0_-24px_80px_-16px_rgba(176,141,87,0.22)_inset]'
-                  : '[border:1px_solid_rgba(255,255,255,0.07)] [box-shadow:0_-20px_60px_-20px_rgba(176,141,87,0.05)_inset]'
+                  ? '[border:1px_solid_color-mix(in srgb, var(--gold) 40%, transparent)] [box-shadow:0_0_0_1px_color-mix(in srgb, var(--gold) 8%, transparent),0_-24px_80px_-16px_color-mix(in srgb, var(--gold) 22%, transparent)_inset]'
+                  : '[border:1px_solid_rgba(255,255,255,0.07)] [box-shadow:0_-20px_60px_-20px_color-mix(in srgb, var(--gold) 5%, transparent)_inset]'
               )}
             >
               {/* Popular badge */}
               {item.isMostPop && (
-                <span className="w-36 absolute -top-5 left-0 right-0 mx-auto px-3 py-2 rounded-full border border-[#b08d57]/40 shadow-md bg-[#b08d57] bg-[radial-gradient(ellipse_20%_80%_at_50%_-20%,rgba(232,201,126,0.5),rgba(176,141,87,0))] animate-background-shine text-center text-[#0a0f1a] text-sm font-semibold">
+                <span className="w-36 absolute -top-5 left-0 right-0 mx-auto px-3 py-2 rounded-full border border-gold/40 shadow-md bg-gold bg-[radial-gradient(ellipse_20%_80%_at_50%_-20%,rgba(232,201,126,0.5),color-mix(in srgb, var(--gold) 0%, transparent))] animate-background-shine text-center text-[#0a0f1a] text-sm font-semibold">
                   {t('popular')}
                 </span>
               )}
@@ -190,7 +190,7 @@ export default async function PackagesPage({
                 className={cn(
                   'p-8 space-y-5 border-b rounded-t-xl',
                   item.isMostPop
-                    ? 'border-white/10 bg-[linear-gradient(135deg,rgba(176,141,87,0.09),transparent_55%)]'
+                    ? 'border-white/10 bg-[linear-gradient(135deg,color-mix(in srgb, var(--gold) 9%, transparent),transparent_55%)]'
                     : 'border-white/5'
                 )}
               >
@@ -199,7 +199,7 @@ export default async function PackagesPage({
                   <span
                     className={cn(
                       'font-serif text-3xl font-light tracking-tight',
-                      item.isMostPop ? 'text-[#b08d57]' : 'text-white/70'
+                      item.isMostPop ? 'text-gold' : 'text-white/70'
                     )}
                   >
                     {item.name}
@@ -215,8 +215,8 @@ export default async function PackagesPage({
                   className={cn(
                     'w-full text-center rounded-lg text-sm tracking-[2px] uppercase px-4 py-3.5 transition-all hover:scale-[1.02] active:scale-[0.98] flex items-center justify-center gap-2',
                     item.isMostPop
-                      ? 'bg-linear-to-br from-[#b08d57] to-[#c9a867] text-[#0a0f1a] font-semibold'
-                      : 'border border-white/12 text-white/50 hover:border-[#b08d57]/50 hover:text-[#b08d57]'
+                      ? 'bg-gold text-[#0a0f1a] font-semibold'
+                      : 'border border-white/12 text-white/50 hover:border-gold/50 hover:text-gold'
                   )}
                 >
                   {t('cta')} →
@@ -234,7 +234,7 @@ export default async function PackagesPage({
                       xmlns="http://www.w3.org/2000/svg"
                       className={cn(
                         'h-5 w-5 flex-none mt-0.5',
-                        item.isMostPop ? 'text-[#b08d57]' : 'text-[#b08d57]/50'
+                        item.isMostPop ? 'text-gold' : 'text-gold/50'
                       )}
                       viewBox="0 0 20 20"
                       fill="currentColor"
@@ -263,7 +263,7 @@ export default async function PackagesPage({
         </div>
 
         {/* ── Drone — full-width horizontal strip ── */}
-        <div className="mt-8 rounded-xl overflow-hidden [border:1px_solid_rgba(255,255,255,0.06)] [box-shadow:0_-16px_60px_-20px_rgba(176,141,87,0.05)_inset]">
+        <div className="mt-8 rounded-xl overflow-hidden [border:1px_solid_rgba(255,255,255,0.06)] [box-shadow:0_-16px_60px_-20px_color-mix(in srgb, var(--gold) 5%, transparent)_inset]">
           <div className="flex flex-col md:flex-row">
 
             {/* Left: identity */}
@@ -271,7 +271,7 @@ export default async function PackagesPage({
               <span className="text-3xl">🚁</span>
               <div>
                 <p className="font-serif text-xl font-light text-white/80">{t('droneTitle')}</p>
-                <p className="text-[10px] tracking-[3px] text-[#b08d57] uppercase mt-1">{t('droneComplement')}</p>
+                <p className="text-[10px] tracking-[3px] text-gold uppercase mt-1">{t('droneComplement')}</p>
               </div>
             </div>
 
@@ -281,7 +281,7 @@ export default async function PackagesPage({
                 <li key={i} className="flex items-center gap-3">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
-                    className="h-4 w-4 text-[#b08d57]/50 flex-none"
+                    className="h-4 w-4 text-gold/50 flex-none"
                     viewBox="0 0 20 20"
                     fill="currentColor"
                   >
@@ -313,7 +313,7 @@ export default async function PackagesPage({
         </h2>
         <Link
           href={`/${locale}/contact`}
-          className="inline-block text-sm tracking-[3px] uppercase text-[#0a0f1a] bg-linear-to-br from-[#b08d57] to-[#c9a867] px-12 py-4 rounded-lg font-semibold hover:scale-[1.02] active:scale-[0.98] transition-all duration-200"
+          className="inline-block text-sm tracking-[3px] uppercase text-[#0a0f1a] bg-gold px-12 py-4 rounded-lg font-semibold hover:scale-[1.02] active:scale-[0.98] transition-all duration-200"
         >
           {t('cta')} →
         </Link>

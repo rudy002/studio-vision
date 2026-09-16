@@ -984,7 +984,7 @@ export default function AdminDashboard() {
                   className={[
                     'text-[11px] tracking-[3px] uppercase px-10 py-4 rounded-full transition-all duration-200 cursor-pointer flex items-center gap-2',
                     loading || submitDone
-                      ? 'bg-transparent border border-[rgba(176,141,87,0.55)] text-[#b08d57]'
+                      ? 'bg-transparent border border-[color-mix(in srgb, var(--gold) 55%, transparent)] text-gold'
                       : 'bg-[#1a1410] text-white hover:bg-[#8b6914] disabled:opacity-50',
                   ].join(' ')}
                 >
@@ -996,7 +996,7 @@ export default function AdminDashboard() {
                   ) : submitDone ? (
                     <>
                       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                        <path d="M5 12l5 5L20 7" stroke="#b08d57" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                        <path d="M5 12l5 5L20 7" stroke="var(--gold)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
                       </svg>
                       Confirmé
                     </>
@@ -1016,13 +1016,13 @@ export default function AdminDashboard() {
                       className={[
                         'text-[11px] tracking-[3px] uppercase px-8 py-4 rounded-full transition-all duration-200 cursor-pointer flex items-center gap-2',
                         loading || submitDone
-                          ? 'border border-[rgba(176,141,87,0.55)] text-[#b08d57]'
+                          ? 'border border-[color-mix(in srgb, var(--gold) 55%, transparent)] text-gold'
                           : 'border border-[#1a1410] text-[#1a1410] hover:bg-[#1a1410] hover:text-white disabled:opacity-50',
                       ].join(' ')}
                     >
                       {loading ? <SpinRing size="sm" light /> : submitDone ? (
                         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                          <path d="M5 12l5 5L20 7" stroke="#b08d57" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                          <path d="M5 12l5 5L20 7" stroke="var(--gold)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
                         </svg>
                       ) : null}
                       {loading ? 'En cours…' : submitDone ? 'Confirmé' : 'Terminer'}

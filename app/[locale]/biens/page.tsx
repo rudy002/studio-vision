@@ -56,12 +56,12 @@ function SkeletonCard() {
   return (
     <div className="rounded-2xl overflow-hidden border border-white/6 h-104 flex flex-col" style={{ background: 'rgba(255,255,255,0.03)' }}>
       {/* Image placeholder — cream background with 2 pulsing gold bars */}
-      <div className="relative flex-1 flex flex-col items-center justify-center gap-3 overflow-hidden" style={{ background: '#0f1420' }}>
+      <div className="relative flex-1 flex flex-col items-center justify-center gap-3 overflow-hidden" style={{ background: 'var(--surface-1)' }}>
         <div
           className="h-px origin-left rounded-full"
           style={{
             width: '56px',
-            background: '#b08d57',
+            background: 'var(--gold)',
             animation: 'spin-bar-pulse 1.4s ease-in-out infinite',
           }}
         />
@@ -69,7 +69,7 @@ function SkeletonCard() {
           className="h-px origin-left rounded-full"
           style={{
             width: '32px',
-            background: '#b08d57',
+            background: 'var(--gold)',
             animation: 'spin-bar-pulse 1.4s ease-in-out infinite',
             animationDelay: '0.3s',
           }}
@@ -275,12 +275,12 @@ export default function BiensPage() {
   const pillClass = (active: boolean) =>
     `text-xs tracking-[1.5px] uppercase px-4 py-1.5 rounded-full border transition-all duration-200 cursor-pointer whitespace-nowrap ${
       active
-        ? 'bg-[#c39553] border-[#c39553] text-[#0a0f1a]'
+        ? 'bg-gold border-gold text-[#0a0f1a]'
         : 'border-white/30 text-white/60 hover:border-white/55 hover:text-white'
     }`;
 
   const inputClass =
-    'border border-white/20 rounded-lg px-3 py-2 text-white text-[12px] placeholder:text-white/35 focus:outline-none focus:border-[#c39553]/70 transition-colors bg-white/8';
+    'border border-white/20 rounded-lg px-3 py-2 text-white text-[12px] placeholder:text-white/35 focus:outline-none focus:border-gold/70 transition-colors bg-white/8';
 
   const selectStyle = { background: '#0a0f1a', colorScheme: 'dark' as const };
 
@@ -289,7 +289,7 @@ export default function BiensPage() {
 
       {/* ── Header ── */}
       <div className="pt-32 md:pt-40 pb-10 px-6 md:px-16">
-        <p className="text-[13px] tracking-[4px] text-[#c39553] uppercase mb-4">
+        <p className="text-[13px] tracking-[4px] text-gold uppercase mb-4">
           {t('eyebrow')}
         </p>
         <h1 className="font-serif text-4xl md:text-5xl font-light text-white mb-10">
@@ -322,11 +322,11 @@ export default function BiensPage() {
         {/* Toggle filtres avancés (mobile) */}
         <button
           onClick={() => setFiltersOpen((o) => !o)}
-          className="md:hidden flex items-center gap-2 text-xs tracking-[2px] uppercase text-white/50 hover:text-[#c39553] transition-colors mb-4 cursor-pointer"
+          className="md:hidden flex items-center gap-2 text-xs tracking-[2px] uppercase text-white/50 hover:text-gold transition-colors mb-4 cursor-pointer"
         >
           <span>{filtersOpen ? '↑' : '↓'}</span>
           {t('filters.advanced')}
-          {hasActiveFilters && <span className="w-1.5 h-1.5 rounded-full bg-[#c39553] inline-block" />}
+          {hasActiveFilters && <span className="w-1.5 h-1.5 rounded-full bg-gold inline-block" />}
         </button>
 
         {/* Filtres avancés */}
@@ -334,7 +334,7 @@ export default function BiensPage() {
           className={`rounded-2xl p-6 transition-all duration-300 overflow-hidden ${
             filtersOpen ? 'block' : 'hidden md:block'
           }`}
-          style={{ background: 'rgba(195,149,83,0.04)', border: '1px solid rgba(195,149,83,0.12)' }}
+          style={{ background: 'color-mix(in srgb, var(--gold) 4%, transparent)', border: '1px solid color-mix(in srgb, var(--gold) 12%, transparent)' }}
         >
           <div className="flex flex-col gap-5">
 
@@ -458,7 +458,7 @@ export default function BiensPage() {
               {hasActiveFilters && (
                 <button
                   onClick={resetFilters}
-                  className="text-xs tracking-[1.5px] uppercase text-[#c39553] hover:text-white border border-[#c39553]/40 hover:border-white/40 px-4 py-2 rounded-lg transition-all duration-200 cursor-pointer self-end"
+                  className="text-xs tracking-[1.5px] uppercase text-gold hover:text-white border border-gold/40 hover:border-white/40 px-4 py-2 rounded-lg transition-all duration-200 cursor-pointer self-end"
                 >
                   {t('filters.reset')}
                 </button>
@@ -473,16 +473,16 @@ export default function BiensPage() {
         {!mapOpen ? (
           <button
             onClick={() => setMapOpen(true)}
-            className="group relative w-full h-32 md:h-36 rounded-3xl overflow-hidden cursor-pointer transition-colors duration-300 hover:border-[#c39553]/40"
-            style={{ border: '1px solid rgba(195,149,83,0.15)', background: '#0c1220' }}
+            className="group relative w-full h-32 md:h-36 rounded-3xl overflow-hidden cursor-pointer transition-colors duration-300 hover:border-gold/40"
+            style={{ border: '1px solid color-mix(in srgb, var(--gold) 15%, transparent)', background: 'var(--surface-1)' }}
           >
             {/* Fond façon plan cadastral */}
             <div
               className="absolute inset-0 opacity-70"
               style={{
                 background: `
-                  repeating-linear-gradient(90deg, rgba(195,149,83,0.06) 0 1px, transparent 1px 56px),
-                  repeating-linear-gradient(0deg, rgba(195,149,83,0.06) 0 1px, transparent 1px 56px),
+                  repeating-linear-gradient(90deg, color-mix(in srgb, var(--gold) 6%, transparent) 0 1px, transparent 1px 56px),
+                  repeating-linear-gradient(0deg, color-mix(in srgb, var(--gold) 6%, transparent) 0 1px, transparent 1px 56px),
                   repeating-linear-gradient(45deg, rgba(255,255,255,0.02) 0 1px, transparent 1px 90px)`,
               }}
             />
@@ -492,10 +492,10 @@ export default function BiensPage() {
             />
             <div className="relative flex flex-col items-center justify-center gap-2 h-full">
               <span className="relative flex items-center justify-center w-8 h-8">
-                <span className="absolute inline-flex w-full h-full rounded-full bg-[#c39553] opacity-15 animate-ping" />
-                <MapPin className="relative h-5 w-5 text-[#c39553]" strokeWidth={1.5} />
+                <span className="absolute inline-flex w-full h-full rounded-full bg-gold opacity-15 animate-ping" />
+                <MapPin className="relative h-5 w-5 text-gold" strokeWidth={1.5} />
               </span>
-              <span className="text-xs tracking-[3px] uppercase text-white/80 group-hover:text-[#c39553] transition-colors">
+              <span className="text-xs tracking-[3px] uppercase text-white/80 group-hover:text-gold transition-colors">
                 {t('filters.exploreMap')}
               </span>
               <span className="text-xs tracking-[2px] uppercase text-white/35">
@@ -506,7 +506,7 @@ export default function BiensPage() {
         ) : (
           <div
             className="relative rounded-3xl overflow-hidden"
-            style={{ border: '1px solid rgba(195,149,83,0.12)', animation: 'sp-fade-in 0.35s ease forwards', opacity: 0 }}
+            style={{ border: '1px solid color-mix(in srgb, var(--gold) 12%, transparent)', animation: 'sp-fade-in 0.35s ease forwards', opacity: 0 }}
           >
             <MapView
               properties={filtered}
@@ -531,14 +531,14 @@ export default function BiensPage() {
 
       {/* ── Séparateur ── */}
       <div className="px-6 md:px-16">
-        <div className="h-px bg-[#c39553]/18" />
+        <div className="h-px bg-gold/18" />
       </div>
 
       {/* ── Grille ── */}
       <div className="px-6 md:px-16 py-16 md:py-24">
 
         {!loading && !error && (
-          <p className="text-xs tracking-[2px] uppercase text-[#c39553]/45 mb-10">
+          <p className="text-xs tracking-[2px] uppercase text-gold/45 mb-10">
             {filtered.length} {t('filters.resultsCount')}
           </p>
         )}
@@ -550,7 +550,7 @@ export default function BiensPage() {
             <p className="text-sm text-white/25 max-w-xs">{error}</p>
             <button
               onClick={() => { setLoading(true); setError(null); setFetchTick((n) => n + 1); }}
-              className="mt-4 text-xs tracking-[2px] uppercase text-[#c39553] border border-[#c39553]/40 px-6 py-2 rounded-lg hover:bg-[#c39553]/10 transition-colors cursor-pointer"
+              className="mt-4 text-xs tracking-[2px] uppercase text-gold border border-gold/40 px-6 py-2 rounded-lg hover:bg-gold/10 transition-colors cursor-pointer"
             >
               {t('retry')}
             </button>

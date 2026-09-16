@@ -148,7 +148,7 @@ export function MediaCarousel({ items, className }: MediaCarouselProps) {
               onClick={() => setPage(i)}
               className={cn(
                 "rounded-full transition-all duration-200 focus:outline-none",
-                i === page ? "w-4 h-1.5 bg-[#c39553]" : "w-1.5 h-1.5 bg-white/25 hover:bg-white/45"
+                i === page ? "w-4 h-1.5 bg-gold" : "w-1.5 h-1.5 bg-white/25 hover:bg-white/45"
               )}
             />
           ))}
@@ -171,7 +171,7 @@ export function MediaCarousel({ items, className }: MediaCarouselProps) {
               className={cn(
                 "shrink-0 w-24 h-16 rounded-xl overflow-hidden border-2 transition-all duration-200 focus:outline-none",
                 i === page
-                  ? "border-[#c39553] opacity-100"
+                  ? "border-gold opacity-100"
                   : "border-transparent opacity-40 hover:opacity-70"
               )}
             >

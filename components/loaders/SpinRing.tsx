@@ -32,7 +32,7 @@ export function SpinRing({ size = 'md', light = false, className }: SpinRingProp
         className={cn('rounded-full', dimsCls[size])}
         style={{
           border: `${borderW[size]} solid ${track}`,
-          borderTopColor: '#b08d57',
+          borderTopColor: 'var(--gold)',
           animation: 'spin-ring 0.9s linear infinite',
         }}
       />
