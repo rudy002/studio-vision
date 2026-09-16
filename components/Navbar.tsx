@@ -65,20 +65,20 @@ export default function Navbar() {
   return (
     <nav
       ref={navRef}
-      className="fixed top-0 left-0 right-0 z-50 flex justify-between items-center px-6 md:px-16 py-5 transition-all duration-500 [&.nav-hidden]:md:-translate-y-full [&.nav-hidden]:md:opacity-0 [&.nav-hidden]:md:pointer-events-none"
+      className="fixed top-0 left-0 right-0 z-50 flex justify-between items-center gap-4 px-6 md:px-8 lg:px-16 py-5 transition-all duration-500 [&.nav-hidden]:md:-translate-y-full [&.nav-hidden]:md:opacity-0 [&.nav-hidden]:md:pointer-events-none"
       style={navStyle}
     >
       {/* Logo */}
       <TransitionLink
         href={`/${locale}`}
-        className={`font-serif text-xl tracking-widest uppercase transition-colors ${logoClass}`}
+        className={`font-serif text-xl tracking-widest uppercase whitespace-nowrap shrink-0 transition-colors ${logoClass}`}
       >
         Studio<span className="text-[#b08d57]">.</span>Vision
         <span className="inline text-[10px] tracking-wider font-sans font-light opacity-70 ms-2 normal-case">by Lior Haddad</span>
       </TransitionLink>
 
       {/* Desktop links */}
-      <div className="hidden md:flex gap-8 items-center">
+      <div className="hidden md:flex gap-4 lg:gap-8 items-center shrink-0">
         <TransitionLink href={`/${locale}`} className={`text-[13px] tracking-widest uppercase transition-colors ${linkClass}`}>
           {t('home')}
         </TransitionLink>
@@ -94,7 +94,7 @@ export default function Navbar() {
       </div>
 
       {/* Desktop language switcher */}
-      <div className="hidden md:flex gap-3 items-center">
+      <div className="hidden md:flex gap-3 items-center shrink-0">
         {['fr', 'en', 'he'].map((lang) => (
           <button
             key={lang}
