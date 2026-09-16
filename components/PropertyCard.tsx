@@ -186,7 +186,7 @@ function PropertyCard({
         {/* Top badges */}
         <div className="absolute top-4 left-4 right-4 flex justify-between items-start pointer-events-none">
           <span
-            className={`text-[9px] tracking-[2px] uppercase px-3 py-1 rounded-full backdrop-blur-sm border ${
+            className={`text-xs tracking-[2px] uppercase px-3 py-1 rounded-full backdrop-blur-sm border ${
               isAvailable
                 ? 'text-[#c39553] bg-[#c39553]/10 border-[#c39553]/30'
                 : 'text-white/50 bg-black/25 border-white/10'
@@ -194,14 +194,14 @@ function PropertyCard({
           >
             {isAvailable ? t('available') : t('sold')}
           </span>
-          <span className="text-[9px] tracking-[2px] uppercase px-3 py-1 rounded-full bg-white/10 backdrop-blur-sm border border-white/15 text-white/75">
+          <span className="text-xs tracking-[2px] uppercase px-3 py-1 rounded-full bg-white/10 backdrop-blur-sm border border-white/15 text-white/75">
             {property.type}
           </span>
         </div>
 
         {/* Bottom content */}
         <div className="relative flex flex-col justify-end h-full p-5 text-white">
-          <p className="text-[9px] tracking-[3px] text-[#c39553]/75 uppercase mb-1.5 flex items-center gap-1">
+          <p className="text-xs tracking-[3px] text-[#c39553]/75 uppercase mb-1.5 flex items-center gap-1">
             <MapPin className="h-2.5 w-2.5 shrink-0" />
             {cityLabel(property, locale)}
           </p>
@@ -211,7 +211,7 @@ function PropertyCard({
               {property.packages.map((pkg) => (
                 <span
                   key={pkg}
-                  className="text-[7px] tracking-[1.5px] uppercase px-2 py-0.5 rounded-full border border-[#c39553]/25 text-[#c39553]/65"
+                  className="text-xs tracking-[1.5px] uppercase px-2 py-0.5 rounded-full border border-[#c39553]/25 text-[#c39553]/65"
                   style={{ background: 'rgba(195,149,83,0.07)' }}
                 >
                   {PACKAGE_KEY[pkg] ? tPkg(PACKAGE_KEY[pkg]) : pkg}
@@ -220,7 +220,7 @@ function PropertyCard({
             </div>
           )}
 
-          <div className="flex items-center gap-2.5 text-[10px] text-white/55 mb-4 font-mono">
+          <div className="flex items-center gap-2.5 text-xs text-white/55 mb-4 font-mono">
             {property.surface > 0 && <span>{property.surface} m²</span>}
             {property.surface > 0 && property.rooms > 0 && <span className="opacity-30">·</span>}
             {property.rooms > 0 && <span>{property.rooms} {t('rooms')}</span>}
