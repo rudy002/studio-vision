@@ -32,7 +32,12 @@ export function MediaCarousel({ items, className }: MediaCarouselProps) {
   }
 
   return (
-    <div className={cn("flex flex-col", className)} style={{ height: '100%' }}>
+    // dir="ltr" : la piste est un flex décalé par translateX(-page * 100%), calcul qui
+    // suppose un axe gauche→droite. Dans un conteneur RTL les slides se rangent à
+    // l'inverse et la piste glissait vers le vide. Les médias n'ont pas de sens de
+    // lecture : on fige la mécanique interne du carrousel en LTR dans toutes les langues
+    // (piste, flèches, compteur, miniatures restent cohérents entre eux).
+    <div dir="ltr" className={cn("flex flex-col", className)} style={{ height: '100%' }}>
 
       {/* ── Main viewport ── */}
       <div className="relative bg-black overflow-hidden" style={{ flex: 1, minHeight: 0 }}>
