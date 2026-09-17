@@ -208,13 +208,13 @@ export function FocusRail({
                 className="space-y-1"
               >
                 {activeItem.meta && (
-                  <span className="hidden md:inline text-[10px] font-medium uppercase tracking-[0.35em]"
+                  <span className="hidden md:inline text-xs font-medium uppercase tracking-label"
                     style={{ color: 'var(--gold)' }}>
                     {activeItem.meta}
                   </span>
                 )}
                 {activeItem.title && (
-                  <h2 className="text-xl md:text-3xl font-light tracking-tight text-white"
+                  <h2 className="text-xl md:text-3xl font-light tracking-title text-white"
                     style={{ fontFamily: 'var(--font-serif, "Cormorant Garamond", serif)' }}>
                     {activeItem.title}
                   </h2>
@@ -257,14 +257,11 @@ export function FocusRail({
             {activeItem.href && (
               <Link
                 href={activeItem.href}
-                className="group flex items-center gap-2 rounded-full px-5 py-3 text-sm font-medium transition-transform hover:scale-105 active:scale-95"
+                className="group flex items-center gap-2 rounded-full px-5 py-3 text-xs tracking-ui uppercase font-medium transition-transform hover:scale-105 active:scale-95"
                 style={{
                   background: 'var(--gold)',
                   color: 'var(--bg)',
                   fontFamily: 'var(--font-sans, sans-serif)',
-                  letterSpacing: '0.06em',
-                  textTransform: 'uppercase',
-                  fontSize: '11px',
                 }}
               >
                 {ctaLabel}

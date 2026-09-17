@@ -35,7 +35,7 @@ export default function AdminPage() {
     return (
       <div className="min-h-screen flex items-center justify-center gap-3">
         <SpinRing size="sm" light />
-        <span className="text-[11px] tracking-[2px] uppercase text-[#6b5d4a]/70 font-light">
+        <span className="text-xs tracking-label uppercase text-[#6b5d4a]/70 font-light">
           Synchronisation des médias
         </span>
       </div>
@@ -56,17 +56,17 @@ export default function AdminPage() {
         }}
       >
         <div className="text-center mb-10">
-          <p className="font-serif text-2xl font-light text-[#1a1410] tracking-widest uppercase">
+          <p className="font-serif text-2xl font-light text-[#1a1410] tracking-ui uppercase">
             Studio Vision
           </p>
-          <p className="text-[9px] tracking-[3px] text-gold-on-light uppercase mt-2">
+          <p className="text-xs tracking-label text-gold-on-light uppercase mt-2">
             Administration
           </p>
         </div>
 
         <form onSubmit={handleLogin} className="flex flex-col gap-4">
           <div className="flex flex-col gap-2">
-            <label className="text-[9px] tracking-[2px] text-[#6b5d4a] uppercase">
+            <label className="text-xs tracking-label text-[#6b5d4a] uppercase">
               Mot de passe
             </label>
             <input
@@ -85,7 +85,7 @@ export default function AdminPage() {
             type="submit"
             disabled={loading || done}
             className={[
-              'mt-2 text-[11px] tracking-[3px] uppercase py-4 rounded-full transition-all duration-200 cursor-pointer flex items-center justify-center gap-2',
+              'mt-2 text-xs tracking-ui uppercase py-4 rounded-full transition-all duration-200 cursor-pointer flex items-center justify-center gap-2',
               loading
                 ? 'bg-transparent border border-gold-on-light/55 text-gold'
                 : done

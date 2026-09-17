@@ -186,7 +186,7 @@ function PropertyCard({
         {/* Top badges */}
         <div className="absolute top-4 left-4 right-4 flex justify-between items-start pointer-events-none">
           <span
-            className={`text-xs tracking-[2px] uppercase px-3 py-1 rounded-full border ${
+            className={`text-xs tracking-label uppercase px-2.5 py-1 rounded-full border ${
               isAvailable
                 ? 'text-gold bg-bg/85 border-gold/30'
                 : 'text-white/50 bg-bg/85 border-white/10'
@@ -194,14 +194,14 @@ function PropertyCard({
           >
             {isAvailable ? t('available') : t('sold')}
           </span>
-          <span className="text-xs tracking-[2px] uppercase px-3 py-1 rounded-full bg-bg/85 border border-white/15 text-white/75">
+          <span className="text-xs tracking-label uppercase px-2.5 py-1 rounded-full bg-bg/85 border border-white/15 text-white/75">
             {property.type}
           </span>
         </div>
 
         {/* Bottom content */}
         <div className="relative flex flex-col justify-end h-full p-5 text-white">
-          <p className="text-xs tracking-[3px] text-gold/75 uppercase mb-1.5 flex items-center gap-1">
+          <p className="text-xs tracking-label text-gold/75 uppercase mb-1.5 flex items-center gap-1">
             <MapPin className="h-2.5 w-2.5 shrink-0" />
             {cityLabel(property, locale)}
           </p>
@@ -211,7 +211,7 @@ function PropertyCard({
               {property.packages.map((pkg) => (
                 <span
                   key={pkg}
-                  className="text-xs tracking-[1.5px] uppercase px-2 py-0.5 rounded-full border border-gold/25 text-gold/65"
+                  className="text-xs tracking-label uppercase px-2 py-0.5 rounded-full border border-gold/25 text-gold/65"
                   style={{ background: 'color-mix(in srgb, var(--gold) 7%, transparent)' }}
                 >
                   {PACKAGE_KEY[pkg] ? tPkg(PACKAGE_KEY[pkg]) : pkg}

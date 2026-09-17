@@ -22,7 +22,6 @@
   font-family: var(--sans);
   font-weight: 300;
   -webkit-font-smoothing: antialiased;
-  letter-spacing: 0.01em;
   display: block;
   position: relative;
 }
@@ -34,8 +33,8 @@
 /* ---------- Typography ---------- */
 .sv-eyebrow {
   font-family: var(--sans);
-  font-size: 10px;
-  letter-spacing: 0.42em;
+  font-size: 0.75rem;
+  letter-spacing: var(--tracking-label);
   text-transform: uppercase;
   color: var(--gold);
   font-weight: 500;
@@ -56,7 +55,7 @@
 .serif {
   font-family: var(--serif);
   font-weight: 300;
-  letter-spacing: -0.01em;
+  letter-spacing: var(--tracking-title);
   line-height: 1.02;
 }
 
@@ -82,8 +81,8 @@
   display: flex; align-items: center;
   color: var(--white-40);
   font-family: var(--sans);
-  font-size: 9px;
-  letter-spacing: 0.32em;
+  font-size: 0.75rem;
+  letter-spacing: var(--tracking-label);
   text-transform: uppercase;
   padding: 0;
   transition: color 0.3s ease;
@@ -128,7 +127,7 @@
   -webkit-backdrop-filter: blur(12px) saturate(1.3);
   border: 1px solid rgba(255, 255, 255, 0.12);
   box-shadow: 0 8px 22px -10px rgba(0, 0, 0, 0.55);
-  font-size: 9.5px; letter-spacing: 0.26em; text-transform: uppercase; font-weight: 500;
+  font-size: 0.75rem; letter-spacing: var(--tracking-label); text-transform: uppercase; font-weight: 500;
   color: rgba(255, 255, 255, 0.78);
   pointer-events: none;
   opacity: 0; transform: translateX(-50%) translateY(8px);
@@ -199,9 +198,9 @@
 .sv-act-1 .sv-title-stack .sv-layer {
   font-family: var(--serif);
   font-weight: 300;
-  font-size: clamp(56px, 11vw, 168px);
+  font-size: var(--display-lg);
   line-height: 0.95;
-  letter-spacing: -0.02em;
+  letter-spacing: var(--tracking-title);
   position: relative;
   text-align: center;
 }
@@ -230,7 +229,7 @@
 }
 .sv-act-1 .sv-subtitle {
   margin-top: 36px;
-  font-size: 11px; letter-spacing: 0.5em; text-transform: uppercase;
+  font-size: 0.75rem; letter-spacing: var(--tracking-label); text-transform: uppercase;
   color: var(--white-60);
   transform: translateY(calc(var(--p, 0) * 40px));
   opacity: calc(1 - var(--p, 0));
@@ -333,8 +332,8 @@
   gap: 0;
   color: #fff;
   font-family: var(--mono);
-  font-size: 10px;
-  letter-spacing: 0.18em;
+  font-size: 0.75rem;
+  letter-spacing: var(--tracking-label);
   text-transform: uppercase;
 }
 .sv-act-2 .sv-hud .sv-corner {
@@ -384,7 +383,7 @@
 }
 .sv-act-2 .sv-caption .sv-h {
   font-family: var(--serif);
-  font-size: clamp(36px, 5vw, 64px);
+  font-size: var(--display-sm);
   font-weight: 300;
   line-height: 1;
   margin: 10px 0;
@@ -396,7 +395,7 @@
 /* Altitude readout */
 .sv-act-2 .sv-altitude {
   font-family: var(--mono);
-  font-size: 9px; letter-spacing: 0.25em;
+  font-size: 0.75rem; letter-spacing: var(--tracking-label); text-transform: uppercase;
   color: var(--gold);
 }
 
@@ -459,22 +458,24 @@
 }
 .sv-act-3 .sv-room .sv-info .sv-num {
   font-family: var(--mono);
-  font-size: 10px; letter-spacing: 0.32em;
+  font-size: 0.75rem; letter-spacing: var(--tracking-label); text-transform: uppercase;
   color: var(--gold);
   margin-bottom: 14px;
 }
 .sv-act-3 .sv-room .sv-info h3 {
   font-family: var(--serif);
   font-weight: 300;
+  /* Hors échelle display, volontairement : noms de pièces à l'échelle d'un hero.
+     --display-sm les réduirait d'un tiers (96→64px), --display-lg les ferait exploser. */
   font-size: clamp(44px, 5.4vw, 96px);
   line-height: 0.95;
   margin: 0;
-  letter-spacing: -0.01em;
+  letter-spacing: var(--tracking-title);
 }
 .sv-act-3 .sv-room .sv-info h3 em { font-style: italic; color: var(--gold); }
 .sv-act-3 .sv-room .sv-info p {
   margin-top: 18px;
-  font-size: 13px; line-height: 1.6;
+  font-size: 0.875rem; line-height: 1.6;
   color: var(--white-60);
   max-width: 320px;
 }
@@ -503,12 +504,12 @@
 }
 .sv-act-3 .sv-strip .sv-lead {
   font-family: var(--mono);
-  font-size: 10px; letter-spacing: 0.42em;
+  font-size: 0.75rem; letter-spacing: var(--tracking-label); text-transform: uppercase;
   color: var(--gold);
 }
 .sv-act-3 .sv-strip .sv-count {
   font-family: var(--mono);
-  font-size: 10px; letter-spacing: 0.3em;
+  font-size: 0.75rem; letter-spacing: var(--tracking-label); text-transform: uppercase;
   color: var(--white-60);
 }
 
@@ -536,8 +537,8 @@
   border: 1px solid color-mix(in srgb, var(--gold) 45%, transparent);
   border-radius: 999px;
   font-family: var(--mono);
-  font-size: 10px;
-  letter-spacing: 0.28em;
+  font-size: 0.75rem;
+  letter-spacing: var(--tracking-label);
   text-transform: uppercase;
   color: var(--gold);
   background: rgba(10,15,26,0.4);
@@ -599,14 +600,13 @@
   position: absolute; left: 50%; top: 50%;
   transform: translate(-50%, -50%);
   font-family: var(--sans);
-  font-size: 14px;
+  font-size: 0.875rem;
   color: var(--gold);
-  letter-spacing: -0.05em;
 }
 .sv-act-4 .sv-label {
   position: absolute; top: 48px;
   font-family: var(--mono);
-  font-size: 10px; letter-spacing: 0.42em; text-transform: uppercase;
+  font-size: 0.75rem; letter-spacing: var(--tracking-label); text-transform: uppercase;
   z-index: 2;
 }
 .sv-act-4 .sv-label.sv-before { left: 56px; color: var(--white-60); opacity: calc(1 - var(--p4, 0)); }
@@ -614,7 +614,7 @@
 .sv-act-4 .sv-label .sv-v {
   font-family: var(--serif);
   font-style: italic;
-  font-size: 24px;
+  font-size: 1.5rem;
   letter-spacing: 0;
   display: block;
   margin-top: 6px;
@@ -633,7 +633,7 @@
 .sv-act-4 .sv-caption h2 {
   font-family: var(--serif);
   font-weight: 300;
-  font-size: clamp(40px, 5vw, 72px);
+  font-size: var(--display-sm);
   line-height: 1;
   margin: 14px 0 8px;
   color: #fff;
@@ -718,7 +718,7 @@
   position: absolute;
   bottom: 18px; left: 20px;
   font-family: var(--mono);
-  font-size: 10px; letter-spacing: 0.30em; text-transform: uppercase;
+  font-size: 0.75rem; letter-spacing: var(--tracking-label); text-transform: uppercase;
   color: color-mix(in srgb, var(--gold) 88%, transparent);
   display: flex; align-items: center; gap: 12px;
   z-index: 3;
@@ -791,7 +791,7 @@
 }
 .sv-act-5 .sv-wt-nav-lbl {
   font-family: var(--mono);
-  font-size: 9px; letter-spacing: 0.26em; text-transform: uppercase;
+  font-size: 0.75rem; letter-spacing: var(--tracking-label); text-transform: uppercase;
   color: rgba(255,255,255,0.28);
   white-space: nowrap;
 }
@@ -805,14 +805,14 @@
 .sv-act-5 .sv-caption h2 {
   font-family: var(--serif);
   font-weight: 300;
-  font-size: clamp(36px, 4.6vw, 64px);
+  font-size: var(--display-sm);
   line-height: 1;
   margin: 14px 0 12px;
   color: #fff;
 }
 .sv-act-5 .sv-caption h2 em { font-style: italic; color: var(--gold); }
 .sv-act-5 .sv-caption p {
-  font-size: 13px;
+  font-size: 0.875rem;
   line-height: 1.6;
   color: var(--white-60);
 }
@@ -822,12 +822,12 @@
   z-index: 4;
   display: flex; gap: 36px;
   font-family: var(--mono);
-  font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase;
+  font-size: 0.75rem; letter-spacing: var(--tracking-label); text-transform: uppercase;
   color: var(--white-60);
 }
 .sv-act-5 .sv-stats .sv-stat .sv-v {
   font-family: var(--serif);
-  font-size: 28px;
+  font-size: 1.875rem;
   letter-spacing: 0;
   color: var(--gold);
   display: block;
@@ -904,8 +904,8 @@
   position: absolute; left: 64px; bottom: 64px;
   z-index: 5;
   font-family: var(--mono);
-  font-size: 10px;
-  letter-spacing: 0.32em;
+  font-size: 0.75rem;
+  letter-spacing: var(--tracking-label);
   text-transform: uppercase;
   color: var(--gold);
   display: flex; align-items: center; gap: 12px;
@@ -920,7 +920,7 @@
   position: absolute; right: 64px; top: 90px;
   z-index: 5;
   font-family: var(--mono);
-  font-size: 10px; letter-spacing: 0.28em; color: var(--white-60);
+  font-size: 0.75rem; letter-spacing: var(--tracking-label); text-transform: uppercase; color: var(--white-60);
   text-align: right;
 }
 .sv-act-6 .sv-reel-meta strong { color: var(--gold); font-weight: 500; display: block; }
@@ -959,11 +959,13 @@
 .sv-act-6 .sv-center-block h2 {
   font-family: var(--serif);
   font-weight: 300;
+  /* Hors échelle display, volontairement : titre du showreel, rôle de hero secondaire.
+     Entre --display-sm (max 64px) et --display-lg (max 168px), aucun ne convient. */
   font-size: clamp(56px, 8vw, 128px);
   line-height: 0.95;
   margin: 0;
   color: #fff;
-  letter-spacing: -0.01em;
+  letter-spacing: var(--tracking-title);
 }
 .sv-act-6 .sv-center-block h2 em { font-style: italic; color: var(--gold); }
 /* Les deux moitiés du titre s'écartent à mesure que la vidéo grandit (--p6). */
@@ -980,7 +982,7 @@
 }
 .sv-act-6 .sv-center-block .sv-tagline {
   margin-top: 28px;
-  font-size: 13px; letter-spacing: 0.42em; text-transform: uppercase;
+  font-size: 0.875rem; letter-spacing: var(--tracking-label); text-transform: uppercase;
   color: var(--white-60);
 }
 
@@ -994,7 +996,7 @@
   display: inline-flex; align-items: center; gap: 12px;
   padding: 16px 26px;
   font-family: var(--sans);
-  font-size: 11px; letter-spacing: 0.32em; text-transform: uppercase;
+  font-size: 0.75rem; letter-spacing: var(--tracking-ui); text-transform: uppercase;
   text-decoration: none;
   border-radius: 999px;
   transition: all 0.25s ease;
@@ -1022,10 +1024,10 @@
 
   /* Acte 1 */
   .sv-act-1 .sv-frame { inset: 64px 14px 14px; }
-  .sv-act-1 .sv-subtitle { letter-spacing: 0.22em; text-align: center; padding: 0 16px; }
+  .sv-act-1 .sv-subtitle { letter-spacing: var(--tracking-label); text-align: center; padding: 0 16px; }
 
   /* Indice de scroll flottant — pastille fine sur mobile */
-  .sv-scroll-floating { bottom: calc(env(safe-area-inset-bottom, 0px) + 22px); font-size: 10px; color: rgba(255, 255, 255, 0.85); }
+  .sv-scroll-floating { bottom: calc(env(safe-area-inset-bottom, 0px) + 22px); font-size: 0.75rem; color: rgba(255, 255, 255, 0.85); }
   .sv-scroll-floating .sv-scroll-chevron svg { width: 18px; height: 18px; }
   .sv-scroll-floating.is-idle .sv-scroll-chevron { animation-duration: 1.3s; }
 
@@ -1035,7 +1037,7 @@
       linear-gradient(180deg, rgba(10,15,26,0.0) 0%, rgba(10,15,26,0.55) 100%),
       var(--sky-url-mobile, var(--sky-url));
   }
-  .sv-act-2 .sv-hud { inset: 18px; font-size: 9px; }
+  .sv-act-2 .sv-hud { inset: 18px; font-size: 0.75rem; }
   .sv-act-2 .sv-hud .sv-crosshair { width: 140px; height: 140px; }
   .sv-act-2 .sv-hud .sv-corner.sv-bl,
   .sv-act-2 .sv-hud .sv-corner.sv-br { display: none; }

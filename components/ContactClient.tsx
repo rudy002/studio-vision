@@ -50,8 +50,8 @@ export default function ContactClient() {
     `w-full bg-white border border-[#e0d8ce] rounded-xl px-4 py-3 text-[#1c1917] placeholder:text-[#b8b0a6] outline-none focus:border-gold transition-colors ${isHe ? 'text-base' : 'text-sm'}`;
 
   const labelClass = isHe
-    ? 'text-[13px] text-[#8a8078] uppercase mb-1.5 block'
-    : 'text-[11px] tracking-[2px] text-[#8a8078] uppercase mb-1.5 block';
+    ? 'text-sm text-[#8a8078] uppercase mb-1.5 block'
+    : 'text-xs tracking-label text-[#8a8078] uppercase mb-1.5 block';
 
   const infoItems = [
     {
@@ -101,11 +101,11 @@ export default function ContactClient() {
         {/* ── Colonne gauche — info ── */}
         <div className={`flex flex-col justify-center px-8 md:px-16 lg:px-20 pt-36 pb-16 ${visible ? '' : 'invisible'}`}>
 
-          <p className={`fade-up fade-up-1 text-gold uppercase mb-6 ${isHe ? 'text-sm' : 'text-[11px] tracking-[4px]'}`}>
+          <p className={`fade-up fade-up-1 text-gold uppercase mb-6 ${isHe ? 'text-sm' : 'text-sm tracking-label'}`}>
             {t('eyebrow')}
           </p>
 
-          <h1 className={`fade-up fade-up-2 font-serif font-light text-white leading-tight mb-8 ${isHe ? 'text-5xl md:text-6xl' : 'text-4xl md:text-5xl'}`}>
+          <h1 className={`fade-up fade-up-2 font-serif font-light text-white leading-tight mb-8 tracking-title text-4xl md:text-5xl`}>
             {t('title')}
           </h1>
 
@@ -128,7 +128,7 @@ export default function ContactClient() {
                   {item.icon}
                 </div>
                 <div>
-                  <p className={`text-gold uppercase mb-0.5 ${isHe ? 'text-[13px]' : 'text-[11px] tracking-[1.5px]'}`}>{item.label}</p>
+                  <p className={`text-gold uppercase mb-0.5 ${isHe ? 'text-sm' : 'text-xs tracking-label'}`}>{item.label}</p>
                   <p className={`text-white/65 ${isHe ? 'text-base' : 'text-sm'}`} dir={item.ltr ? 'ltr' : undefined}>{item.value}</p>
                 </div>
               </div>
@@ -156,7 +156,7 @@ export default function ContactClient() {
               </div>
             ) : (
               <>
-                <p className={`fade-up fade-up-2 text-gold uppercase mb-2 ${isHe ? 'text-sm' : 'text-[11px] tracking-[3px]'}`}>{t('form.eyebrow')}</p>
+                <p className={`fade-up fade-up-2 text-gold uppercase mb-2 ${isHe ? 'text-sm' : 'text-xs tracking-label'}`}>{t('form.eyebrow')}</p>
                 <h2 className={`fade-up fade-up-3 font-serif font-light text-[#1c1917] mb-8 ${isHe ? 'text-4xl' : 'text-3xl'}`}>
                   {t('form.title')}
                 </h2>
@@ -196,7 +196,7 @@ export default function ContactClient() {
                           key={r}
                           type="button"
                           onClick={() => setForm({ ...form, role: r })}
-                          className={`uppercase px-5 py-2 rounded-full border transition-all duration-200 cursor-pointer ${isHe ? 'text-sm' : 'text-[12px] tracking-[1px]'} ${
+                          className={`uppercase px-5 py-2 rounded-full border transition-all duration-200 cursor-pointer ${isHe ? 'text-sm' : 'text-xs tracking-ui'} ${
                             form.role === r
                               ? 'bg-gold border-gold text-white'
                               : 'border-[#d4cdc4] text-[#8a8078] hover:border-gold hover:text-gold'
@@ -216,7 +216,7 @@ export default function ContactClient() {
                   </div>
 
                   {submitError && (
-                    <p className={`text-red-400/80 ${isHe ? 'text-sm' : 'text-[11px] tracking-[1px]'}`}>
+                    <p className={`text-red-400/80 ${isHe ? 'text-sm' : 'text-xs'}`}>
                       {t('form.error')}
                     </p>
                   )}
@@ -224,7 +224,7 @@ export default function ContactClient() {
                   <button
                     type="submit"
                     disabled={loading}
-                    className={`mt-1 bg-[#0a0f1a] text-white uppercase py-4 rounded-full hover:bg-gold transition-colors duration-300 cursor-pointer disabled:opacity-40 ${isHe ? 'text-base' : 'text-[12px] tracking-[3px]'}`}
+                    className={`mt-1 bg-[#0a0f1a] text-white uppercase py-4 rounded-full hover:bg-gold transition-colors duration-300 cursor-pointer disabled:opacity-40 ${isHe ? 'text-base' : 'text-xs tracking-ui'}`}
                   >
                     {loading ? '…' : t('form.submit')}
                   </button>

@@ -61,10 +61,9 @@ export default function SplashScreen() {
 
         {/* Eyebrow */}
         <p
-          className="text-[14px] md:text-[20px] uppercase text-gold text-center px-4"
+          className="text-sm md:text-xl tracking-label uppercase text-gold text-center px-4"
           style={{
             fontFamily: 'var(--font-jakarta), sans-serif',
-            letterSpacing: '0.28em',
             opacity: 0,
             animation: 'sp-fade-in 0.7s ease-out 0.2s forwards',
           }}
@@ -82,7 +81,7 @@ export default function SplashScreen() {
             fontWeight: 300,
             fontSize: 'clamp(56px, 7vw, 88px)',
             lineHeight: 1,
-            letterSpacing: '-0.015em',
+            letterSpacing: 'var(--tracking-title)',
             color: '#ffffff',
           }}
         >
@@ -159,10 +158,9 @@ export default function SplashScreen() {
 
         {/* Baseline */}
         <p
-          className="text-[22px] uppercase"
+          className="text-xl tracking-label uppercase"
           style={{
             fontFamily: 'var(--font-jakarta), sans-serif',
-            letterSpacing: '0.35em',
             color: 'rgba(255,255,255,0.40)',
             opacity: 0,
             animation: 'sp-fade-in 0.7s ease-out 1.85s forwards',

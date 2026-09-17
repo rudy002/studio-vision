@@ -147,7 +147,7 @@ export default function PropertyModal({
           {mediaItems.length > 0
             ? <MediaCarousel items={mediaItems} className="flex-1" />
             : <div className="flex-1 flex items-center justify-center" style={{ background: '#0a0f1a' }}>
-                <p className="text-xs tracking-[3px] uppercase text-white/20">{t('noMedia')}</p>
+                <p className="text-xs tracking-label uppercase text-white/20">{t('noMedia')}</p>
               </div>
           }
 
@@ -174,7 +174,7 @@ export default function PropertyModal({
           {/* Header */}
           <div className="px-5 pt-5 pb-4 md:px-7 md:pt-8 md:pb-5">
             <span
-              className={`inline-flex items-center text-xs tracking-[3px] uppercase px-3 py-1.5 rounded-full mb-3 md:mb-6 ${
+              className={`inline-flex items-center text-xs tracking-label uppercase px-3 py-1.5 rounded-full mb-3 md:mb-6 ${
                 isAvailable
                   ? 'text-gold border border-gold/30'
                   : 'text-white/35 border border-white/15'
@@ -185,7 +185,7 @@ export default function PropertyModal({
               {isAvailable ? t('available') : t('sold')}
             </span>
 
-            <p className="flex items-center gap-1.5 text-xs tracking-[2.5px] text-white/55 uppercase mb-3">
+            <p className="flex items-center gap-1.5 text-xs tracking-label text-white/55 uppercase mb-3">
               <MapPin className="h-2.5 w-2.5 shrink-0 text-gold/50" />
               {localizedCity}
               {property.type && (
@@ -207,13 +207,13 @@ export default function PropertyModal({
             {property.surface > 0 && (
               <div className="text-center">
                 <p className="text-2xl font-light text-white mb-1" style={{ fontFamily: 'var(--font-serif, "Cormorant Garamond", serif)' }}>{property.surface}</p>
-                <p className="text-xs tracking-[2px] text-white/50 uppercase">{t('surface')}</p>
+                <p className="text-xs tracking-label text-white/50 uppercase">{t('surface')}</p>
               </div>
             )}
             {property.rooms > 0 && (
               <div className="text-center" style={property.surface > 0 ? { borderLeft: '1px solid color-mix(in srgb, var(--gold) 10%, transparent)' } : undefined}>
                 <p className="text-2xl font-light text-white mb-1" style={{ fontFamily: 'var(--font-serif, "Cormorant Garamond", serif)' }}>{property.rooms}</p>
-                <p className="text-xs tracking-[2px] text-white/50 uppercase">{t('rooms')}</p>
+                <p className="text-xs tracking-label text-white/50 uppercase">{t('rooms')}</p>
               </div>
             )}
           </div>
@@ -225,7 +225,7 @@ export default function PropertyModal({
             const desc = locale === 'fr' ? property.description_fr : locale === 'en' ? property.description_en : property.description_he;
             return desc ? (
               <div className="px-5 py-4 md:px-7 md:py-5">
-                <p className="text-xs tracking-[3px] text-gold/60 uppercase mb-2">{t('description')}</p>
+                <p className="text-xs tracking-label text-gold/60 uppercase mb-2">{t('description')}</p>
                 <p className="text-sm text-white/55 leading-relaxed">{desc}</p>
               </div>
             ) : null;
@@ -236,10 +236,10 @@ export default function PropertyModal({
             <>
               <div className="mx-7 h-px" style={{ background: 'color-mix(in srgb, var(--gold) 12%, transparent)' }} />
               <div className="px-5 py-4 md:px-7 md:py-5">
-                <p className="text-xs tracking-[3px] text-gold/60 uppercase mb-3">{t('packagesLabel')}</p>
+                <p className="text-xs tracking-label text-gold/60 uppercase mb-3">{t('packagesLabel')}</p>
                 <div className="flex flex-wrap gap-2">
                   {property.packages.map((pkg) => (
-                    <span key={pkg} className="text-xs tracking-[1.5px] uppercase px-3 py-1.5 rounded-full border border-gold/25 text-gold/70" style={{ background: 'color-mix(in srgb, var(--gold) 6%, transparent)' }}>
+                    <span key={pkg} className="text-xs tracking-label uppercase px-3 py-1.5 rounded-full border border-gold/25 text-gold/70" style={{ background: 'color-mix(in srgb, var(--gold) 6%, transparent)' }}>
                       {PACKAGE_KEY[pkg] ? tPkg(PACKAGE_KEY[pkg]) : pkg}
                     </span>
                   ))}
@@ -251,7 +251,7 @@ export default function PropertyModal({
           {/* Media count hint */}
           {mediaItems.length > 1 && (
             <div className="px-5 pt-3 pb-0 md:px-7 md:pt-5">
-              <p className="text-xs tracking-[3px] text-white/50 uppercase flex items-center gap-2">
+              <p className="text-xs tracking-label text-white/50 uppercase flex items-center gap-2">
                 <Maximize2 className="h-3 w-3 text-gold/40" />
                 {t('mediaAvailable', { count: mediaItems.length })}
               </p>
@@ -263,7 +263,7 @@ export default function PropertyModal({
             <button
               type="button"
               onClick={() => setShowSharePanel(true)}
-              className="w-full flex items-center justify-center gap-2.5 py-3 rounded-xl text-xs tracking-[2px] uppercase transition-all duration-200 cursor-pointer hover:border-white/25 hover:text-white/75"
+              className="w-full flex items-center justify-center gap-2.5 py-3 rounded-xl text-xs tracking-ui uppercase transition-all duration-200 cursor-pointer hover:border-white/25 hover:text-white/75"
               style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.1)', color: 'rgba(255,255,255,0.5)' }}
             >
               <Share2 className="h-3.5 w-3.5 shrink-0" strokeWidth={1.5} />
@@ -288,7 +288,7 @@ export default function PropertyModal({
           >
             {/* Header */}
             <div className="flex items-center justify-between mb-4">
-              <p className="text-xs tracking-[4px] uppercase text-gold/60">{t('share')}</p>
+              <p className="text-xs tracking-label uppercase text-gold/60">{t('share')}</p>
               <button type="button" onClick={() => setShowSharePanel(false)} className="p-1 text-white/40 hover:text-white transition-colors cursor-pointer">
                 <X className="h-4 w-4" />
               </button>
@@ -346,7 +346,7 @@ export default function PropertyModal({
               <button
                 type="button"
                 onClick={shareNative}
-                className="w-full flex items-center justify-center gap-2.5 py-3 rounded-xl text-xs tracking-[2px] uppercase cursor-pointer transition-all duration-200 hover:border-white/25 hover:text-white/60"
+                className="w-full flex items-center justify-center gap-2.5 py-3 rounded-xl text-xs tracking-ui uppercase cursor-pointer transition-all duration-200 hover:border-white/25 hover:text-white/60"
                 style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.08)', color: 'rgba(255,255,255,0.35)' }}
               >
                 <Share2 className="h-3.5 w-3.5 shrink-0" strokeWidth={1.5} />

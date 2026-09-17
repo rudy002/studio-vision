@@ -26,7 +26,7 @@ export function MediaCarousel({ items, className }: MediaCarouselProps) {
         className={cn("flex items-center justify-center bg-black", className)}
         style={{ height: '100%' }}
       >
-        <p className="text-white/50 text-[10px] tracking-[4px] uppercase">Aucun média</p>
+        <p className="text-white/50 text-xs tracking-label uppercase">Aucun média</p>
       </div>
     );
   }
@@ -128,7 +128,7 @@ export function MediaCarousel({ items, className }: MediaCarouselProps) {
         {/* Counter */}
         {count > 1 && (
           <div
-            className="absolute bottom-3 right-4 z-20 px-2.5 py-1 rounded-full text-[9px] tracking-[2px] text-white/55 font-mono tabular-nums pointer-events-none"
+            className="absolute bottom-3 right-4 z-20 px-2.5 py-1 rounded-full text-xs text-white/55 font-mono tabular-nums pointer-events-none"
             style={{ background: 'rgba(6,9,12,0.6)', backdropFilter: 'blur(8px)' }}
           >
             {page + 1} / {count}

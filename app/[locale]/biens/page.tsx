@@ -273,14 +273,14 @@ export default function BiensPage() {
   );
 
   const pillClass = (active: boolean) =>
-    `text-xs tracking-[1.5px] uppercase px-4 py-1.5 rounded-full border transition-all duration-200 cursor-pointer whitespace-nowrap ${
+    `text-xs tracking-ui uppercase px-4 py-1.5 rounded-full border transition-all duration-200 cursor-pointer whitespace-nowrap ${
       active
         ? 'bg-gold border-gold text-[#0a0f1a]'
         : 'border-white/30 text-white/60 hover:border-white/55 hover:text-white'
     }`;
 
   const inputClass =
-    'border border-white/20 rounded-lg px-3 py-2 text-white text-[12px] placeholder:text-white/35 focus:outline-none focus:border-gold/70 transition-colors bg-white/8';
+    'border border-white/20 rounded-lg px-3 py-2 text-white text-xs placeholder:text-white/35 focus:outline-none focus:border-gold/70 transition-colors bg-white/8';
 
   const selectStyle = { background: '#0a0f1a', colorScheme: 'dark' as const };
 
@@ -289,10 +289,10 @@ export default function BiensPage() {
 
       {/* ── Header ── */}
       <div className="pt-32 md:pt-40 pb-10 px-6 md:px-16">
-        <p className="text-[13px] tracking-[4px] text-gold uppercase mb-4">
+        <p className="text-sm tracking-label text-gold uppercase mb-4">
           {t('eyebrow')}
         </p>
-        <h1 className="font-serif text-4xl md:text-5xl font-light text-white mb-10">
+        <h1 className="font-serif text-4xl md:text-5xl font-light tracking-title text-white mb-10">
           {t('title')}
         </h1>
 
@@ -322,7 +322,7 @@ export default function BiensPage() {
         {/* Toggle filtres avancés (mobile) */}
         <button
           onClick={() => setFiltersOpen((o) => !o)}
-          className="md:hidden flex items-center gap-2 text-xs tracking-[2px] uppercase text-white/50 hover:text-gold transition-colors mb-4 cursor-pointer"
+          className="md:hidden flex items-center gap-2 text-xs tracking-ui uppercase text-white/50 hover:text-gold transition-colors mb-4 cursor-pointer"
         >
           <span>{filtersOpen ? '↑' : '↓'}</span>
           {t('filters.advanced')}
@@ -342,7 +342,7 @@ export default function BiensPage() {
             <div className="flex flex-wrap gap-x-6 gap-y-4 items-end">
 
               <div className="flex flex-col gap-1.5">
-                <label className="text-xs tracking-[2px] uppercase text-white/60">{t('filters.city')}</label>
+                <label className="text-xs tracking-label uppercase text-white/60">{t('filters.city')}</label>
                 <select
                   value={filters.city}
                   onChange={(e) => setFilter('city', e.target.value)}
@@ -355,7 +355,7 @@ export default function BiensPage() {
               </div>
 
               <div className="flex flex-col gap-1.5">
-                <label className="text-xs tracking-[2px] uppercase text-white/60">{t('filters.status')}</label>
+                <label className="text-xs tracking-label uppercase text-white/60">{t('filters.status')}</label>
                 <div className="flex gap-2">
                   {(['all', 'available', 'sold'] as StatusFilter[]).map((s) => (
                     <button key={s} onClick={() => setFilter('status', s)} className={pillClass(filters.status === s)}>
@@ -366,7 +366,7 @@ export default function BiensPage() {
               </div>
 
               <div className="flex flex-col gap-1.5">
-                <label className="text-xs tracking-[2px] uppercase text-white/60">{t('filters.rooms')}</label>
+                <label className="text-xs tracking-label uppercase text-white/60">{t('filters.rooms')}</label>
                 <div className="flex gap-2">
                   <button onClick={() => setFilter('rooms', null)} className={pillClass(filters.rooms === null)}>
                     {t('filters.roomsAll')}
@@ -382,7 +382,7 @@ export default function BiensPage() {
 
             {/* Ligne 2 : Type de bien */}
             <div className="flex flex-col gap-1.5">
-              <label className="text-xs tracking-[2px] uppercase text-white/60">{t('filters.type')}</label>
+              <label className="text-xs tracking-label uppercase text-white/60">{t('filters.type')}</label>
               <div className="flex flex-wrap gap-2">
                 {PROPERTY_TYPES.map((type) => (
                   <button key={type} onClick={() => setFilter('type', type)} className={pillClass(filters.type === type)}>
@@ -396,7 +396,7 @@ export default function BiensPage() {
             <div className="flex flex-wrap gap-x-6 gap-y-4 items-end">
 
               <div className="flex flex-col gap-1.5">
-                <label className="text-xs tracking-[2px] uppercase text-white/60">{t('filters.priceRange')}</label>
+                <label className="text-xs tracking-label uppercase text-white/60">{t('filters.priceRange')}</label>
                 <div className="flex items-center gap-2">
                   <input
                     type="number" min={0}
@@ -419,7 +419,7 @@ export default function BiensPage() {
               </div>
 
               <div className="flex flex-col gap-1.5">
-                <label className="text-xs tracking-[2px] uppercase text-white/60">{t('filters.surfaceRange')} (m²)</label>
+                <label className="text-xs tracking-label uppercase text-white/60">{t('filters.surfaceRange')} (m²)</label>
                 <div className="flex items-center gap-2">
                   <input
                     type="number" min={0}
@@ -442,7 +442,7 @@ export default function BiensPage() {
               </div>
 
               <div className="flex flex-col gap-1.5">
-                <label className="text-xs tracking-[2px] uppercase text-white/60">{t('filters.sort')}</label>
+                <label className="text-xs tracking-label uppercase text-white/60">{t('filters.sort')}</label>
                 <select
                   value={filters.sort}
                   onChange={(e) => setFilter('sort', e.target.value as SortKey)}
@@ -458,7 +458,7 @@ export default function BiensPage() {
               {hasActiveFilters && (
                 <button
                   onClick={resetFilters}
-                  className="text-xs tracking-[1.5px] uppercase text-gold hover:text-white border border-gold/40 hover:border-white/40 px-4 py-2 rounded-lg transition-all duration-200 cursor-pointer self-end"
+                  className="text-xs tracking-ui uppercase text-gold hover:text-white border border-gold/40 hover:border-white/40 px-4 py-2 rounded-lg transition-all duration-200 cursor-pointer self-end"
                 >
                   {t('filters.reset')}
                 </button>
@@ -495,10 +495,10 @@ export default function BiensPage() {
                 <span className="absolute inline-flex w-full h-full rounded-full bg-gold opacity-15 animate-ping" />
                 <MapPin className="relative h-5 w-5 text-gold" strokeWidth={1.5} />
               </span>
-              <span className="text-xs tracking-[3px] uppercase text-white/80 group-hover:text-gold transition-colors">
+              <span className="text-xs tracking-ui uppercase text-white/80 group-hover:text-gold transition-colors">
                 {t('filters.exploreMap')}
               </span>
-              <span className="text-xs tracking-[2px] uppercase text-white/35">
+              <span className="text-xs tracking-label uppercase text-white/35">
                 {t('filters.mapCount', { count: geoCount })}
               </span>
             </div>
@@ -515,7 +515,7 @@ export default function BiensPage() {
             />
             <button
               onClick={() => setMapOpen(false)}
-              className="absolute top-4 right-4 z-1001 flex items-center gap-2 px-4 py-2 rounded-full text-xs tracking-[2px] uppercase text-white/80 hover:text-white cursor-pointer transition-colors"
+              className="absolute top-4 right-4 z-1001 flex items-center gap-2 px-4 py-2 rounded-full text-xs tracking-ui uppercase text-white/80 hover:text-white cursor-pointer transition-colors"
               style={{
                 background: 'rgba(5,8,12,0.72)',
                 border: '1px solid rgba(255,255,255,0.16)',
@@ -538,7 +538,7 @@ export default function BiensPage() {
       <div className="px-6 md:px-16 py-16 md:py-24">
 
         {!loading && !error && (
-          <p className="text-xs tracking-[2px] uppercase text-gold/45 mb-10">
+          <p className="text-xs tracking-label uppercase text-gold/45 mb-10">
             {filtered.length} {t('filters.resultsCount')}
           </p>
         )}
@@ -550,7 +550,7 @@ export default function BiensPage() {
             <p className="text-sm text-white/25 max-w-xs">{error}</p>
             <button
               onClick={() => { setLoading(true); setError(null); setFetchTick((n) => n + 1); }}
-              className="mt-4 text-xs tracking-[2px] uppercase text-gold border border-gold/40 px-6 py-2 rounded-lg hover:bg-gold/10 transition-colors cursor-pointer"
+              className="mt-4 text-xs tracking-ui uppercase text-gold border border-gold/40 px-6 py-2 rounded-lg hover:bg-gold/10 transition-colors cursor-pointer"
             >
               {t('retry')}
             </button>
@@ -568,7 +568,7 @@ export default function BiensPage() {
         {!loading && !error && tabLoading && (
           <div className="flex flex-col items-center gap-4 py-24">
             <SpinBar />
-            <p className="text-xs tracking-[2px] uppercase text-white/50">{t('loading')}</p>
+            <p className="text-xs tracking-label uppercase text-white/50">{t('loading')}</p>
           </div>
         )}
 

@@ -155,10 +155,10 @@ export default async function PackagesPage({
 
         {/* ── Header ── */}
         <div className="relative max-w-xl mx-auto sm:text-center pt-28 pb-2">
-          <p className="text-sm tracking-[5px] text-gold uppercase mb-4">
+          <p className="text-sm tracking-label text-gold uppercase mb-4">
             {t('eyebrow')}
           </p>
-          <h1 className="font-serif text-gold text-5xl font-light sm:text-7xl py-1 sm:py-2 leading-tight">
+          <h1 className="font-serif text-gold text-4xl md:text-5xl font-light tracking-title py-1 sm:py-2 leading-tight">
             {t('title')}
           </h1>
           <div className="mt-5 text-white/40 text-lg">
@@ -198,7 +198,7 @@ export default async function PackagesPage({
                   <span className="text-4xl">{item.icon}</span>
                   <span
                     className={cn(
-                      'font-serif text-3xl font-light tracking-tight',
+                      'font-serif text-3xl font-light tracking-title',
                       item.isMostPop ? 'text-gold' : 'text-white/70'
                     )}
                   >
@@ -213,7 +213,7 @@ export default async function PackagesPage({
                 <Link
                   href={`/${locale}/contact`}
                   className={cn(
-                    'w-full text-center rounded-lg text-sm tracking-[2px] uppercase px-4 py-3.5 transition-all hover:scale-[1.02] active:scale-[0.98] flex items-center justify-center gap-2',
+                    'w-full text-center rounded-lg text-sm tracking-ui uppercase px-4 py-3.5 transition-all hover:scale-[1.02] active:scale-[0.98] flex items-center justify-center gap-2',
                     item.isMostPop
                       ? 'bg-gold text-[#0a0f1a] font-semibold'
                       : 'border border-white/12 text-white/50 hover:border-gold/50 hover:text-gold'
@@ -225,7 +225,7 @@ export default async function PackagesPage({
 
               {/* Features list */}
               <ul className="p-8 space-y-4">
-                <li className="text-[10px] tracking-[4px] text-white/30 uppercase pb-1">
+                <li className="text-xs tracking-label text-white/30 uppercase pb-1">
                   {t('features')}
                 </li>
                 {item.features.map((feat, i) => (
@@ -271,7 +271,7 @@ export default async function PackagesPage({
               <span className="text-3xl">🚁</span>
               <div>
                 <p className="font-serif text-xl font-light text-white/80">{t('droneTitle')}</p>
-                <p className="text-[10px] tracking-[3px] text-gold uppercase mt-1">{t('droneComplement')}</p>
+                <p className="text-xs tracking-label text-gold uppercase mt-1">{t('droneComplement')}</p>
               </div>
             </div>
 
@@ -313,7 +313,7 @@ export default async function PackagesPage({
         </h2>
         <Link
           href={`/${locale}/contact`}
-          className="inline-block text-sm tracking-[3px] uppercase text-[#0a0f1a] bg-gold px-12 py-4 rounded-lg font-semibold hover:scale-[1.02] active:scale-[0.98] transition-all duration-200"
+          className="inline-block text-sm tracking-ui uppercase text-[#0a0f1a] bg-gold px-12 py-4 rounded-lg font-semibold hover:scale-[1.02] active:scale-[0.98] transition-all duration-200"
         >
           {t('cta')} →
         </Link>
