@@ -19,6 +19,76 @@
   }
 }
 
+/* ═══════════════════════════════════════════════════════════════
+   Système de design — tokens (batch 1)
+
+   Ces tokens sont définis mais AUCUN n'est encore utilisé : ce batch
+   ne produit aucun changement visuel. Les composants migreront aux
+   batchs suivants (palette, glassmorphism, typographie).
+
+   Les valeurs brutes vivent dans :root (nommage sémantique) ; le bloc
+   @theme les expose ensuite à Tailwind (bg-gold, text-ink, tracking-label…).
+   ═══════════════════════════════════════════════════════════════ */
+
+:root {
+  /* ── Or ──
+     Un seul or sur fond sombre : #c39553 absorbe #b08d57 (chrome),
+     #c9a867 et #e8c97e (dégradé de la page packages).
+     #8b6914 reste pour les fonds clairs, où #c39553 ne passe pas en contraste. */
+  --gold: #c39553;
+  --gold-on-light: #8b6914;
+  --gold-hover: #d9b277;
+
+  /* ── Surfaces ──
+     --surface-1 fusionne #0c1220 et #0f1420 (blocs surélevés),
+     --surface-2 fusionne #05080c et #0d1421 (calques au-dessus de tout).
+     --ink est une couleur de texte sur fond clair, pas un fond. */
+  --bg: #0a0f1a;
+  --surface-1: #0f1420;
+  --surface-2: #05080c;
+  --ink: #1a1410;
+  --paper: #f5f2ec;
+
+  /* ── Titres display ──
+     Reprise à l'identique des deux extrêmes de scroll-experience.css :
+     --display-lg = titre du hero (acte 1), --display-sm = titres de section.
+     Quatre autres clamp() intermédiaires subsistent dans ce fichier CSS et
+     devront être tranchés au batch 2/3 (les rallier ferait bouger le rendu). */
+  --display-lg: clamp(56px, 11vw, 168px);
+  --display-sm: clamp(36px, 5vw, 64px);
+
+  /* ── Interlettrage ──
+     Uniquement sur des capitales, jamais sur du texte courant, et en em
+     pour suivre la taille de police.
+     Valeurs répétées dans @theme plus bas : @theme inline n'émet pas de
+     variable CSS (Tailwind inline la valeur dans l'utilitaire). Les déclarer
+     ici rend var(--tracking-*) utilisable depuis du CSS classique, comme
+     scroll-experience.css, en plus des classes tracking-label / -ui / -title. */
+  --tracking-label: 0.2em;
+  --tracking-ui: 0.1em;
+  --tracking-title: -0.01em;
+}
+
+@theme inline {
+  --color-gold: var(--gold);
+  --color-gold-on-light: var(--gold-on-light);
+  --color-gold-hover: var(--gold-hover);
+
+  --color-bg: var(--bg);
+  --color-surface-1: var(--surface-1);
+  --color-surface-2: var(--surface-2);
+  --color-ink: var(--ink);
+  --color-paper: var(--paper);
+
+  --text-display-lg: var(--display-lg);
+  --text-display-sm: var(--display-sm);
+
+  /* Doublon assumé avec :root ci-dessus (voir le commentaire là-haut) */
+  --tracking-label: 0.2em;
+  --tracking-ui: 0.1em;
+  --tracking-title: -0.01em;
+}
+
 body {
   background: linear-gradient(135deg, #e8dfd4 0%, #d4c9b8 50%, #c8b99a 100%);
   background-attachment: fixed;
@@ -58,16 +128,6 @@ body {
 [lang="he"] .font-serif {
   font-family: var(--font-hebrew), 'Noto Sans Hebrew', serif;
 }
-/* Compensation optique : sans majuscules ni letter-spacing, l'hébreu
-   paraît plus petit à taille de police égale — on remonte d'1px les
-   petits libellés (filtres, badges, labels). */
-[lang="he"] [class*="text-[7px]"]  { font-size: 8px !important; }
-[lang="he"] [class*="text-[8px]"]  { font-size: 9px !important; }
-[lang="he"] [class*="text-[9px]"]  { font-size: 10px !important; }
-[lang="he"] [class*="text-[10px]"] { font-size: 11px !important; }
-[lang="he"] [class*="text-[11px]"] { font-size: 12px !important; }
-[lang="he"] [class*="text-[12px]"] { font-size: 13px !important; }
-[lang="he"] [class*="text-[13px]"] { font-size: 14px !important; }
 
 /* ── Splash screen keyframes ── */
 @keyframes sp-letter {
@@ -131,7 +191,7 @@ body {
     width: 6px;
     height: 6px;
     border-radius: 9999px;
-    background: #b08d57;
+    background: var(--gold);
     opacity: 0.6;
   }
 }

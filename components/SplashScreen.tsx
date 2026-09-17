@@ -61,10 +61,9 @@ export default function SplashScreen() {
 
         {/* Eyebrow */}
         <p
-          className="text-[14px] md:text-[20px] uppercase text-[#b08d57] text-center px-4"
+          className="text-sm md:text-xl tracking-label uppercase text-gold text-center px-4"
           style={{
             fontFamily: 'var(--font-jakarta), sans-serif',
-            letterSpacing: '0.28em',
             opacity: 0,
             animation: 'sp-fade-in 0.7s ease-out 0.2s forwards',
           }}
@@ -82,7 +81,7 @@ export default function SplashScreen() {
             fontWeight: 300,
             fontSize: 'clamp(56px, 7vw, 88px)',
             lineHeight: 1,
-            letterSpacing: '-0.015em',
+            letterSpacing: 'var(--tracking-title)',
             color: '#ffffff',
           }}
         >
@@ -108,7 +107,7 @@ export default function SplashScreen() {
             style={{
               display: 'inline-block',
               position: 'relative',
-              color: '#b08d57',
+              color: 'var(--gold)',
               opacity: 0,
               transform: 'translateY(-32px)',
               animation: `sp-dot-drop 0.55s cubic-bezier(.5,.05,.4,1) ${LD(6)} forwards`,
@@ -122,7 +121,7 @@ export default function SplashScreen() {
                 width: '22px',
                 height: '22px',
                 borderRadius: '50%',
-                border: '1px solid #b08d57',
+                border: '1px solid var(--gold)',
                 opacity: 0,
                 animation: `sp-tick 0.7s ease-out ${TICK_DELAY} forwards`,
               }}
@@ -152,17 +151,16 @@ export default function SplashScreen() {
           style={{
             width: 0,
             height: '1px',
-            background: '#b08d57',
+            background: 'var(--gold)',
             animation: 'sp-div 0.9s cubic-bezier(.4,0,.2,1) 1.5s forwards',
           }}
         />
 
         {/* Baseline */}
         <p
-          className="text-[22px] uppercase"
+          className="text-xl tracking-label uppercase"
           style={{
             fontFamily: 'var(--font-jakarta), sans-serif',
-            letterSpacing: '0.35em',
             color: 'rgba(255,255,255,0.40)',
             opacity: 0,
             animation: 'sp-fade-in 0.7s ease-out 1.85s forwards',

@@ -22,7 +22,7 @@ export function SpinBar({ size = 'md', className }: SpinBarProps) {
         style={{ width: trackW[size], height: '1px', background: 'rgba(255,255,255,0.25)' }}
       >
         <span
-          className="absolute inset-y-0 left-0 rounded-full bg-[#b08d57]"
+          className="absolute inset-y-0 left-0 rounded-full bg-gold"
           style={{
             width: indicW[size],
             animation: 'spin-bar-slide 1.4s cubic-bezier(0.4,0,0.2,1) infinite',

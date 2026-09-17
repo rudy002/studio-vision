@@ -58,48 +58,48 @@ export default function Navbar() {
   const burgerClass = 'text-white';
 
   const langClass = (lang: string) => {
-    if (locale === lang) return 'text-[#b08d57] border-b border-[#b08d57]';
+    if (locale === lang) return 'text-gold border-b border-gold';
     return 'text-white/60 hover:text-white';
   };
 
   return (
     <nav
       ref={navRef}
-      className="fixed top-0 left-0 right-0 z-50 flex justify-between items-center px-6 md:px-16 py-5 transition-all duration-500 [&.nav-hidden]:md:-translate-y-full [&.nav-hidden]:md:opacity-0 [&.nav-hidden]:md:pointer-events-none"
+      className="fixed top-0 left-0 right-0 z-50 flex justify-between items-center gap-4 px-6 md:px-8 lg:px-16 py-5 transition-all duration-500 [&.nav-hidden]:md:-translate-y-full [&.nav-hidden]:md:opacity-0 [&.nav-hidden]:md:pointer-events-none"
       style={navStyle}
     >
       {/* Logo */}
       <TransitionLink
         href={`/${locale}`}
-        className={`font-serif text-xl tracking-widest uppercase transition-colors ${logoClass}`}
+        className={`font-serif text-xl tracking-ui uppercase whitespace-nowrap shrink-0 transition-colors ${logoClass}`}
       >
-        Studio<span className="text-[#b08d57]">.</span>Vision
-        <span className="inline text-[10px] tracking-wider font-sans font-light opacity-70 ms-2 normal-case">by Lior Haddad</span>
+        Studio<span className="text-gold">.</span>Vision
+        <span className="inline text-xs tracking-normal font-sans font-light opacity-70 ms-2 normal-case">by Lior Haddad</span>
       </TransitionLink>
 
       {/* Desktop links */}
-      <div className="hidden md:flex gap-8 items-center">
-        <TransitionLink href={`/${locale}`} className={`text-[13px] tracking-widest uppercase transition-colors ${linkClass}`}>
+      <div className="hidden md:flex gap-4 lg:gap-8 items-center shrink-0">
+        <TransitionLink href={`/${locale}`} className={`text-xs lg:text-sm tracking-ui uppercase transition-colors ${linkClass}`}>
           {t('home')}
         </TransitionLink>
-        <TransitionLink href={`/${locale}/biens`} className={`text-[13px] tracking-widest uppercase transition-colors ${linkClass}`}>
+        <TransitionLink href={`/${locale}/biens`} className={`text-xs lg:text-sm tracking-ui uppercase transition-colors ${linkClass}`}>
           {t('properties')}
         </TransitionLink>
-        <TransitionLink href={`/${locale}/packages`} className={`text-[13px] tracking-widest uppercase transition-colors ${linkClass}`}>
+        <TransitionLink href={`/${locale}/packages`} className={`text-xs lg:text-sm tracking-ui uppercase transition-colors ${linkClass}`}>
           {t('packages')}
         </TransitionLink>
-        <TransitionLink href={`/${locale}/contact`} className={`text-[13px] tracking-widest uppercase transition-colors ${linkClass}`}>
+        <TransitionLink href={`/${locale}/contact`} className={`text-xs lg:text-sm tracking-ui uppercase transition-colors ${linkClass}`}>
           {t('contact')}
         </TransitionLink>
       </div>
 
       {/* Desktop language switcher */}
-      <div className="hidden md:flex gap-3 items-center">
+      <div className="hidden md:flex gap-3 items-center shrink-0">
         {['fr', 'en', 'he'].map((lang) => (
           <button
             key={lang}
             onClick={() => switchLocale(lang)}
-            className={`text-[13px] tracking-widest uppercase transition-colors cursor-pointer ${langClass(lang)}`}
+            className={`text-xs lg:text-sm tracking-ui uppercase transition-colors cursor-pointer ${langClass(lang)}`}
           >
             {lang}
           </button>
@@ -128,28 +128,28 @@ export default function Navbar() {
           <TransitionLink
             href={`/${locale}`}
             onNavigate={() => setMenuOpen(false)}
-            className="px-6 py-4 text-[13px] tracking-widest text-white/80 uppercase hover:text-[#b08d57] transition-colors border-b border-white/10"
+            className="px-6 py-4 text-sm tracking-ui text-white/80 uppercase hover:text-gold transition-colors border-b border-white/10"
           >
             {t('home')}
           </TransitionLink>
           <TransitionLink
             href={`/${locale}/biens`}
             onNavigate={() => setMenuOpen(false)}
-            className="px-6 py-4 text-[13px] tracking-widest text-white/80 uppercase hover:text-[#b08d57] transition-colors border-b border-white/10"
+            className="px-6 py-4 text-sm tracking-ui text-white/80 uppercase hover:text-gold transition-colors border-b border-white/10"
           >
             {t('properties')}
           </TransitionLink>
           <TransitionLink
             href={`/${locale}/packages`}
             onNavigate={() => setMenuOpen(false)}
-            className="px-6 py-4 text-[13px] tracking-widest text-white/80 uppercase hover:text-[#b08d57] transition-colors border-b border-white/10"
+            className="px-6 py-4 text-sm tracking-ui text-white/80 uppercase hover:text-gold transition-colors border-b border-white/10"
           >
             {t('packages')}
           </TransitionLink>
           <TransitionLink
             href={`/${locale}/contact`}
             onNavigate={() => setMenuOpen(false)}
-            className="px-6 py-4 text-[13px] tracking-widest text-white/80 uppercase hover:text-[#b08d57] transition-colors border-b border-white/10"
+            className="px-6 py-4 text-sm tracking-ui text-white/80 uppercase hover:text-gold transition-colors border-b border-white/10"
           >
             {t('contact')}
           </TransitionLink>
@@ -158,7 +158,7 @@ export default function Navbar() {
               <button
                 key={lang}
                 onClick={() => switchLocale(lang)}
-                className={`text-[13px] tracking-widest uppercase transition-colors cursor-pointer ${langClass(lang)}`}
+                className={`text-sm tracking-ui uppercase transition-colors cursor-pointer ${langClass(lang)}`}
               >
                 {lang}
               </button>

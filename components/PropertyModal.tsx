@@ -139,7 +139,7 @@ export default function PropertyModal({
       {/* Modal shell */}
       <div
         className="fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-1001 w-[95vw] max-w-325 rounded-2xl overflow-hidden shadow-2xl flex flex-col md:flex-row"
-        style={{ background: '#05080c', height: 'min(90vh, 660px)' }}
+        style={{ background: 'var(--surface-2)', height: 'min(90vh, 660px)' }}
       >
 
         {/* ── LEFT: Carousel ── */}
@@ -147,7 +147,7 @@ export default function PropertyModal({
           {mediaItems.length > 0
             ? <MediaCarousel items={mediaItems} className="flex-1" />
             : <div className="flex-1 flex items-center justify-center" style={{ background: '#0a0f1a' }}>
-                <p className="text-[10px] tracking-[3px] uppercase text-white/20">{t('noMedia')}</p>
+                <p className="text-xs tracking-label uppercase text-white/20">{t('noMedia')}</p>
               </div>
           }
 
@@ -168,25 +168,25 @@ export default function PropertyModal({
         {/* ── RIGHT: Details panel ── */}
         <div
           className="flex-1 md:flex-none md:w-76 lg:w-88 xl:w-96 overflow-y-auto flex flex-col"
-          style={{ background: '#0a0f1a', borderLeft: '1px solid rgba(195,149,83,0.1)' }}
+          style={{ background: '#0a0f1a', borderLeft: '1px solid color-mix(in srgb, var(--gold) 10%, transparent)' }}
         >
 
           {/* Header */}
           <div className="px-5 pt-5 pb-4 md:px-7 md:pt-8 md:pb-5">
             <span
-              className={`inline-flex items-center text-[9px] tracking-[3px] uppercase px-3 py-1.5 rounded-full mb-3 md:mb-6 ${
+              className={`inline-flex items-center text-xs tracking-label uppercase px-3 py-1.5 rounded-full mb-3 md:mb-6 ${
                 isAvailable
-                  ? 'text-[#c39553] border border-[#c39553]/30'
+                  ? 'text-gold border border-gold/30'
                   : 'text-white/35 border border-white/15'
               }`}
-              style={{ background: isAvailable ? 'rgba(195,149,83,0.08)' : 'rgba(255,255,255,0.04)' }}
+              style={{ background: isAvailable ? 'color-mix(in srgb, var(--gold) 8%, transparent)' : 'rgba(255,255,255,0.04)' }}
             >
-              <span className={`w-1.5 h-1.5 rounded-full mr-2 ${isAvailable ? 'bg-[#c39553]' : 'bg-white/30'}`} />
+              <span className={`w-1.5 h-1.5 rounded-full mr-2 ${isAvailable ? 'bg-gold' : 'bg-white/30'}`} />
               {isAvailable ? t('available') : t('sold')}
             </span>
 
-            <p className="flex items-center gap-1.5 text-[10px] tracking-[2.5px] text-white/55 uppercase mb-3">
-              <MapPin className="h-2.5 w-2.5 shrink-0 text-[#c39553]/50" />
+            <p className="flex items-center gap-1.5 text-xs tracking-label text-white/55 uppercase mb-3">
+              <MapPin className="h-2.5 w-2.5 shrink-0 text-gold/50" />
               {localizedCity}
               {property.type && (
                 <><span className="opacity-30">·</span><span>{property.type}</span></>
@@ -194,38 +194,38 @@ export default function PropertyModal({
             </p>
 
             {property.price > 0 && (
-              <p className="text-3xl font-light text-[#c39553]" style={{ fontFamily: 'var(--font-serif, "Cormorant Garamond", serif)' }}>
+              <p className="text-3xl font-light text-gold" style={{ fontFamily: 'var(--font-serif, "Cormorant Garamond", serif)' }}>
                 {property.price.toLocaleString(intlLocale)}&nbsp;₪
               </p>
             )}
           </div>
 
-          <div className="mx-7 h-px" style={{ background: 'rgba(195,149,83,0.12)' }} />
+          <div className="mx-7 h-px" style={{ background: 'color-mix(in srgb, var(--gold) 12%, transparent)' }} />
 
           {/* Specs */}
           <div className="px-5 py-4 md:px-7 md:py-6 grid grid-cols-2">
             {property.surface > 0 && (
               <div className="text-center">
                 <p className="text-2xl font-light text-white mb-1" style={{ fontFamily: 'var(--font-serif, "Cormorant Garamond", serif)' }}>{property.surface}</p>
-                <p className="text-[9px] tracking-[2px] text-white/50 uppercase">{t('surface')}</p>
+                <p className="text-xs tracking-label text-white/50 uppercase">{t('surface')}</p>
               </div>
             )}
             {property.rooms > 0 && (
-              <div className="text-center" style={property.surface > 0 ? { borderLeft: '1px solid rgba(195,149,83,0.1)' } : undefined}>
+              <div className="text-center" style={property.surface > 0 ? { borderLeft: '1px solid color-mix(in srgb, var(--gold) 10%, transparent)' } : undefined}>
                 <p className="text-2xl font-light text-white mb-1" style={{ fontFamily: 'var(--font-serif, "Cormorant Garamond", serif)' }}>{property.rooms}</p>
-                <p className="text-[9px] tracking-[2px] text-white/50 uppercase">{t('rooms')}</p>
+                <p className="text-xs tracking-label text-white/50 uppercase">{t('rooms')}</p>
               </div>
             )}
           </div>
 
-          <div className="mx-7 h-px" style={{ background: 'rgba(195,149,83,0.12)' }} />
+          <div className="mx-7 h-px" style={{ background: 'color-mix(in srgb, var(--gold) 12%, transparent)' }} />
 
           {/* Description */}
           {(() => {
             const desc = locale === 'fr' ? property.description_fr : locale === 'en' ? property.description_en : property.description_he;
             return desc ? (
               <div className="px-5 py-4 md:px-7 md:py-5">
-                <p className="text-[9px] tracking-[3px] text-[#c39553]/60 uppercase mb-2">{t('description')}</p>
+                <p className="text-xs tracking-label text-gold/60 uppercase mb-2">{t('description')}</p>
                 <p className="text-sm text-white/55 leading-relaxed">{desc}</p>
               </div>
             ) : null;
@@ -234,12 +234,12 @@ export default function PropertyModal({
           {/* Packages */}
           {property.packages && property.packages.length > 0 && (
             <>
-              <div className="mx-7 h-px" style={{ background: 'rgba(195,149,83,0.12)' }} />
+              <div className="mx-7 h-px" style={{ background: 'color-mix(in srgb, var(--gold) 12%, transparent)' }} />
               <div className="px-5 py-4 md:px-7 md:py-5">
-                <p className="text-[9px] tracking-[3px] text-[#c39553]/60 uppercase mb-3">{t('packagesLabel')}</p>
+                <p className="text-xs tracking-label text-gold/60 uppercase mb-3">{t('packagesLabel')}</p>
                 <div className="flex flex-wrap gap-2">
                   {property.packages.map((pkg) => (
-                    <span key={pkg} className="text-[9px] tracking-[1.5px] uppercase px-3 py-1.5 rounded-full border border-[#c39553]/25 text-[#c39553]/70" style={{ background: 'rgba(195,149,83,0.06)' }}>
+                    <span key={pkg} className="text-xs tracking-label uppercase px-3 py-1.5 rounded-full border border-gold/25 text-gold/70" style={{ background: 'color-mix(in srgb, var(--gold) 6%, transparent)' }}>
                       {PACKAGE_KEY[pkg] ? tPkg(PACKAGE_KEY[pkg]) : pkg}
                     </span>
                   ))}
@@ -251,8 +251,8 @@ export default function PropertyModal({
           {/* Media count hint */}
           {mediaItems.length > 1 && (
             <div className="px-5 pt-3 pb-0 md:px-7 md:pt-5">
-              <p className="text-[9px] tracking-[3px] text-white/50 uppercase flex items-center gap-2">
-                <Maximize2 className="h-3 w-3 text-[#c39553]/40" />
+              <p className="text-xs tracking-label text-white/50 uppercase flex items-center gap-2">
+                <Maximize2 className="h-3 w-3 text-gold/40" />
                 {t('mediaAvailable', { count: mediaItems.length })}
               </p>
             </div>
@@ -263,7 +263,7 @@ export default function PropertyModal({
             <button
               type="button"
               onClick={() => setShowSharePanel(true)}
-              className="w-full flex items-center justify-center gap-2.5 py-3 rounded-xl text-[11px] tracking-[2px] uppercase transition-all duration-200 cursor-pointer hover:border-white/25 hover:text-white/75"
+              className="w-full flex items-center justify-center gap-2.5 py-3 rounded-xl text-xs tracking-ui uppercase transition-all duration-200 cursor-pointer hover:border-white/25 hover:text-white/75"
               style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.1)', color: 'rgba(255,255,255,0.5)' }}
             >
               <Share2 className="h-3.5 w-3.5 shrink-0" strokeWidth={1.5} />
@@ -278,24 +278,24 @@ export default function PropertyModal({
         {showSharePanel && (
           <div
             className="absolute inset-0 z-50 flex items-center justify-center p-4"
-            style={{ background: 'rgba(5,8,12,0.7)', backdropFilter: 'blur(4px)', animation: 'sp-fade-in 0.2s ease forwards', opacity: 0 }}
+            style={{ background: 'color-mix(in srgb, var(--surface-2) 70%, transparent)', animation: 'sp-fade-in 0.2s ease forwards', opacity: 0 }}
             onClick={() => setShowSharePanel(false)}
           >
           <div
             className="w-full max-w-95 rounded-2xl px-6 pt-5 pb-6 shadow-2xl"
-            style={{ background: '#0d1421', border: '1px solid rgba(195,149,83,0.2)' }}
+            style={{ background: 'var(--surface-2)', border: '1px solid color-mix(in srgb, var(--gold) 20%, transparent)' }}
             onClick={(e) => e.stopPropagation()}
           >
             {/* Header */}
             <div className="flex items-center justify-between mb-4">
-              <p className="text-[10px] tracking-[4px] uppercase text-[#c39553]/60">{t('share')}</p>
+              <p className="text-xs tracking-label uppercase text-gold/60">{t('share')}</p>
               <button type="button" onClick={() => setShowSharePanel(false)} className="p-1 text-white/40 hover:text-white transition-colors cursor-pointer">
                 <X className="h-4 w-4" />
               </button>
             </div>
 
             {/* URL preview */}
-            <p className="mb-5 px-3 py-2 rounded-lg text-[10px] text-white/30 truncate" style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.07)' }}>
+            <p className="mb-5 px-3 py-2 rounded-lg text-xs text-white/30 truncate" style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.07)' }}>
               {shareUrl}
             </p>
 
@@ -307,7 +307,7 @@ export default function PropertyModal({
                 <div className="w-14 h-14 rounded-2xl flex items-center justify-center transition-transform duration-150 group-active:scale-90 group-hover:scale-105" style={{ background: 'rgba(37,211,102,0.1)', border: '1px solid rgba(37,211,102,0.2)' }}>
                   <WaIcon />
                 </div>
-                <span className="text-[9px] text-white/45 text-center leading-tight">WhatsApp</span>
+                <span className="text-xs text-white/45 text-center leading-tight">WhatsApp</span>
               </button>
 
               {/* Facebook */}
@@ -315,7 +315,7 @@ export default function PropertyModal({
                 <div className="w-14 h-14 rounded-2xl flex items-center justify-center transition-transform duration-150 group-active:scale-90 group-hover:scale-105" style={{ background: 'rgba(24,119,242,0.1)', border: '1px solid rgba(24,119,242,0.2)' }}>
                   <FbIcon />
                 </div>
-                <span className="text-[9px] text-white/45 text-center leading-tight">Facebook</span>
+                <span className="text-xs text-white/45 text-center leading-tight">Facebook</span>
               </button>
 
               {/* Instagram & Story (opens native share on mobile) */}
@@ -323,21 +323,21 @@ export default function PropertyModal({
                 <div className="w-14 h-14 rounded-2xl flex items-center justify-center transition-transform duration-150 group-active:scale-90 group-hover:scale-105" style={{ background: 'rgba(220,39,67,0.1)', border: '1px solid rgba(220,39,67,0.2)' }}>
                   <IgIcon />
                 </div>
-                <span className="text-[9px] text-white/45 text-center leading-tight">Instagram</span>
+                <span className="text-xs text-white/45 text-center leading-tight">Instagram</span>
               </button>
 
               {/* Copy link */}
               <button type="button" onClick={copyLink} className="flex flex-col items-center gap-2 cursor-pointer group">
                 <div
                   className="w-14 h-14 rounded-2xl flex items-center justify-center transition-all duration-150 group-active:scale-90 group-hover:scale-105"
-                  style={{ background: linkCopied ? 'rgba(176,141,87,0.2)' : 'rgba(176,141,87,0.08)', border: `1px solid ${linkCopied ? 'rgba(176,141,87,0.5)' : 'rgba(176,141,87,0.2)'}` }}
+                  style={{ background: linkCopied ? 'color-mix(in srgb, var(--gold) 20%, transparent)' : 'color-mix(in srgb, var(--gold) 8%, transparent)', border: `1px solid ${linkCopied ? 'color-mix(in srgb, var(--gold) 50%, transparent)' : 'color-mix(in srgb, var(--gold) 20%, transparent)'}` }}
                 >
                   {linkCopied
-                    ? <Check className="w-6 h-6 text-[#b08d57]" strokeWidth={2} />
-                    : <Link className="w-5 h-5 text-[#b08d57]" strokeWidth={1.5} />
+                    ? <Check className="w-6 h-6 text-gold" strokeWidth={2} />
+                    : <Link className="w-5 h-5 text-gold" strokeWidth={1.5} />
                   }
                 </div>
-                <span className="text-[9px] text-white/45 text-center leading-tight">{linkCopied ? t('shareCopied') : t('shareCopy')}</span>
+                <span className="text-xs text-white/45 text-center leading-tight">{linkCopied ? t('shareCopied') : t('shareCopy')}</span>
               </button>
             </div>
 
@@ -346,7 +346,7 @@ export default function PropertyModal({
               <button
                 type="button"
                 onClick={shareNative}
-                className="w-full flex items-center justify-center gap-2.5 py-3 rounded-xl text-[11px] tracking-[2px] uppercase cursor-pointer transition-all duration-200 hover:border-white/25 hover:text-white/60"
+                className="w-full flex items-center justify-center gap-2.5 py-3 rounded-xl text-xs tracking-ui uppercase cursor-pointer transition-all duration-200 hover:border-white/25 hover:text-white/60"
                 style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.08)', color: 'rgba(255,255,255,0.35)' }}
               >
                 <Share2 className="h-3.5 w-3.5 shrink-0" strokeWidth={1.5} />

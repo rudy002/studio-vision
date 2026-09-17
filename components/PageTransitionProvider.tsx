@@ -77,7 +77,7 @@ export function PageTransitionProvider({ children }: { children: ReactNode }) {
         <div
           key={phase}
           className="page-loader fixed inset-0 z-200 flex items-center justify-center"
-          style={{ background: 'rgba(10,15,26,0.85)', backdropFilter: 'blur(6px)', ...overlayStyle }}
+          style={{ background: 'color-mix(in srgb, var(--bg) 85%, transparent)', ...overlayStyle }}
           onAnimationEnd={phase !== 'navigating' ? handleAnimEnd : undefined}
           aria-hidden="true"
         >
@@ -86,8 +86,8 @@ export function PageTransitionProvider({ children }: { children: ReactNode }) {
               width: 36,
               height: 36,
               borderRadius: '50%',
-              border: '1.5px solid rgba(195,149,83,0.2)',
-              borderTopColor: '#b08d57',
+              border: '1.5px solid color-mix(in srgb, var(--gold) 20%, transparent)',
+              borderTopColor: 'var(--gold)',
               animation: 'spin-ring 0.75s linear infinite',
             }}
           />

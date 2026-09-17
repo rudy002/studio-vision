@@ -105,7 +105,7 @@ export function FocusRail({
         "group relative flex h-150 w-full flex-col overflow-hidden text-white outline-none select-none overflow-x-hidden",
         className
       )}
-      style={{ background: '#0e1612' }}
+      style={{ background: 'var(--bg)' }}
       onMouseEnter={() => setIsHovering(true)}
       onMouseLeave={() => setIsHovering(false)}
       tabIndex={0}
@@ -129,7 +129,7 @@ export function FocusRail({
               className="h-full w-full object-cover blur-3xl saturate-150"
             />
             <div className="absolute inset-0" style={{
-              background: 'linear-gradient(to top, #0e1612 0%, rgba(14,22,18,0.55) 50%, transparent 100%)'
+              background: 'linear-gradient(to top, var(--bg) 0%, color-mix(in srgb, var(--bg) 55%, transparent) 50%, transparent 100%)'
             }} />
           </motion.div>
         </AnimatePresence>
@@ -159,11 +159,11 @@ export function FocusRail({
               <motion.div
                 key={absIndex}
                 className={cn(
-                  "absolute aspect-3/4 w-55 md:w-70 rounded-2xl bg-[#142019] shadow-2xl",
+                  "absolute aspect-3/4 w-55 md:w-70 rounded-2xl bg-surface-1 shadow-2xl",
                   isCenter ? "z-20" : "z-10"
                 )}
                 style={{
-                  borderTop: '1px solid rgba(195,149,83,0.2)',
+                  borderTop: '1px solid color-mix(in srgb, var(--gold) 20%, transparent)',
                   transformStyle: "preserve-3d",
                 }}
                 initial={false}
@@ -186,7 +186,7 @@ export function FocusRail({
                   className="h-full w-full rounded-2xl object-cover pointer-events-none"
                 />
                 <div className="absolute inset-0 rounded-2xl pointer-events-none"
-                  style={{ background: 'linear-gradient(to bottom, rgba(195,149,83,0.08), transparent)' }}
+                  style={{ background: 'linear-gradient(to bottom, color-mix(in srgb, var(--gold) 8%, transparent), transparent)' }}
                 />
                 <div className="absolute inset-0 rounded-2xl bg-black/10 pointer-events-none mix-blend-multiply" />
               </motion.div>
@@ -208,13 +208,13 @@ export function FocusRail({
                 className="space-y-1"
               >
                 {activeItem.meta && (
-                  <span className="hidden md:inline text-[10px] font-medium uppercase tracking-[0.35em]"
-                    style={{ color: '#c39553' }}>
+                  <span className="hidden md:inline text-xs font-medium uppercase tracking-label"
+                    style={{ color: 'var(--gold)' }}>
                     {activeItem.meta}
                   </span>
                 )}
                 {activeItem.title && (
-                  <h2 className="text-xl md:text-3xl font-light tracking-tight text-white"
+                  <h2 className="text-xl md:text-3xl font-light tracking-title text-white"
                     style={{ fontFamily: 'var(--font-serif, "Cormorant Garamond", serif)' }}>
                     {activeItem.title}
                   </h2>
@@ -230,8 +230,8 @@ export function FocusRail({
 
           {/* Boutons nav + CTA */}
           <div className="flex items-center gap-4">
-            <div className="flex items-center gap-1 rounded-full p-1 backdrop-blur-md"
-              style={{ background: 'rgba(20,32,25,0.8)', border: '1px solid rgba(195,149,83,0.2)' }}>
+            <div className="flex items-center gap-1 rounded-full p-1"
+              style={{ background: 'color-mix(in srgb, var(--surface-1) 80%, transparent)', border: '1px solid color-mix(in srgb, var(--gold) 20%, transparent)' }}>
               <button
                 onClick={handlePrev}
                 className="rounded-full p-3 transition hover:bg-white/10 active:scale-95"
@@ -241,7 +241,7 @@ export function FocusRail({
                 <ChevronLeft className="h-5 w-5" />
               </button>
               <span className="min-w-10 text-center text-xs font-mono"
-                style={{ color: 'rgba(195,149,83,0.6)' }}>
+                style={{ color: 'color-mix(in srgb, var(--gold) 60%, transparent)' }}>
                 {activeIndex + 1} / {count}
               </span>
               <button
@@ -257,14 +257,11 @@ export function FocusRail({
             {activeItem.href && (
               <Link
                 href={activeItem.href}
-                className="group flex items-center gap-2 rounded-full px-5 py-3 text-sm font-medium transition-transform hover:scale-105 active:scale-95"
+                className="group flex items-center gap-2 rounded-full px-5 py-3 text-xs tracking-ui uppercase font-medium transition-transform hover:scale-105 active:scale-95"
                 style={{
-                  background: '#c39553',
-                  color: '#0e1612',
+                  background: 'var(--gold)',
+                  color: 'var(--bg)',
                   fontFamily: 'var(--font-sans, sans-serif)',
-                  letterSpacing: '0.06em',
-                  textTransform: 'uppercase',
-                  fontSize: '11px',
                 }}
               >
                 {ctaLabel}

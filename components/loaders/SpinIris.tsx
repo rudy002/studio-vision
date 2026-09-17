@@ -20,7 +20,7 @@ export function SpinIris({ size = 'md', className }: SpinIrisProps) {
     <polygon
       key={i}
       points={`${c},${c} ${c - halfBase * 1.5},${outer} ${c + halfBase * 1.5},${outer}`}
-      fill="#b08d57"
+      fill="var(--gold)"
       transform={`rotate(${i * 60}, ${c}, ${c})`}
       opacity={0.55 + i * 0.075}
     />

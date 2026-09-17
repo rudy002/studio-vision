@@ -174,16 +174,16 @@ export default async function Home({
           <style>{`@media (max-width: 767px) { .fp-header { margin-top: 80px; } }`}</style>
           <div className="fp-header flex flex-col gap-4 md:flex-row md:justify-between md:items-end mb-10 md:mb-12">
             <div>
-              <p className="text-[10px] tracking-[5px] text-[#c39553] uppercase mb-1">
+              <p className="text-sm tracking-label text-gold uppercase mb-1">
                 {th('sectionEyebrow')}
               </p>
-              <h2 className="font-serif text-3xl md:text-5xl font-light text-white">
+              <h2 className="font-serif text-3xl md:text-5xl font-light tracking-title text-white">
                 {th('sectionTitle')}
               </h2>
             </div>
             <Link
               href={`/${locale}/biens`}
-              className="text-[11px] tracking-[3px] uppercase text-white border-b-2 border-[#c39553] pb-1 hover:text-[#c39553] transition-colors self-start md:self-auto"
+              className="text-xs tracking-ui uppercase text-white border-b-2 border-gold pb-1 hover:text-gold transition-colors self-start md:self-auto"
             >
               {th('seeAll')}
             </Link>
