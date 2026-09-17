@@ -1053,7 +1053,9 @@
      À revérifier si les photos de cette section changent. */
   .sv-act-3 .sv-room.sv-r2 { background-position: 32% center; }
   .sv-act-3 .sv-room .sv-info p { display: none; }
-  .sv-act-3 .sv-strip { padding: 20px 20px 0; }
+  /* Même technique que l'acte 5 : dégagement sous la navbar (76px) et libellés
+     empilés. Côte à côte, ils passaient sur deux lignes et sous la nav. */
+  .sv-act-3 .sv-strip { padding: 76px 20px 0; flex-direction: column; align-items: flex-start; gap: 6px; }
   .sv-act-3 .sv-progress { left: 20px; right: 20px; bottom: 20px; }
 
   /* Acte 4 — avant/après */
