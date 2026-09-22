@@ -2,6 +2,7 @@
 
 import * as React from "react";
 import { ChevronLeft, ChevronRight, Play } from "lucide-react";
+import { useTranslations } from "next-intl";
 import { cn } from "@/lib/utils";
 
 export type CarouselMediaItem =
@@ -15,6 +16,8 @@ interface MediaCarouselProps {
 
 export function MediaCarousel({ items, className }: MediaCarouselProps) {
   const [page, setPage] = React.useState(0);
+  const t = useTranslations('properties');
+  const tA11y = useTranslations('a11y');
   const count = items.length;
 
   const prev = () => setPage(p => (p - 1 + count) % count);
@@ -26,7 +29,7 @@ export function MediaCarousel({ items, className }: MediaCarouselProps) {
         className={cn("flex items-center justify-center bg-black", className)}
         style={{ height: '100%' }}
       >
-        <p className="text-white/50 text-xs tracking-label uppercase">Aucun média</p>
+        <p className="text-white/50 text-xs tracking-label uppercase">{t('noMedia')}</p>
       </div>
     );
   }
@@ -102,6 +105,7 @@ export function MediaCarousel({ items, className }: MediaCarouselProps) {
           <>
             <button
               onClick={prev}
+              aria-label={tA11y('previous')}
               className="absolute left-3 top-1/2 -translate-y-1/2 z-20 w-10 h-10 rounded-full flex items-center justify-center transition-all duration-200 hover:bg-white/15 active:scale-95 focus:outline-none"
               style={{
                 background: 'rgba(6,9,12,0.68)',
@@ -113,6 +117,7 @@ export function MediaCarousel({ items, className }: MediaCarouselProps) {
             </button>
             <button
               onClick={next}
+              aria-label={tA11y('next')}
               className="absolute right-3 top-1/2 -translate-y-1/2 z-20 w-10 h-10 rounded-full flex items-center justify-center transition-all duration-200 hover:bg-white/15 active:scale-95 focus:outline-none"
               style={{
                 background: 'rgba(6,9,12,0.68)',
@@ -146,6 +151,8 @@ export function MediaCarousel({ items, className }: MediaCarouselProps) {
             <button
               key={i}
               onClick={() => setPage(i)}
+              aria-label={tA11y('media', { n: i + 1 })}
+              aria-current={i === page}
               className={cn(
                 "rounded-full transition-all duration-200 focus:outline-none",
                 i === page ? "w-4 h-1.5 bg-gold" : "w-1.5 h-1.5 bg-white/25 hover:bg-white/45"
@@ -168,6 +175,8 @@ export function MediaCarousel({ items, className }: MediaCarouselProps) {
             <button
               key={i}
               onClick={() => setPage(i)}
+              aria-label={tA11y('media', { n: i + 1 })}
+              aria-current={i === page}
               className={cn(
                 "shrink-0 w-24 h-16 rounded-xl overflow-hidden border-2 transition-all duration-200 focus:outline-none",
                 i === page

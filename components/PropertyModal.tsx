@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { useLocale, useTranslations } from 'next-intl';
 import { PACKAGE_KEY } from '@/lib/packages';
 import { cityLabel } from '@/lib/city';
+import { translatePropertyType } from '@/lib/property-type';
 import { X, MapPin, Maximize2, Share2, Link, Check } from 'lucide-react';
 import { Property } from './PropertyCard';
 import { MediaCarousel, type CarouselMediaItem } from './ui/carousel-1';
@@ -45,12 +46,15 @@ export default function PropertyModal({
   const locale = useLocale();
   const t = useTranslations('properties');
   const tPkg = useTranslations('packages');
+  const tType = useTranslations('propertyTypes');
+  const tA11y = useTranslations('a11y');
   const [showSharePanel, setShowSharePanel] = useState(false);
   const [linkCopied, setLinkCopied] = useState(false);
 
   const intlLocale = locale === 'fr' ? 'fr-FR' : locale === 'he' ? 'he-IL' : 'en-US';
   const localizedCity = cityLabel(property, locale);
-  const propertyLabel = [property.type, localizedCity].filter(Boolean).join(' · ');
+  const typeLabel = translatePropertyType(tType, property.type);
+  const propertyLabel = [typeLabel, localizedCity].filter(Boolean).join(' · ');
   const isAvailable = property.status === 'available';
 
   const shareUrl = typeof window !== 'undefined'
@@ -109,7 +113,7 @@ export default function PropertyModal({
   const mediaItems: CarouselMediaItem[] = [
     ...(property.video_url ? [{ type: 'video' as const, url: property.video_url, alt: propertyLabel }] : []),
     ...(property.photos && property.photos.length > 0
-      ? property.photos.map((url: string, i: number) => ({ type: 'photo' as const, url, alt: `${propertyLabel} — photo ${i + 1}` }))
+      ? property.photos.map((url: string, i: number) => ({ type: 'photo' as const, url, alt: `${propertyLabel} — ${tA11y('media', { n: i + 1 })}` }))
       : []),
   ];
 
@@ -153,7 +157,7 @@ export default function PropertyModal({
 
           <button
             onClick={onClose}
-            aria-label="Fermer"
+            aria-label={tA11y('close')}
             className="absolute top-4 right-4 z-30 w-9 h-9 rounded-full flex items-center justify-center cursor-pointer transition-all duration-200 hover:bg-white/15 active:scale-95 focus:outline-none"
             style={{
               background: 'rgba(5,8,12,0.72)',
@@ -189,7 +193,7 @@ export default function PropertyModal({
               <MapPin className="h-2.5 w-2.5 shrink-0 text-gold/50" />
               {localizedCity}
               {property.type && (
-                <><span className="opacity-30">·</span><span>{property.type}</span></>
+                <><span className="opacity-30">·</span><span>{typeLabel}</span></>
               )}
             </p>
 

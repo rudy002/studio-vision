@@ -4,6 +4,7 @@ import * as React from "react";
 import { motion, AnimatePresence, PanInfo } from "framer-motion";
 import { ChevronLeft, ChevronRight, ArrowUpRight } from "lucide-react";
 import Link from "next/link";
+import { useTranslations } from "next-intl";
 import { cn } from "@/lib/utils";
 
 export type FocusRailItem = {
@@ -42,6 +43,7 @@ export function FocusRail({
   className,
   ctaLabel = "Voir le bien",
 }: FocusRailProps) {
+  const tA11y = useTranslations('a11y');
   const [active, setActive] = React.useState(initialIndex);
   const [isHovering, setIsHovering] = React.useState(false);
   const lastWheelTime = React.useRef<number>(0);
@@ -236,7 +238,7 @@ export function FocusRail({
                 onClick={handlePrev}
                 className="rounded-full p-3 transition hover:bg-white/10 active:scale-95"
                 style={{ color: 'rgba(239,231,214,0.5)' }}
-                aria-label="Précédent"
+                aria-label={tA11y('previous')}
               >
                 <ChevronLeft className="h-5 w-5" />
               </button>
@@ -248,7 +250,7 @@ export function FocusRail({
                 onClick={handleNext}
                 className="rounded-full p-3 transition hover:bg-white/10 active:scale-95"
                 style={{ color: 'rgba(239,231,214,0.5)' }}
-                aria-label="Suivant"
+                aria-label={tA11y('next')}
               >
                 <ChevronRight className="h-5 w-5" />
               </button>

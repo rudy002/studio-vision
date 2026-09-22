@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
+import { useTranslations } from 'next-intl';
 import './scroll-experience.css';
 
 type Texts = {
@@ -144,6 +145,7 @@ export default function ScrollExperience({
 }: Props) {
   const t: Required<Texts> = { ...DEFAULT_TEXTS, ...(textsOverride || {}) };
   const imgs = { ...DEFAULTS.images, ...(imagesOverride || {}) };
+  const tA11y = useTranslations('a11y');
 
   const rootRef = useRef<HTMLDivElement | null>(null);
   const videoRef = useRef<HTMLVideoElement | null>(null);
@@ -346,7 +348,7 @@ export default function ScrollExperience({
       </div>
 
       {/* Chapter indicator */}
-      <aside className="sv-chapters" aria-label="Chapitres">
+      <aside className="sv-chapters" aria-label={tA11y('chapters')}>
         {t.chapters.map((label, i) => (
           <button key={i} data-chapter={i + 1} aria-current={i === 0 ? 'true' : 'false'}>
             <span className="sv-label">{label}</span>
@@ -393,7 +395,7 @@ export default function ScrollExperience({
             type="button"
             className="sv-reel-sound"
             onClick={toggleReelSound}
-            aria-label={reelMuted ? 'Activer le son' : 'Couper le son'}
+            aria-label={reelMuted ? tA11y('soundOn') : tA11y('soundOff')}
             aria-pressed={!reelMuted}
           >
             {reelMuted ? (
@@ -493,7 +495,7 @@ export default function ScrollExperience({
           </div>
 
           {/* Navigation latérale — fil de pièces */}
-          <nav className="sv-wt-nav" aria-label="Pièces visitées">
+          <nav className="sv-wt-nav" aria-label={tA11y('visitedRooms')}>
             {(imgs.visitRooms ?? []).map((_, i, arr) => (
               <div key={i} className="sv-wt-nav-item">
                 <div className="sv-wt-nav-dot" />

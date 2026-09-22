@@ -5,7 +5,7 @@ import { MapContainer, TileLayer, Marker, Popup, GeoJSON } from 'react-leaflet';
 import L from 'leaflet';
 
 import 'leaflet/dist/leaflet.css';
-import { useLocale } from 'next-intl';
+import { useLocale, useTranslations } from 'next-intl';
 import { Property } from './PropertyCard';
 import { cityLabel } from '../lib/city';
 
@@ -49,6 +49,7 @@ interface MapViewProps {
 
 export default function MapView({ properties, onPropertyClick, className = 'h-130' }: MapViewProps) {
   const locale = useLocale();
+  const t = useTranslations('properties');
   const [maskFeature, setMaskFeature] = useState<GeoJSONFeature | null>(null);
 
   useEffect(() => {
@@ -121,7 +122,7 @@ export default function MapView({ properties, onPropertyClick, className = 'h-13
                 </p>
                 {(property.rooms > 0 || property.surface > 0) && (
                   <p style={{ fontSize: '15px', fontWeight: 300, color: '#1c1917', margin: '0 0 4px', lineHeight: 1.3 }}>
-                    {[property.rooms > 0 && `${property.rooms} pièces`, property.surface > 0 && `${property.surface} m²`].filter(Boolean).join(' · ')}
+                    {[property.rooms > 0 && `${property.rooms} ${t('rooms')}`, property.surface > 0 && `${property.surface} m²`].filter(Boolean).join(' · ')}
                   </p>
                 )}
                 {property.price > 0 && (
@@ -145,7 +146,7 @@ export default function MapView({ properties, onPropertyClick, className = 'h-13
                     fontFamily: 'Georgia, serif',
                   }}
                 >
-                  Voir le bien
+                  {t('viewProperty')}
                 </button>
               </div>
             </Popup>

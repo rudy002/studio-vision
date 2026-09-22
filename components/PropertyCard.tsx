@@ -7,6 +7,7 @@ import { ArrowRight, MapPin, Play } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { PACKAGE_KEY } from '@/lib/packages';
 import { cityLabel } from '@/lib/city';
+import { translatePropertyType } from '@/lib/property-type';
 
 export type Property = {
   id: string;
@@ -51,6 +52,7 @@ function PropertyCard({
 }) {
   const t = useTranslations('properties');
   const tPkg = useTranslations('packages');
+  const tType = useTranslations('propertyTypes');
   const locale = useLocale();
 
   const intlLocale =
@@ -195,7 +197,7 @@ function PropertyCard({
             {isAvailable ? t('available') : t('sold')}
           </span>
           <span className="text-xs tracking-label uppercase px-2.5 py-1 rounded-full bg-bg/85 border border-white/15 text-white/75">
-            {property.type}
+            {translatePropertyType(tType, property.type)}
           </span>
         </div>
 

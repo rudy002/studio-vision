@@ -539,7 +539,7 @@ export default function BiensPage() {
 
         {!loading && !error && (
           <p className="text-xs tracking-label uppercase text-gold/45 mb-10">
-            {filtered.length} {t('filters.resultsCount')}
+            {t('filters.resultsCount', { count: filtered.length })}
           </p>
         )}
 
@@ -567,7 +567,7 @@ export default function BiensPage() {
         {/* Tab transition overlay */}
         {!loading && !error && tabLoading && (
           <div className="flex flex-col items-center gap-4 py-24">
-            <SpinBar />
+            <SpinBar label={t('loading')} />
             <p className="text-xs tracking-label uppercase text-white/50">{t('loading')}</p>
           </div>
         )}

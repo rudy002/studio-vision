@@ -8,6 +8,7 @@ import { usePageTransition } from './PageTransitionProvider';
 
 export default function Navbar() {
   const t = useTranslations('nav');
+  const tA11y = useTranslations('a11y');
   const locale = useLocale();
   const navigate = usePageTransition();
   const pathname = usePathname();
@@ -110,7 +111,7 @@ export default function Navbar() {
       <button
         className={`md:hidden text-xl cursor-pointer transition-colors ${burgerClass}`}
         onClick={() => setMenuOpen(!menuOpen)}
-        aria-label="Menu"
+        aria-label={tA11y('menu')}
       >
         {menuOpen ? '✕' : '☰'}
       </button>

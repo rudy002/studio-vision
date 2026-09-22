@@ -13,8 +13,8 @@
     "cta": "Explore properties"
   },
   "properties": {
-    "title": "Our Properties",
-    "eyebrow": "Exceptional properties",
+    "title": "Our work",
+    "eyebrow": "Selected shoots",
     "filters": {
       "all": "All",
       "villa": "Villa",
@@ -44,9 +44,9 @@
       "sort_surface_desc": "Surface: large to small",
       "reset": "Reset",
       "exploreMap": "Explore the map",
-      "mapCount": "{count} properties on the map",
+      "mapCount": "{count, plural, one {# property on the map} other {# properties on the map}}",
       "hideMap": "Hide map",
-      "resultsCount": "property(ies) found",
+      "resultsCount": "{count, plural, one {# property found} other {# properties found}}",
       "advanced": "Advanced filters"
     },
     "available": "Available",
@@ -63,9 +63,10 @@
     "shareCopied": "Copied!",
     "shareOther": "Other apps...",
     "noMedia": "No media",
-    "mediaAvailable": "{count} media available",
+    "mediaAvailable": "{count, plural, one {# media item available} other {# media items available}}",
     "packagesLabel": "Packages",
-    "priceOnRequest": "Price on request"
+    "priceOnRequest": "Price on request",
+    "viewProperty": "View property"
   },
   "status": {
     "available": "Available",
@@ -76,7 +77,7 @@
     "seeProperty": "View property →",
     "sectionEyebrow": "Featured properties",
     "sectionTitle": "Exceptional properties",
-    "seeAll": "View all properties →",
+    "seeAll": "View all our work →",
     "statSoldNumber": "300+",
     "statSoldLabel": "Properties sold for our clients",
     "statExperienceNumber": "5 years",
@@ -229,5 +230,24 @@
     "admaya":       "Virtual staging",
     "construction": "Construction",
     "videoExpert":  "Expert Video"
+  },
+  "propertyTypes": {
+    "villa": "Villa",
+    "appartement": "Apartment",
+    "maison": "House",
+    "penthouse": "Penthouse",
+    "duplex": "Duplex"
+  },
+  "a11y": {
+    "close": "Close",
+    "menu": "Menu",
+    "previous": "Previous",
+    "next": "Next",
+    "chapters": "Chapters",
+    "soundOn": "Turn sound on",
+    "soundOff": "Mute",
+    "visitedRooms": "Rooms visited",
+    "media": "Media {n}",
+    "loading": "Loading"
   }
 }
