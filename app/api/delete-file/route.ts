@@ -17,9 +17,17 @@ export async function POST(request: NextRequest) {
 
   try {
     const { url } = await request.json();
-    
-    // Extrait le chemin du fichier depuis l'URL publique
-    const key = url.replace(`${process.env.R2_PUBLIC_URL}/`, '');
+
+    // L'URL doit être un média de ce site : sinon n'importe quelle clé du
+    // bucket pouvait être supprimée en forgeant la requête.
+    const prefix = `${process.env.R2_PUBLIC_URL}/`;
+    if (typeof url !== 'string' || !url.startsWith(prefix)) {
+      return NextResponse.json({ error: 'URL non autorisée' }, { status: 400 });
+    }
+    const key = url.slice(prefix.length);
+    if (!/^(photos|videos)\/[\w.-]+$/.test(key)) {
+      return NextResponse.json({ error: 'Chemin non autorisé' }, { status: 400 });
+    }
 
     await r2.send(new DeleteObjectCommand({
       Bucket: process.env.R2_BUCKET_NAME!,
