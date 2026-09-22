@@ -87,6 +87,13 @@
   padding: 0;
   transition: color 0.3s ease;
 }
+/* La cible visuelle est un trait d'1px : on élargit la zone cliquable
+   sans toucher à la mise en page. */
+.sv-chapters button::after {
+  content: '';
+  position: absolute;
+  inset: -9px -8px;
+}
 .sv-chapters button .sv-dot {
   width: 24px; height: 1px;
   background: currentColor;
@@ -376,7 +383,9 @@
 .sv-act-2 .sv-hud .sv-crosshair span.sv-br { bottom: 0; right: 0; border-left: 0; border-top: 0; }
 
 .sv-act-2 .sv-caption {
-  position: absolute; left: 50%; bottom: 120px;
+  /* 160px : la rangée de CTA occupe les 80px du bas sur ~52px de haut ;
+     en dessous, la légende venait la chevaucher. */
+  position: absolute; left: 50%; bottom: 160px;
   transform: translateX(-50%) translateY(calc(var(--p2c, 0) * -40px));
   text-align: center;
   color: #fff;
@@ -604,7 +613,8 @@
   color: var(--gold);
 }
 .sv-act-4 .sv-label {
-  position: absolute; top: 48px;
+  /* 96px : sous la navbar, qui descend jusqu'à ~68px. */
+  position: absolute; top: 96px;
   font-family: var(--mono);
   font-size: 0.75rem; letter-spacing: var(--tracking-label); text-transform: uppercase;
   z-index: 2;
@@ -1059,8 +1069,11 @@
   .sv-act-3 .sv-progress { left: 20px; right: 20px; bottom: 20px; }
 
   /* Acte 4 — avant/après */
+  /* Les deux libellés démarraient à 48px, sous la navbar (qui finit à 68px),
+     et « Après · Home staging virtuel » croisait « Avant ». */
+  .sv-act-4 .sv-label { top: 76px; max-width: calc(50% - 26px); }
   .sv-act-4 .sv-label.sv-before { left: 20px; }
-  .sv-act-4 .sv-label.sv-after { right: 20px; }
+  .sv-act-4 .sv-label.sv-after { right: 20px; text-align: right; }
   .sv-act-4 .sv-caption { bottom: 56px; width: 90%; }
 
   /* Acte 5 — Walkthrough */
@@ -1120,4 +1133,12 @@
 @keyframes cueFade {
   0%, 100% { opacity: 0.4; }
   50%      { opacity: 1; }
+}
+
+/* Animations purement décoratives : coupées pour qui demande moins de
+   mouvement (poussière dorée, voyant REC, réticule Matterport). */
+@media (prefers-reduced-motion: reduce) {
+  .sv-act-1 .sv-dust { display: none; }
+  .sv-act-6 .sv-reel-info .sv-rec { animation: none; }
+  .sv-act-5 .sv-wt-reticle::before { animation: none; }
 }

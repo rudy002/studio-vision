@@ -8,13 +8,15 @@ const indicW: Record<Size, string> = { sm: '14px', md: '21px', lg: '32px' };
 interface SpinBarProps {
   size?: Size;
   className?: string;
+  /** Libellé lu par les lecteurs d'écran */
+  label?: string;
 }
 
-export function SpinBar({ size = 'md', className }: SpinBarProps) {
+export function SpinBar({ size = 'md', className, label = 'Chargement' }: SpinBarProps) {
   return (
     <span
       role="status"
-      aria-label="Chargement"
+      aria-label={label}
       className={cn('spin-atom inline-flex items-center', className)}
     >
       <span

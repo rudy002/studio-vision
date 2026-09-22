@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
+import { useTranslations } from 'next-intl';
 
 const STUDIO = ['S', 't', 'u', 'd', 'i', 'o'] as const;
 const VISION = ['V', 'i', 's', 'i', 'o', 'n'] as const;
@@ -17,6 +18,7 @@ export default function SplashScreen() {
   const [show,        setShow]        = useState(!splashHasPlayed);
   const [showContent, setShowContent] = useState(!splashHasPlayed);
   const ran = useRef(false);
+  const t = useTranslations('splash');
 
   useEffect(() => {
     if (ran.current || splashHasPlayed) return;
@@ -68,7 +70,7 @@ export default function SplashScreen() {
             animation: 'sp-fade-in 0.7s ease-out 0.2s forwards',
           }}
         >
-          Real estate cinematography
+          {t('eyebrow')}
         </p>
 
         {/* Wordmark */}

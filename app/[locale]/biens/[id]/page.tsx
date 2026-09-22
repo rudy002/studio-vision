@@ -4,6 +4,8 @@ import { notFound } from 'next/navigation';
 import PropertyPageWrapper from '../../../../components/PropertyPageWrapper';
 import { BASE_URL } from '../../../../lib/seo';
 import { cityLabel } from '../../../../lib/city';
+import { translatePropertyType } from '../../../../lib/property-type';
+import { getTranslations } from 'next-intl/server';
 
 const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL!,
@@ -23,13 +25,15 @@ export async function generateMetadata({ params }: { params: Params }): Promise<
 
   if (!property) return {};
 
+  const tType = await getTranslations({ locale, namespace: 'propertyTypes' });
   // Les titres ne sont plus saisis dans l'admin — fallback type · ville
   const city = cityLabel(property, locale);
+  const typeLabel = translatePropertyType(tType, property.type);
   const title =
     (locale === 'fr' ? property.title_fr
     : locale === 'en' ? property.title_en
     : property.title_he)
-    || [property.type, city].filter(Boolean).join(' · ');
+    || [typeLabel, city].filter(Boolean).join(' · ');
 
   const description =
     locale === 'fr' ? property.description_fr
@@ -37,7 +41,7 @@ export async function generateMetadata({ params }: { params: Params }): Promise<
     : property.description_he;
 
   const image = property.photos?.[0];
-  const metaDesc = description || `${property.type} · ${city} · ${Number(property.price).toLocaleString()} ₪`;
+  const metaDesc = description || `${typeLabel} · ${city} · ${Number(property.price).toLocaleString()} ₪`;
 
   return {
     title: `${title} — Studio Vision`,
@@ -77,12 +81,13 @@ export default async function BienPage({ params }: { params: Params }) {
 
   if (!property) notFound();
 
+  const tType = await getTranslations({ locale, namespace: 'propertyTypes' });
   const city = cityLabel(property, locale);
   const title =
     (locale === 'fr' ? property.title_fr
     : locale === 'en' ? property.title_en
     : property.title_he)
-    || [property.type, city].filter(Boolean).join(' · ');
+    || [translatePropertyType(tType, property.type), city].filter(Boolean).join(' · ');
 
   const jsonLd = {
     '@context': 'https://schema.org',
@@ -120,6 +125,9 @@ export default async function BienPage({ params }: { params: Params }) {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
+      {/* La fiche s'affiche dans un modal sans titre visible : ce h1 donne au
+          document son titre pour les moteurs et les lecteurs d'écran. */}
+      <h1 className="sr-only">{title}</h1>
       <PropertyPageWrapper property={property} />
     </main>
   );

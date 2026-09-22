@@ -5,19 +5,19 @@ import { buildAlternates } from '../../../lib/seo';
 // pas exporter generateMetadata — ce layout serveur porte son SEO.
 const seo = {
   fr: {
-    title: 'Biens immobiliers en Israël | Studio Vision',
+    title: 'Nos réalisations immobilières en Israël | Studio Vision',
     description:
-      'Découvrez notre sélection de biens immobiliers mis en valeur par Studio Vision : photographie professionnelle, vidéo drone 4K et visites virtuelles en Israël.',
+      'Découvrez nos réalisations : biens immobiliers mis en valeur par Studio Vision en photographie professionnelle, vidéo drone 4K et visites virtuelles en Israël.',
   },
   en: {
-    title: 'Properties in Israel | Studio Vision',
+    title: 'Our real estate work in Israel | Studio Vision',
     description:
-      'Discover our selection of properties showcased by Studio Vision: professional photography, 4K drone video and virtual tours in Israel.',
+      'Discover our work: properties showcased by Studio Vision with professional photography, 4K drone video and virtual tours in Israel.',
   },
   he: {
-    title: 'נכסים בישראל | סטודיו ויז\'ן',
+    title: 'העבודות שלנו בנדל"ן בישראל | סטודיו ויז\'ן',
     description:
-      'גלו את מבחר הנכסים שלנו: צילום מקצועי, וידאו רחפן 4K וסיורים וירטואליים בישראל.',
+      'גלו את העבודות שלנו: נכסים שצילמנו בצילום מקצועי, וידאו רחפן 4K וסיורים וירטואליים בישראל.',
   },
 } as const;
 

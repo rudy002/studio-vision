@@ -13,8 +13,8 @@
     "cta": "Explorer les biens"
   },
   "properties": {
-    "title": "Nos Biens",
-    "eyebrow": "Propriétés d'exception",
+    "title": "Nos réalisations",
+    "eyebrow": "Exemples de tournages",
     "filters": {
       "all": "Tous",
       "villa": "Villa",
@@ -44,9 +44,9 @@
       "sort_surface_desc": "Surface décroissante",
       "reset": "Réinitialiser",
       "exploreMap": "Explorer la carte",
-      "mapCount": "{count} bien(s) sur la carte",
+      "mapCount": "{count, plural, one {# bien sur la carte} other {# biens sur la carte}}",
       "hideMap": "Masquer la carte",
-      "resultsCount": "bien(s) trouvé(s)",
+      "resultsCount": "{count, plural, one {# bien trouvé} other {# biens trouvés}}",
       "advanced": "Filtres avancés"
     },
     "available": "Disponible",
@@ -63,9 +63,10 @@
     "shareCopied": "Copié !",
     "shareOther": "Autres applications...",
     "noMedia": "Aucun média",
-    "mediaAvailable": "{count} média(s) disponible(s)",
+    "mediaAvailable": "{count, plural, one {# média disponible} other {# médias disponibles}}",
     "packagesLabel": "Packages",
-    "priceOnRequest": "Prix sur demande"
+    "priceOnRequest": "Prix sur demande",
+    "viewProperty": "Voir le bien"
   },
   "status": {
     "available": "Disponible",
@@ -76,7 +77,7 @@
     "seeProperty": "Voir le bien →",
     "sectionEyebrow": "Biens en vedette",
     "sectionTitle": "Propriétés d'exception",
-    "seeAll": "Voir tous les biens →",
+    "seeAll": "Voir toutes nos réalisations →",
     "statSoldNumber": "300+",
     "statSoldLabel": "Biens vendus pour nos clients",
     "statExperienceNumber": "5 ans",
@@ -229,5 +230,24 @@
     "admaya":       "Home staging virtuel",
     "construction": "Construction",
     "videoExpert":  "Vidéo expert"
+  },
+  "propertyTypes": {
+    "villa": "Villa",
+    "appartement": "Appartement",
+    "maison": "Maison",
+    "penthouse": "Penthouse",
+    "duplex": "Duplex"
+  },
+  "a11y": {
+    "close": "Fermer",
+    "menu": "Menu",
+    "previous": "Précédent",
+    "next": "Suivant",
+    "chapters": "Chapitres",
+    "soundOn": "Activer le son",
+    "soundOff": "Couper le son",
+    "visitedRooms": "Pièces visitées",
+    "media": "Média {n}",
+    "loading": "Chargement"
   }
 }

@@ -9,12 +9,12 @@
     "eyebrow": "צילום נדל\"ן קולנועי",
     "title": "האמנות לחשוף כל",
     "titleAccent": "מרחב",
-    "subtitle": "צילום · וידאו רחפן · סיור וירטואלי 360°",
+    "subtitle": "צילום · וידאו רחפן · סיור וירטואלי 360°‎",
     "cta": "גלה נכסים"
   },
   "properties": {
-    "title": "הנכסים שלנו",
-    "eyebrow": "נכסים יוצאי דופן",
+    "title": "העבודות שלנו",
+    "eyebrow": "דוגמאות צילום",
     "filters": {
       "all": "הכל",
       "villa": "וילה",
@@ -44,9 +44,9 @@
       "sort_surface_desc": "שטח יורד",
       "reset": "אפס",
       "exploreMap": "גלה את המפה",
-      "mapCount": "{count} נכסים על המפה",
+      "mapCount": "{count, plural, one {נכס אחד על המפה} two {שני נכסים על המפה} other {# נכסים על המפה}}",
       "hideMap": "הסתר מפה",
-      "resultsCount": "נכס/נכסים נמצאו",
+      "resultsCount": "{count, plural, one {נכס אחד נמצא} two {שני נכסים נמצאו} other {# נכסים נמצאו}}",
       "advanced": "סינון מתקדם"
     },
     "available": "זמין",
@@ -63,9 +63,10 @@
     "shareCopied": "הועתק!",
     "shareOther": "אפליקציות נוספות...",
     "noMedia": "אין מדיה",
-    "mediaAvailable": "{count} פריטי מדיה זמינים",
+    "mediaAvailable": "{count, plural, one {פריט מדיה אחד זמין} two {שני פריטי מדיה זמינים} other {# פריטי מדיה זמינים}}",
     "packagesLabel": "חבילות",
-    "priceOnRequest": "מחיר על פי דרישה"
+    "priceOnRequest": "מחיר על פי דרישה",
+    "viewProperty": "צפה בנכס"
   },
   "status": {
     "available": "זמין",
@@ -76,7 +77,7 @@
     "seeProperty": "צפה בנכס →",
     "sectionEyebrow": "נכסים מומלצים",
     "sectionTitle": "נכסים יוצאי דופן",
-    "seeAll": "לכל הנכסים →",
+    "seeAll": "לכל העבודות שלנו →",
     "statSoldNumber": "300+",
     "statSoldLabel": "נכסים שנמכרו עבור לקוחותינו",
     "statExperienceNumber": "5 שנים",
@@ -129,7 +130,7 @@
     "packVirtualTitle": "סיור והדמיות",
     "packPhotosDesc": "צילום מקצועי שמציג כל פינה ומרחב במיטבם.",
     "packVideoDesc": "מבסיסי ועד קולנועי — עם רחפן ומוזיקה.",
-    "packVirtualDesc": "סיור 360° והדמיית פרויקט על פי דרישה.",
+    "packVirtualDesc": "סיור 360°‎ והדמיית פרויקט על פי דרישה.",
     "features": "שירותים",
     "cancellationTitle": "מדיניות ביטול",
     "cancel6h": "ביטול 6 שעות לפני",
@@ -165,7 +166,7 @@
     "hadmayaAfter": "אחרי · הדמייה",
     "hadmayaAfterSub": "סימולציה מרוהטת",
     "hadmayaWord": "הדמייה",
-    "matterportTag": "Matterport · סיור 360°",
+    "matterportTag": "Matterport · סיור 360°‎",
     "matterportTitle": "סיור סוחף,",
     "matterportTitleAccent": "24/7.",
     "matterportDesc": "תוכנית תלת-מימד מדויקת לסנטימטר, ניווט חופשי, מידות משולבות. הקונים מבקרים לפני שמגיעים.",
@@ -185,13 +186,13 @@
     "matterportStats": [
       { "value": "·01",   "label": "סריקה תלת-מימד" },
       { "value": "·1ס\"מ","label": "דיוק" },
-      { "value": "360°",  "label": "חופש" }
+      { "value": "360°‎",  "label": "חופש" }
     ]
   },
   "contact": {
     "eyebrow": "צור קשר",
     "title": "בואו נדבר על הפרויקט שלך",
-    "description": "רוצים למקסם את סיכויי המכירה ולהוסיף ערך אמיתי לנכס שלכם? צילום ווידאו מקצועיים, וידאו רחפן וסיור וירטואלי 360° — אנחנו מציגים כל מרחב כדי לרתק קונים כבר ממבט ראשון.",
+    "description": "רוצים למקסם את סיכויי המכירה ולהוסיף ערך אמיתי לנכס שלכם? צילום ווידאו מקצועיים, וידאו רחפן וסיור וירטואלי 360°‎ — אנחנו מציגים כל מרחב כדי לרתק קונים כבר ממבט ראשון.",
     "info": {
       "location": "ישראל",
       "phone": "+972 53-708-4374",
@@ -229,5 +230,24 @@
     "admaya":       "הדמייה",
     "construction": "בנייה",
     "videoExpert":  "וידאו אקספרט"
+  },
+  "propertyTypes": {
+    "villa": "וילה",
+    "appartement": "דירה",
+    "maison": "בית",
+    "penthouse": "פנטהאוז",
+    "duplex": "דופלקס"
+  },
+  "a11y": {
+    "close": "סגור",
+    "menu": "תפריט",
+    "previous": "הקודם",
+    "next": "הבא",
+    "chapters": "פרקים",
+    "soundOn": "הפעל שמע",
+    "soundOff": "השתק",
+    "visitedRooms": "חדרים בסיור",
+    "media": "מדיה {n}",
+    "loading": "טוען"
   }
 }

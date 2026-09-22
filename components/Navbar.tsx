@@ -8,6 +8,7 @@ import { usePageTransition } from './PageTransitionProvider';
 
 export default function Navbar() {
   const t = useTranslations('nav');
+  const tA11y = useTranslations('a11y');
   const locale = useLocale();
   const navigate = usePageTransition();
   const pathname = usePathname();
@@ -71,7 +72,7 @@ export default function Navbar() {
       {/* Logo */}
       <TransitionLink
         href={`/${locale}`}
-        className={`font-serif text-xl tracking-ui uppercase whitespace-nowrap shrink-0 transition-colors ${logoClass}`}
+        className={`brand-wordmark font-serif text-xl tracking-ui uppercase whitespace-nowrap shrink-0 transition-colors ${logoClass}`}
       >
         Studio<span className="text-gold">.</span>Vision
         <span className="inline text-xs tracking-normal font-sans font-light opacity-70 ms-2 normal-case">by Lior Haddad</span>
@@ -108,9 +109,9 @@ export default function Navbar() {
 
       {/* Mobile burger */}
       <button
-        className={`md:hidden text-xl cursor-pointer transition-colors ${burgerClass}`}
+        className={`md:hidden text-xl cursor-pointer transition-colors p-3 -m-3 ${burgerClass}`}
         onClick={() => setMenuOpen(!menuOpen)}
-        aria-label="Menu"
+        aria-label={tA11y('menu')}
       >
         {menuOpen ? '✕' : '☰'}
       </button>

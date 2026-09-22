@@ -4,6 +4,7 @@ import { createClient } from '@supabase/supabase-js';
 import ScrollExperience from '../../components/blocks/ScrollExperience';
 import { BASE_URL, buildAlternates } from '../../lib/seo';
 import { cityLabel } from '../../lib/city';
+import { translatePropertyType } from '../../lib/property-type';
 
 const OG_IMAGE = {
   url: `${BASE_URL}/og-image.jpg`,
@@ -67,6 +68,8 @@ export default async function Home({
 }) {
   const { locale } = await params;
   const th = await getTranslations('home');
+  const tp = await getTranslations('properties');
+  const tType = await getTranslations('propertyTypes');
   const tse = await getTranslations('scrollExperience');
 
   const supabase = createClient(
@@ -121,7 +124,9 @@ export default async function Home({
         }}
         texts={{
           seoTitle: tse('seoTitle'),
-          chapters: tse.raw('chapters') as string[],
+          // Le dernier chapitre pointe vers la section « en vedette », qui n'existe
+          // que si au moins un bien a une photo : sinon le bouton ne mène nulle part.
+          chapters: (tse.raw('chapters') as string[]).slice(0, propertiesWithMedia.length > 0 ? 7 : 6),
           introEyebrow: tse('introEyebrow'),
           introTitleLine1: tse('introTitleLine1'),
           introTitleAccent: tse('introTitleAccent'),
@@ -195,12 +200,12 @@ export default async function Home({
                 id: p.id,
                 imageSrc: p.photos[0],
                 href: `/${locale}/biens/${p.id}`,
-                meta: [cityLabel(p, locale), p.type]
+                meta: [cityLabel(p, locale), translatePropertyType(tType, p.type)]
                   .filter(Boolean)
                   .join(' · '),
                 description: [
                   p.surface && `${p.surface} m²`,
-                  p.rooms && `${p.rooms} pièces`,
+                  p.rooms && `${p.rooms} ${tp('rooms')}`,
                   p.price && `${Number(p.price).toLocaleString('fr-FR')} ₪`,
                 ]
                   .filter(Boolean)

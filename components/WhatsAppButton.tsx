@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState, useRef } from 'react';
+import { usePathname } from 'next/navigation';
 
 const WA_MESSAGES: Record<string, string> = {
   fr: 'Bonjour, je suis intéressé(e) par vos services de photographie et vidéo immobilière. Seriez-vous disponible pour en discuter ?',
@@ -11,6 +12,7 @@ const WA_MESSAGES: Record<string, string> = {
 const WA_BASE = 'https://wa.me/972537084374';
 
 export default function WhatsAppButton() {
+  const pathname = usePathname();
   const [visible, setVisible] = useState(true);
   const hideTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
@@ -37,6 +39,9 @@ export default function WhatsAppButton() {
     };
   }, []);
 
+  // Outil interne : le bouton de contact public n'a rien à y faire.
+  if (pathname?.startsWith('/admin')) return null;
+
   return (
     <>
       <style>{`
@@ -45,6 +50,7 @@ export default function WhatsAppButton() {
           50% { transform: translateY(-6px); }
         }
         .wa-float { animation: wa-float 3s ease-in-out infinite; }
+        @media (prefers-reduced-motion: reduce) { .wa-float { animation: none; } }
         .wa-float:hover { animation: none; transform: scale(1.08) !important; transition: transform 0.2s; }
         .wa-btn {
           position: fixed;
