@@ -45,6 +45,7 @@ export default function WhatsAppButton() {
           50% { transform: translateY(-6px); }
         }
         .wa-float { animation: wa-float 3s ease-in-out infinite; }
+        @media (prefers-reduced-motion: reduce) { .wa-float { animation: none; } }
         .wa-float:hover { animation: none; transform: scale(1.08) !important; transition: transform 0.2s; }
         .wa-btn {
           position: fixed;

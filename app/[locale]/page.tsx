@@ -124,7 +124,9 @@ export default async function Home({
         }}
         texts={{
           seoTitle: tse('seoTitle'),
-          chapters: tse.raw('chapters') as string[],
+          // Le dernier chapitre pointe vers la section « en vedette », qui n'existe
+          // que si au moins un bien a une photo : sinon le bouton ne mène nulle part.
+          chapters: (tse.raw('chapters') as string[]).slice(0, propertiesWithMedia.length > 0 ? 7 : 6),
           introEyebrow: tse('introEyebrow'),
           introTitleLine1: tse('introTitleLine1'),
           introTitleAccent: tse('introTitleAccent'),
