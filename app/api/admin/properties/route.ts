@@ -19,7 +19,14 @@ const db = createClient(
   { auth: { persistSession: false } },
 );
 
-export const serviceKeyConfigured = !!process.env.SUPABASE_SERVICE_ROLE_KEY;
+/** Diagnostic : indique si la clé de service est bien branchée côté serveur. */
+export async function GET() {
+  const unauthorized = await requireAdmin();
+  if (unauthorized) return unauthorized;
+  return NextResponse.json({
+    cleDeServiceConfiguree: !!process.env.SUPABASE_SERVICE_ROLE_KEY,
+  });
+}
 
 export async function POST(request: NextRequest) {
   const unauthorized = await requireAdmin();
