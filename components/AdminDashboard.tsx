@@ -87,6 +87,7 @@ export default function AdminDashboard() {
   const [showConfirmModal, setShowConfirmModal] = useState(false);
   const [folderWarn, setFolderWarn] = useState<string | null>(null);
   const [mediaError, setMediaError] = useState(false);
+  const [submitError, setSubmitError] = useState<string | null>(null);
   const [cityError, setCityError] = useState(false);
   const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
@@ -287,6 +288,7 @@ export default function AdminDashboard() {
 
   const performSubmit = async () => {
     setShowConfirmModal(false);
+    setSubmitError(null);
     setLoading(true);
 
     try {
@@ -336,6 +338,9 @@ export default function AdminDashboard() {
       }, 1200);
     } catch (err) {
       console.error(err);
+      // Sans ce message, un envoi refusé (format de fichier, réseau) ne
+      // laissait aucune trace à l'écran.
+      setSubmitError(err instanceof Error ? err.message : "L'enregistrement a échoué.");
       setLoading(false);
     }
   };
@@ -957,6 +962,12 @@ export default function AdminDashboard() {
                     </div>
                   </div>
                 </div>
+              </div>
+            )}
+
+            {submitError && (
+              <div className="mt-6 px-4 py-3 rounded-xl bg-red-50 border border-red-200">
+                <p className="text-xs text-red-600 font-medium">{submitError}</p>
               </div>
             )}
 

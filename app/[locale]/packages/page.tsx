@@ -1,6 +1,8 @@
 import type { Metadata } from 'next';
 import { getTranslations } from 'next-intl/server';
 import Link from 'next/link';
+import { Camera, Clapperboard, Scan, Plane } from 'lucide-react';
+import type { LucideIcon } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { buildAlternates } from '@/lib/seo';
 
@@ -91,14 +93,14 @@ export default async function PackagesPage({
   };
 
   const plans: {
-    icon: string;
+    icon: LucideIcon;
     name: string;
     desc: string;
     isMostPop: boolean;
     features: Feature[];
   }[] = [
     {
-      icon: '📸',
+      icon: Camera,
       name: t('photoTitle'),
       desc: t('packPhotosDesc'),
       isMostPop: false,
@@ -110,7 +112,7 @@ export default async function PackagesPage({
       ],
     },
     {
-      icon: '🎬',
+      icon: Clapperboard,
       name: t('packVideoTitle'),
       desc: t('packVideoDesc'),
       isMostPop: true,
@@ -122,7 +124,7 @@ export default async function PackagesPage({
       ],
     },
     {
-      icon: '🏠',
+      icon: Scan,
       name: t('packVirtualTitle'),
       desc: t('packVirtualDesc'),
       isMostPop: false,
@@ -195,7 +197,7 @@ export default async function PackagesPage({
                 )}
               >
                 <div className="flex items-center gap-3">
-                  <span className="text-4xl">{item.icon}</span>
+                  <item.icon className="h-8 w-8 text-gold shrink-0" strokeWidth={1.25} aria-hidden="true" />
                   <span
                     className={cn(
                       'font-serif text-3xl font-light tracking-title',
@@ -268,7 +270,7 @@ export default async function PackagesPage({
 
             {/* Left: identity */}
             <div className="p-7 md:w-60 flex-none flex items-center gap-4 border-b md:border-b-0 md:border-r border-white/5">
-              <span className="text-3xl">🚁</span>
+              <Plane className="h-7 w-7 text-gold shrink-0" strokeWidth={1.25} aria-hidden="true" />
               <div>
                 <p className="font-serif text-xl font-light text-white/80">{t('droneTitle')}</p>
                 <p className="text-xs tracking-label text-gold uppercase mt-1">{t('droneComplement')}</p>

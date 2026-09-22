@@ -469,7 +469,7 @@ export default function BiensPage() {
       </div>
 
       {/* ── Carte (bandeau teaser repliable) ── */}
-      <div className="px-6 md:px-16 pb-16 pt-2">
+      <div className="px-6 md:px-16 pb-10 md:pb-16 pt-2">
         {!mapOpen ? (
           <button
             onClick={() => setMapOpen(true)}
@@ -535,10 +535,10 @@ export default function BiensPage() {
       </div>
 
       {/* ── Grille ── */}
-      <div className="px-6 md:px-16 py-16 md:py-24">
+      <div className="px-6 md:px-16 py-10 md:py-24">
 
         {!loading && !error && (
-          <p className="text-xs tracking-label uppercase text-gold/45 mb-10">
+          <p className="text-xs tracking-label uppercase text-gold/70 mb-10">
             {t('filters.resultsCount', { count: filtered.length })}
           </p>
         )}

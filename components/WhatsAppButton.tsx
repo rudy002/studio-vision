@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState, useRef } from 'react';
+import { usePathname } from 'next/navigation';
 
 const WA_MESSAGES: Record<string, string> = {
   fr: 'Bonjour, je suis intéressé(e) par vos services de photographie et vidéo immobilière. Seriez-vous disponible pour en discuter ?',
@@ -11,6 +12,7 @@ const WA_MESSAGES: Record<string, string> = {
 const WA_BASE = 'https://wa.me/972537084374';
 
 export default function WhatsAppButton() {
+  const pathname = usePathname();
   const [visible, setVisible] = useState(true);
   const hideTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
@@ -36,6 +38,9 @@ export default function WhatsAppButton() {
       if (hideTimer.current) clearTimeout(hideTimer.current);
     };
   }, []);
+
+  // Outil interne : le bouton de contact public n'a rien à y faire.
+  if (pathname?.startsWith('/admin')) return null;
 
   return (
     <>

@@ -167,25 +167,25 @@ export default function ContactClient() {
                     <div>
                       <label className={labelClass}>{t('form.firstname')}</label>
                       <input name="firstname" type="text" onChange={handleChange} required
-                        placeholder={t('form.firstname')} className={inputClass} />
+                        className={inputClass} />
                     </div>
                     <div>
                       <label className={labelClass}>{t('form.lastname')}</label>
                       <input name="lastname" type="text" onChange={handleChange} required
-                        placeholder={t('form.lastname')} className={inputClass} />
+                        className={inputClass} />
                     </div>
                   </div>
 
                   <div>
                     <label className={labelClass}>{t('form.email')}</label>
                     <input name="email" type="email" onChange={handleChange} required
-                      placeholder={t('form.email')} className={inputClass} />
+                      className={inputClass} />
                   </div>
 
                   <div>
                     <label className={labelClass}>{t('form.phone')}</label>
                     <input name="phone" type="tel" onChange={handleChange}
-                      placeholder={t('form.phone')} className={inputClass} />
+                      placeholder="+972 5X XXX XXXX" className={inputClass} />
                   </div>
 
                   <div>
@@ -211,7 +211,6 @@ export default function ContactClient() {
                   <div>
                     <label className={labelClass}>{t('form.message')}</label>
                     <textarea name="message" rows={4} onChange={handleChange} required
-                      placeholder={t('form.message')}
                       className={inputClass + ' resize-none'} />
                   </div>
 
