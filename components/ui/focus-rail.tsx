@@ -240,7 +240,7 @@ export function FocusRail({
                 style={{ color: 'rgba(239,231,214,0.5)' }}
                 aria-label={tA11y('previous')}
               >
-                <ChevronLeft className="h-5 w-5" />
+                <ChevronLeft className="h-5 w-5 rtl:-scale-x-100" />
               </button>
               <span className="min-w-10 text-center text-xs font-mono"
                 style={{ color: 'color-mix(in srgb, var(--gold) 60%, transparent)' }}>
@@ -252,7 +252,7 @@ export function FocusRail({
                 style={{ color: 'rgba(239,231,214,0.5)' }}
                 aria-label={tA11y('next')}
               >
-                <ChevronRight className="h-5 w-5" />
+                <ChevronRight className="h-5 w-5 rtl:-scale-x-100" />
               </button>
             </div>
 

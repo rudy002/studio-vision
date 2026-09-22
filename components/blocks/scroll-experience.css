@@ -87,6 +87,13 @@
   padding: 0;
   transition: color 0.3s ease;
 }
+/* La cible visuelle est un trait d'1px : on élargit la zone cliquable
+   sans toucher à la mise en page. */
+.sv-chapters button::after {
+  content: '';
+  position: absolute;
+  inset: -9px -8px;
+}
 .sv-chapters button .sv-dot {
   width: 24px; height: 1px;
   background: currentColor;

@@ -128,6 +128,20 @@ body {
 [lang="he"] .font-serif {
   font-family: var(--font-hebrew), 'Noto Sans Hebrew', serif;
 }
+/* Le wordmark est un mot latin : il garde la police de marque et son
+   interlettrage, même quand la page passe en hébreu. */
+[lang="he"] .brand-wordmark {
+  font-family: var(--font-serif), 'Cormorant Garamond', serif !important;
+  letter-spacing: var(--tracking-ui) !important;
+}
+
+/* I1 — Cormorant et JetBrains n'ont pas de glyphes hébreux : sans cette
+   surcharge, les titres et libellés de l'accueil tombaient sur une police
+   système différente d'un appareil à l'autre. */
+[lang="he"] .sv-root {
+  --serif: var(--font-hebrew), 'Noto Sans Hebrew', serif;
+  --mono: var(--font-hebrew), 'Noto Sans Hebrew', monospace;
+}
 
 /* ── Splash screen keyframes ── */
 @keyframes sp-letter {

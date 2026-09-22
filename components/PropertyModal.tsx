@@ -158,7 +158,7 @@ export default function PropertyModal({
           <button
             onClick={onClose}
             aria-label={tA11y('close')}
-            className="absolute top-4 right-4 z-30 w-9 h-9 rounded-full flex items-center justify-center cursor-pointer transition-all duration-200 hover:bg-white/15 active:scale-95 focus:outline-none"
+            className="absolute top-4 end-4 z-30 w-9 h-9 rounded-full flex items-center justify-center cursor-pointer transition-all duration-200 hover:bg-white/15 active:scale-95 focus:outline-none"
             style={{
               background: 'rgba(5,8,12,0.72)',
               border: '1px solid rgba(255,255,255,0.16)',
@@ -172,7 +172,7 @@ export default function PropertyModal({
         {/* ── RIGHT: Details panel ── */}
         <div
           className="flex-1 md:flex-none md:w-76 lg:w-88 xl:w-96 overflow-y-auto flex flex-col"
-          style={{ background: '#0a0f1a', borderLeft: '1px solid color-mix(in srgb, var(--gold) 10%, transparent)' }}
+          style={{ background: '#0a0f1a', borderInlineStart: '1px solid color-mix(in srgb, var(--gold) 10%, transparent)' }}
         >
 
           {/* Header */}
@@ -185,7 +185,7 @@ export default function PropertyModal({
               }`}
               style={{ background: isAvailable ? 'color-mix(in srgb, var(--gold) 8%, transparent)' : 'rgba(255,255,255,0.04)' }}
             >
-              <span className={`w-1.5 h-1.5 rounded-full mr-2 ${isAvailable ? 'bg-gold' : 'bg-white/30'}`} />
+              <span className={`w-1.5 h-1.5 rounded-full me-2 ${isAvailable ? 'bg-gold' : 'bg-white/30'}`} />
               {isAvailable ? t('available') : t('sold')}
             </span>
 
@@ -215,7 +215,7 @@ export default function PropertyModal({
               </div>
             )}
             {property.rooms > 0 && (
-              <div className="text-center" style={property.surface > 0 ? { borderLeft: '1px solid color-mix(in srgb, var(--gold) 10%, transparent)' } : undefined}>
+              <div className="text-center" style={property.surface > 0 ? { borderInlineStart: '1px solid color-mix(in srgb, var(--gold) 10%, transparent)' } : undefined}>
                 <p className="text-2xl font-light text-white mb-1" style={{ fontFamily: 'var(--font-serif, "Cormorant Garamond", serif)' }}>{property.rooms}</p>
                 <p className="text-xs tracking-label text-white/50 uppercase">{t('rooms')}</p>
               </div>

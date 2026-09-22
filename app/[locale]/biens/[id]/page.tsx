@@ -125,6 +125,9 @@ export default async function BienPage({ params }: { params: Params }) {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
+      {/* La fiche s'affiche dans un modal sans titre visible : ce h1 donne au
+          document son titre pour les moteurs et les lecteurs d'écran. */}
+      <h1 className="sr-only">{title}</h1>
       <PropertyPageWrapper property={property} />
     </main>
   );

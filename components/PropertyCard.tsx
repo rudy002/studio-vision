@@ -241,7 +241,7 @@ function PropertyCard({
             <span className="font-serif text-lg font-light">
               {property.price > 0 ? `${property.price.toLocaleString(intlLocale)} ₪` : t('priceOnRequest')}
             </span>
-            <ArrowRight className="h-4 w-4 text-gold transition-transform duration-300 group-hover:translate-x-1 shrink-0" />
+            <ArrowRight className="h-4 w-4 text-gold transition-transform duration-300 group-hover:translate-x-1 rtl:-scale-x-100 rtl:group-hover:-translate-x-1 shrink-0" />
           </div>
         </div>
       </div>
