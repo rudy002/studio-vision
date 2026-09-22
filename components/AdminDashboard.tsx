@@ -95,6 +95,19 @@ export default function AdminDashboard() {
     return () => photoPreviews.forEach((u) => URL.revokeObjectURL(u));
   }, [photoPreviews]);
 
+  /** Écritures passées au serveur : la clé publique n'écrit plus en base. */
+  const writeProperty = async (method: 'POST' | 'PATCH' | 'DELETE', body: unknown) => {
+    const res = await fetch('/api/admin/properties', {
+      method,
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(body),
+    });
+    if (!res.ok) {
+      const { error } = await res.json().catch(() => ({ error: '' }));
+      throw new Error(error || "L'enregistrement a échoué.");
+    }
+  };
+
   const fetchProperties = async () => {
     const { data } = await supabase
       .from('properties')
@@ -317,9 +330,9 @@ export default function AdminDashboard() {
       };
 
       if (editingId) {
-        await supabase.from('properties').update(payload).eq('id', editingId);
+        await writeProperty('PATCH', { id: editingId, payload });
       } else {
-        await supabase.from('properties').insert(payload);
+        await writeProperty('POST', payload);
       }
 
       setForm(emptyForm);
@@ -347,7 +360,12 @@ export default function AdminDashboard() {
 
   const toggleStatus = async (id: string, currentStatus: string) => {
     const newStatus = currentStatus === 'available' ? 'sold' : 'available';
-    await supabase.from('properties').update({ status: newStatus }).eq('id', id);
+    try {
+      await writeProperty('PATCH', { id, payload: { status: newStatus } });
+    } catch (err) {
+      setSubmitError(err instanceof Error ? err.message : 'Échec de la mise à jour.');
+      return;
+    }
     fetchProperties();
   };
 
@@ -370,7 +388,12 @@ export default function AdminDashboard() {
         body: JSON.stringify({ url: property.video_url }),
       });
     }
-    await supabase.from('properties').delete().eq('id', id);
+    try {
+      await writeProperty('DELETE', { id });
+    } catch (err) {
+      setSubmitError(err instanceof Error ? err.message : 'Échec de la suppression.');
+      return;
+    }
     fetchProperties();
   };
 
